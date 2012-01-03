@@ -57,12 +57,14 @@ private:
 	 * attack could resolve separately. I think it may also help for 
 	 * checking the card types.
 	 */
-	 
-	 /*
-	  * Set
-	  * 
-	  * Not needed for gameplay but it will be needed for game setup.
-	  */
+
+	/*
+	 * Metadata
+	 * Some metadata cards need not (but do not affect gameplay) gameplay 
+	 * include:
+	 * * Dominion set
+	 * * Card categories like Trash and Defenses 
+	 */
 };
 
 #endif // CARD_H

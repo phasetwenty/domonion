@@ -1,6 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <string>
+
+#include "deck.h"
+
 class Player {
 
 public:
@@ -9,6 +13,9 @@ public:
 
 private:
     
+    std::string name;
+    
+    Deck& deck;
 
 };
 

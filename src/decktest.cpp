@@ -6,6 +6,11 @@
  */
 
 #include "../include/simpledeck.h"
+#include <vector>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 int main() {
 	SimpleDeck* d = new SimpleDeck();
@@ -21,7 +26,7 @@ int main() {
 	d->gain("Estate");
 	d->gain("Estate");
 
-	d->draw(5);
+	d->cleanupAndDraw();
 
 	return 0;
 }

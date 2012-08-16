@@ -4,7 +4,6 @@
  *  Created on: Jun 29, 2012
  *      Author: chris
  */
-
 #include "../include/simpledeck.h"
 
 using namespace std;
@@ -21,6 +20,20 @@ SimpleDeck::SimpleDeck() {
 	drawPile = stack<string>();
 	hand = vector<string>();
 	tableau = stack<string>();
+}
+
+void SimpleDeck::cleanupAndDraw() {
+	while (!hand.empty()) {
+		discardPile.push(hand[0]);
+		hand.erase(hand.begin());
+	}
+
+	while (!tableau.empty()) {
+		discardPile.push(tableau.top());
+		tableau.pop();
+	}
+
+	draw(5);
 }
 
 int SimpleDeck::draw(int count) {
@@ -45,12 +58,35 @@ int SimpleDeck::draw(int count) {
 	return drawnCount;
 }
 
-int SimpleDeck::countDrawableCards() {
-	return drawPile.size() + discardPile.size();
-}
-
 void SimpleDeck::gain(string card) {
 	discardPile.push(card);
+}
+
+/*
+ * At first I wanted to return a null value when the card isn't found. Then I
+ * thought, this should be an uncommon case: the user should already know that
+ * the card is in the hand and shouldn't be requesting plays of cards that
+ * aren't there.
+ */
+string SimpleDeck::play(string card) {
+	bool done = false;
+	vector<string>::iterator it = hand.begin();
+	while (!done && it != hand.end()) {
+		if (card == *it) {
+			done = true;
+		}
+
+		if (!done) {
+			it++;
+		}
+	}
+
+	if (!done && it == hand.end()) {
+		// throw an exception
+	}
+
+
+	return *it;
 }
 
 /*
@@ -85,5 +121,18 @@ void SimpleDeck::reveal(int count) {
  */
 void SimpleDeck::shuffle() {
 	// TODO: actually shuffle the discard pile. And see if there is a non-naive way of moving all of these objects.
-
+	while (discardPile.size() > 0) {
+		string temp = discardPile.top();
+		discardPile.pop();
+		drawPile.push(temp);
+	}
 }
+
+const vector<string>& SimpleDeck::getHand() {
+	return hand;
+}
+
+int SimpleDeck::countDrawableCards() {
+	return drawPile.size() + discardPile.size();
+}
+

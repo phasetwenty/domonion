@@ -10,4 +10,4 @@
 	 * Many effects need to check the game state.
 	 * 
 	 * 
-	 */		
+	 */

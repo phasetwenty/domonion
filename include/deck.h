@@ -1,8 +1,6 @@
 #ifndef DECK_H 
 #define DECK_H
 
-extern Card;
-
 class Deck {
 public:
     /*

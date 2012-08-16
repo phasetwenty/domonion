@@ -18,6 +18,12 @@ public:
 	~SimpleDeck();
 
 	/*
+	 * Run the standard C and D parts of the turn: (c)leanup the cards on the
+	 * table, discard any remaining cards, (d)raw a new hand.
+	 */
+	void cleanupAndDraw();
+
+	/*
      * Draw, optionally taking a number of cards to draw, into the player's
      * hand. Returns the number of cards drawn.
      */
@@ -29,6 +35,10 @@ public:
 	 */
 	void gain(std::string card);
 
+	/*
+	 * Takes `card` from the hand and plays it. Returns the played card.
+	 */
+	std::string play(std::string card);
     /*
      * Reveal a card from the top of the deck, optionally taking a number of
      * cards to reveal (defaulting to 1).
@@ -45,6 +55,11 @@ public:
 	 * trashed.
 	 */
 	std::string trash(std::string card);
+
+	/*
+	 * Getter for the hand.
+	 */
+	const std::vector<std::string>& getHand();
 
 private:
     /*

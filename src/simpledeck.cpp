@@ -4,7 +4,7 @@
  *  Created on: Jun 29, 2012
  *      Author: chris
  */
-#include "../include/simpledeck.h"
+#include <simpledeck.h>
 
 using namespace std;
 
@@ -22,6 +22,14 @@ SimpleDeck::SimpleDeck() {
 	tableau = stack<string>();
 }
 
+SimpleDeck::~SimpleDeck() {
+
+}
+
+/*
+ * When Seaside is on the table, you have to remember not to clean up cards with
+ * Duration.
+ */
 void SimpleDeck::cleanupAndDraw() {
 	while (!hand.empty()) {
 		discardPile.push(hand[0]);
@@ -58,6 +66,10 @@ int SimpleDeck::draw(int count) {
 	return drawnCount;
 }
 
+/*
+ * In the future, I'll need to gain cards into the hand and the top of the
+ * draw pile.
+ */
 void SimpleDeck::gain(string card) {
 	discardPile.push(card);
 }
@@ -135,4 +147,3 @@ const vector<string>& SimpleDeck::getHand() {
 int SimpleDeck::countDrawableCards() {
 	return drawPile.size() + discardPile.size();
 }
-

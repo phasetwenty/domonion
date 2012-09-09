@@ -1,13 +1,14 @@
-/*
- * scratch.cpp
- *
- *  Created on: Jun 20, 2012
- *      Author: chris
- */
-#include <iostream>
-using namespace std;
+#include <ncurses.h>
 
 int main() {
-	cout << "Hello World!" << endl;
+	initscr();			/* Start curses mode 		  */
+	getch();
+
+
+	printw("Hello World !!!");	/* Print Hello World		  */
+	refresh();			/* Print it on to the real screen */
+	getch();			/* Wait for user input */
+	endwin();			/* End curses mode		  */
+
 	return 0;
 }

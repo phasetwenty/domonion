@@ -65,12 +65,12 @@ private:
     /*
      * Cards in the discard pile.
      */
-    std::stack<std::string> discardPile;
+    std::vector<std::string> discardPile;
 
     /*
      * Cards (immediately) available for drawing.
      */
-    std::stack<std::string> drawPile;
+    std::vector<std::string> drawPile;
 
     /*
      * Cards in hand.

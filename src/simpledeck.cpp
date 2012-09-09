@@ -4,6 +4,11 @@
  *  Created on: Jun 29, 2012
  *      Author: chris
  */
+#include <assert.h>
+#include <algorithm>
+#include <stdlib.h>
+#include <time.h>
+
 #include <simpledeck.h>
 
 using namespace std;
@@ -16,10 +21,12 @@ using namespace std;
  * interface.
  */
 SimpleDeck::SimpleDeck() {
-	discardPile = stack<string>();
-	drawPile = stack<string>();
+	discardPile = vector<string>();
+	drawPile = vector<string>();
 	hand = vector<string>();
 	tableau = stack<string>();
+
+	srand(time(NULL));
 }
 
 SimpleDeck::~SimpleDeck() {
@@ -32,12 +39,12 @@ SimpleDeck::~SimpleDeck() {
  */
 void SimpleDeck::cleanupAndDraw() {
 	while (!hand.empty()) {
-		discardPile.push(hand[0]);
+		discardPile.push_back(hand[0]);
 		hand.erase(hand.begin());
 	}
 
 	while (!tableau.empty()) {
-		discardPile.push(tableau.top());
+		discardPile.push_back(tableau.top());
 		tableau.pop();
 	}
 
@@ -47,8 +54,8 @@ void SimpleDeck::cleanupAndDraw() {
 int SimpleDeck::draw(int count) {
 	int drawnCount = 0;
 	while (!drawPile.empty() && drawnCount < count) {
-		hand.insert(hand.end(), drawPile.top());
-		drawPile.pop();
+		hand.insert(hand.end(), drawPile.front());
+		drawPile.erase(drawPile.begin());
 		drawnCount++;
 	}
 
@@ -57,8 +64,8 @@ int SimpleDeck::draw(int count) {
 		shuffle();
 
 		while (!drawPile.empty() && drawnCount < count) {
-			hand.insert(hand.end(), drawPile.top());
-			drawPile.pop();
+			hand.insert(hand.end(), drawPile.front());
+			drawPile.erase(drawPile.begin());
 			drawnCount++;
 		}
 	}
@@ -71,7 +78,7 @@ int SimpleDeck::draw(int count) {
  * draw pile.
  */
 void SimpleDeck::gain(string card) {
-	discardPile.push(card);
+	discardPile.push_back(card);
 }
 
 /*
@@ -120,24 +127,27 @@ string SimpleDeck::play(string card) {
  * * Changing the method signature to take a function to run on the revealed cards.
  * * Adding a member `revealedCards` which is populated by this method? Might
  *   need more thought.
- * *
  */
 void SimpleDeck::reveal(int count) {
 
 }
 
-
 /*
- * Publicized this method to provide an interface for the game start
- * initialization.
+ * In base Dominion, you can assume that the draw pile is empty when shuffling.
+ * This won't be the case in future sets (Inn, for example, will break it).
  */
 void SimpleDeck::shuffle() {
-	// TODO: actually shuffle the discard pile. And see if there is a non-naive way of moving all of these objects.
-	while (discardPile.size() > 0) {
-		string temp = discardPile.top();
-		discardPile.pop();
-		drawPile.push(temp);
-	}
+	/*
+	 * Publicized this method to provide an interface for the game start
+	 * initialization.
+	 */
+
+	assert(drawPile.empty());
+
+	random_shuffle(discardPile.begin(), discardPile.end());
+
+	drawPile = discardPile;
+	discardPile = vector<string>();
 }
 
 const vector<string>& SimpleDeck::getHand() {

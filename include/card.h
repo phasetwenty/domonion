@@ -23,7 +23,8 @@ private:
 
     /*
      * Card text
-     * should be pretty basic, but may need some formatting power?
+     * After having messed with the console UI, I can already see there could
+     * be use for some formatting. Look into this later.
      */
     std::string text;
 

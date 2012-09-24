@@ -1,23 +1,108 @@
-#include <ncurses.h>
+#include <algorithm>
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
+
+#include <menu.h>
+#include <ncurses.h>
 
 #include <simpledeck.h>
 
 using namespace std;
 
 void initializeScreen();
-void printHand(WINDOW *w, SimpleDeck d);
+SimpleDeck *initializeDeck();
+WINDOW* initializeWindow(int lines, int cols, int starty, int startx);
+ITEM** makeItems(const vector<string> source);
+void updateHandMenu(MENU *menu, SimpleDeck& d);
 
 #define MIN_LINES 12
 #define MIN_COLS 80
 
-#define HAND_WINDOW_MIN_LINES MIN_LINES
-#define HAND_WINDOW_MIN_COLS MIN_COLS / 4
+#define WINDOW_LINES MIN_LINES
+#define WINDOW_COLS MIN_COLS / 4
+
+#define HAND_WINDOW_START_Y 0
+#define HAND_WINDOW_START_X 59
+#define TABLEAU_WINDOW_START_Y 0
+#define TABLEAU_WINDOW_START_X 39
+
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 int main() {
 	initializeScreen();
+	getch();
+
+	SimpleDeck& deck = *initializeDeck();
+	deck.cleanupAndDraw();
+
+	WINDOW *handWindowMain = initializeWindow(WINDOW_LINES,
+			WINDOW_COLS,
+			HAND_WINDOW_START_Y,
+			HAND_WINDOW_START_X);
+	WINDOW *handWindowSub = derwin(handWindowMain, 9, 18, 3, 1);
+	WINDOW *tableauWindow = initializeWindow(WINDOW_LINES,
+			WINDOW_COLS,
+			TABLEAU_WINDOW_START_Y,
+			TABLEAU_WINDOW_START_X);
+
+	ITEM **initialItems = makeItems(deck.getHand());
+	MENU *handMenu = new_menu(initialItems);
+	set_menu_win(handMenu, handWindowMain);
+	set_menu_sub(handMenu, handWindowSub);
+
+	char ch = 0;
+	while ((ch = getch()) != 'c') {
+		deck.cleanupAndDraw();
+		updateHandMenu(handMenu, deck);
+	}
+
+	endwin();
+	return 0;
+}
+
+/*
+ * Helper to convert data structures in the deck to data structures for the
+ * menus.
+ */
+ITEM** makeItems(const vector<string> source) {
+	/*
+	 * Perhaps there's a way to do this without copies?
+	 */
+	int numberOfChoices = source.size();
+	char **itemStrings = (char**)calloc(numberOfChoices + 1, sizeof(char*));
+	for (int i = 0; i < (int)source.size(); ++i) {
+		itemStrings[i] = (char*)calloc(source[i].length() + 1, sizeof(char));
+		strcpy(itemStrings[i], source[i].c_str());
+	}
+
+	ITEM** items = (ITEM **)calloc(numberOfChoices + 1, sizeof(ITEM *));
+	for (int i = 0; i < numberOfChoices; ++i) {
+		items[i] = new_item(itemStrings[i], NULL);
+	}
+
+	return items;
+}
+
+SimpleDeck *initializeDeck() {
+	/*
+	 * Since I just put this deck on the heap, it's my responsibility to
+	 * deallocate it, right?
+	 */
+	SimpleDeck *d = new SimpleDeck();
+	for (int i = 0; i < 7; ++i) {
+		d->gain("Copper");
+	}
+	for (int i = 0; i < 3; ++i) {
+		d->gain("Estate");
+	}
+
+	return d;
+}
+
+void initializeScreen() {
+	initscr();
 
 	if (LINES < MIN_LINES || COLS < MIN_COLS) {
 		printw("This screen is too small!");
@@ -27,60 +112,32 @@ int main() {
 		exit(1);
 	}
 
-	printw("%d rows and %d columns.", LINES, COLS);
-
-	int handWindowLines = HAND_WINDOW_MIN_LINES;
-	// Intentional rounding down of this division.
-	int handWindowCols = HAND_WINDOW_MIN_COLS;
-	if (COLS / 4 > handWindowCols) {
-		handWindowCols = COLS / 4;
-	}
-
-	WINDOW *handWindow = newwin(handWindowLines,
-			handWindowCols,
-			0,
-			COLS - handWindowCols - 1);
-	box(handWindow, 0, 0);
-	wrefresh(handWindow);
-
-	SimpleDeck d = SimpleDeck();
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Copper");
-	d.gain("Estate");
-	d.gain("Estate");
-	d.gain("Estate");
-
-	char ch = 0;
-	while ((ch = getch()) != 'c') {
-		d.cleanupAndDraw();
-		printHand(handWindow, d);
-	}
-
-	endwin();
-	return 0;
+	cbreak();  // In case you forget, this disables line buffering.
+	noecho();  // Disables terminal echo.
 }
 
-void initializeScreen() {
-	initscr();
-	cbreak();
-	noecho();
+WINDOW* initializeWindow(int lines, int cols, int starty, int startx) {
+	WINDOW* result = newwin(lines, cols, starty, startx);
+	box(result, '|', '-');
+	wrefresh(result);
+	return result;
 }
 
-void printHand(WINDOW *win, SimpleDeck d) {
-	werase(win);
-	wmove(win, 0, 0);
+void updateHandMenu(MENU *menu, SimpleDeck& d) {
+	unpost_menu(menu);
 
-	vector<string> hand = d.getHand();
-	for(vector<string>::iterator it = hand.begin();
-			it != hand.end();
-			++it) {
-		wprintw(win, "%s\n", it->c_str());
+	/* Create items */
+	ITEM** newItems = makeItems(d.getHand());
+
+	int oldNumberOfChoices = item_count(menu);
+	ITEM** oldItems = menu_items(menu);
+	for (int i = 0; i < oldNumberOfChoices; ++i) {
+		free_item(oldItems[i]);
 	}
 
-	wrefresh(win);
+	set_menu_items(menu, newItems);
+	free(oldItems);
+
+	post_menu(menu);
+	wrefresh(menu_win(menu));
 }

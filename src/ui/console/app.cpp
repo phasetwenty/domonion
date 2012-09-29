@@ -51,11 +51,24 @@ int main() {
 	MENU *handMenu = new_menu(initialItems);
 	set_menu_win(handMenu, handWindowMain);
 	set_menu_sub(handMenu, handWindowSub);
+	post_menu(handMenu);
 
-	char ch = 0;
-	while ((ch = getch()) != 'c') {
-		deck.cleanupAndDraw();
-		updateHandMenu(handMenu, deck);
+	int ch = 0;
+	while ((ch = getch()) != 'q') {
+		switch (ch) {
+		case KEY_DOWN:
+			menu_driver(handMenu, REQ_DOWN_ITEM);
+			wrefresh(handWindowMain);
+			break;
+		case KEY_UP:
+			menu_driver(handMenu, REQ_UP_ITEM);
+			wrefresh(handWindowMain);
+			break;
+		default:
+			deck.cleanupAndDraw();
+			updateHandMenu(handMenu, deck);
+			break;
+		}
 	}
 
 	endwin();
@@ -112,6 +125,7 @@ void initializeScreen() {
 		exit(1);
 	}
 
+	keypad(stdscr, TRUE);
 	cbreak();  // In case you forget, this disables line buffering.
 	noecho();  // Disables terminal echo.
 }
@@ -124,8 +138,6 @@ WINDOW* initializeWindow(int lines, int cols, int starty, int startx) {
 }
 
 void updateHandMenu(MENU *menu, SimpleDeck& d) {
-	unpost_menu(menu);
-
 	/* Create items */
 	ITEM** newItems = makeItems(d.getHand());
 
@@ -138,6 +150,5 @@ void updateHandMenu(MENU *menu, SimpleDeck& d) {
 	set_menu_items(menu, newItems);
 	free(oldItems);
 
-	post_menu(menu);
 	wrefresh(menu_win(menu));
 }

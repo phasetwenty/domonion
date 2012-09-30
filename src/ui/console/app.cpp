@@ -13,9 +13,13 @@ using namespace std;
 
 void initializeScreen();
 SimpleDeck *initializeDeck();
-WINDOW* initializeWindow(int lines, int cols, int starty, int startx);
-ITEM** makeItems(const vector<string> source);
-void updateHandMenu(MENU *menu, SimpleDeck& d);
+MENU *initializeMenu(WINDOW *window,
+		WINDOW *subwindow,
+		vector<string> initialItems);
+WINDOW *initializeWindow(int lines, int cols, int starty, int startx);
+ITEM **makeItems(const vector<string> source);
+void playAction(MENU *handMenu, MENU *tableauMenu,  SimpleDeck& d);
+void updateMenu(MENU *menu, ITEM **newItems);
 
 #define MIN_LINES 12
 #define MIN_COLS 80
@@ -42,32 +46,45 @@ int main() {
 			HAND_WINDOW_START_Y,
 			HAND_WINDOW_START_X);
 	WINDOW *handWindowSub = derwin(handWindowMain, 9, 18, 3, 1);
-	WINDOW *tableauWindow = initializeWindow(WINDOW_LINES,
+	WINDOW *tableauWindowMain = initializeWindow(WINDOW_LINES,
 			WINDOW_COLS,
 			TABLEAU_WINDOW_START_Y,
 			TABLEAU_WINDOW_START_X);
+	WINDOW *tableauWindowSub = derwin(tableauWindowMain, 9, 18, 3, 1);
 
-	ITEM **initialItems = makeItems(deck.getHand());
-	MENU *handMenu = new_menu(initialItems);
-	set_menu_win(handMenu, handWindowMain);
-	set_menu_sub(handMenu, handWindowSub);
-	post_menu(handMenu);
+	MENU *handMenu = initializeMenu(handWindowMain,
+			handWindowSub,
+			deck.getHand());
+	MENU *tableauMenu = initializeMenu(tableauWindowMain,
+			tableauWindowSub,
+			deck.getTableau());
 
 	int ch = 0;
 	while ((ch = getch()) != 'q') {
 		switch (ch) {
-		case KEY_DOWN:
+		case KEY_DOWN: {
 			menu_driver(handMenu, REQ_DOWN_ITEM);
 			wrefresh(handWindowMain);
 			break;
-		case KEY_UP:
+		} case KEY_UP: {
 			menu_driver(handMenu, REQ_UP_ITEM);
 			wrefresh(handWindowMain);
 			break;
-		default:
-			deck.cleanupAndDraw();
-			updateHandMenu(handMenu, deck);
+		/*
+		 * In example 22 of the menus tutorial:
+		 * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/menus.html
+		 * The example does not use the KEY_ENTER constant to compare the enter key. Why?
+		 */
+		} case 10: {
+			const char *name = item_name(current_item(handMenu));
+			deck.play(string(name));
+			playAction(handMenu, tableauMenu, deck);
 			break;
+		} default: {
+			deck.cleanupAndDraw();
+			updateMenu(handMenu, makeItems(deck.getHand()));
+			break;
+		}
 		}
 	}
 
@@ -79,7 +96,7 @@ int main() {
  * Helper to convert data structures in the deck to data structures for the
  * menus.
  */
-ITEM** makeItems(const vector<string> source) {
+ITEM **makeItems(const vector<string> source) {
 	/*
 	 * Perhaps there's a way to do this without copies?
 	 */
@@ -130,19 +147,44 @@ void initializeScreen() {
 	noecho();  // Disables terminal echo.
 }
 
-WINDOW* initializeWindow(int lines, int cols, int starty, int startx) {
-	WINDOW* result = newwin(lines, cols, starty, startx);
+MENU *initializeMenu(WINDOW *window, WINDOW *subwindow, vector<string> initialItems) {
+	ITEM **items = makeItems(initialItems);
+	MENU *result = new_menu(items);
+
+	set_menu_win(result, window);
+	set_menu_sub(result, subwindow);
+	set_menu_mark(result, " ");
+	post_menu(result);
+
+	return result;
+}
+
+WINDOW *initializeWindow(int lines, int cols, int starty, int startx) {
+	WINDOW *result = newwin(lines, cols, starty, startx);
+	keypad(result, TRUE);
 	box(result, '|', '-');
 	wrefresh(result);
 	return result;
 }
 
-void updateHandMenu(MENU *menu, SimpleDeck& d) {
-	/* Create items */
-	ITEM** newItems = makeItems(d.getHand());
+/*
+ * Updates the hand and tableau menus. Intended to be called after having played
+ * a card.
+ */
+void playAction(MENU *handMenu, MENU *tableauMenu, SimpleDeck& d) {
+	ITEM **newHandItems = makeItems(d.getHand());
+	updateMenu(handMenu, newHandItems);
 
+	ITEM **newTableauItems = makeItems(d.getTableau());
+	updateMenu(tableauMenu, newTableauItems);
+}
+
+/*
+ * Update a menu with new items. The window containing the menu is refreshed.
+ */
+void updateMenu(MENU *menu, ITEM **newItems) {
 	int oldNumberOfChoices = item_count(menu);
-	ITEM** oldItems = menu_items(menu);
+	ITEM **oldItems = menu_items(menu);
 	for (int i = 0; i < oldNumberOfChoices; ++i) {
 		free_item(oldItems[i]);
 	}

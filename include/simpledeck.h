@@ -56,10 +56,8 @@ public:
 	 */
 	std::string trash(std::string card);
 
-	/*
-	 * Getter for the hand.
-	 */
 	const std::vector<std::string>& getHand();
+	const std::vector<std::string>& getTableau();
 
 private:
     /*
@@ -80,7 +78,7 @@ private:
     /*
      * Cards in play.
      */
-    std::stack<std::string> tableau;
+    std::vector<std::string> tableau;
 
 	/*
 	 * Return a count of the cards that can be drawn.

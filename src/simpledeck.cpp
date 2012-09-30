@@ -24,7 +24,7 @@ SimpleDeck::SimpleDeck() {
 	discardPile = vector<string>();
 	drawPile = vector<string>();
 	hand = vector<string>();
-	tableau = stack<string>();
+	tableau = vector<string>();
 
 	srand(time(NULL));
 }
@@ -44,8 +44,8 @@ void SimpleDeck::cleanupAndDraw() {
 	}
 
 	while (!tableau.empty()) {
-		discardPile.push_back(tableau.top());
-		tableau.pop();
+		discardPile.push_back(tableau.back());
+		tableau.erase(tableau.end());
 	}
 
 	draw(5);
@@ -82,12 +82,27 @@ void SimpleDeck::gain(string card) {
 }
 
 /*
- * At first I wanted to return a null value when the card isn't found. Then I
- * thought, this should be an uncommon case: the user should already know that
- * the card is in the hand and shouldn't be requesting plays of cards that
- * aren't there.
+ * Moves a card from the hand to the tableau. The user is responsible for taking
+ * appropriate action to "play" the card.
+ *
+ * The return value is the card played.
  */
 string SimpleDeck::play(string card) {
+	/*
+	 * At first I wanted to return a null value when the card isn't found. Then I
+	 * thought, this should be an uncommon case: the user should already know that
+	 * the card is in the hand and shouldn't be requesting plays of cards that
+	 * aren't there.
+	 */
+	/*
+	 * TODO: In the event a card cannot be played, such as plain victory cards
+	 * or curses, do something. It's not clear yet if introducing this
+	 * information into the deck will harm the separation of concerns.
+	 *
+	 * Perhaps a property isPlayable() would work: the card will have to be
+	 * aware of the game state anyway, so it would be appropriate to know the
+	 * answer.
+	 */
 	bool done = false;
 	vector<string>::iterator it = hand.begin();
 	while (!done && it != hand.end()) {
@@ -104,8 +119,11 @@ string SimpleDeck::play(string card) {
 		// throw an exception
 	}
 
+	string foundCard = *it;
+	hand.erase(it);
+	tableau.push_back(foundCard);
 
-	return *it;
+	return foundCard;
 }
 
 /*
@@ -115,7 +133,7 @@ string SimpleDeck::play(string card) {
  * * Library sort of
  * * Adventurer
  *
- * Lesser reveals:
+ * Lesser or different reveals:
  * * Moat
  * * Bureaucrat
  */
@@ -152,6 +170,10 @@ void SimpleDeck::shuffle() {
 
 const vector<string>& SimpleDeck::getHand() {
 	return hand;
+}
+
+const vector<string>& SimpleDeck::getTableau() {
+	return tableau;
 }
 
 int SimpleDeck::countDrawableCards() {

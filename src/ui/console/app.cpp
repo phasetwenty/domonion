@@ -183,6 +183,8 @@ void playAction(MENU *handMenu, MENU *tableauMenu, SimpleDeck& d) {
  * Update a menu with new items. The window containing the menu is refreshed.
  */
 void updateMenu(MENU *menu, ITEM **newItems) {
+	unpost_menu(menu);
+
 	int oldNumberOfChoices = item_count(menu);
 	ITEM **oldItems = menu_items(menu);
 	for (int i = 0; i < oldNumberOfChoices; ++i) {
@@ -192,5 +194,6 @@ void updateMenu(MENU *menu, ITEM **newItems) {
 	set_menu_items(menu, newItems);
 	free(oldItems);
 
+	post_menu(menu);
 	wrefresh(menu_win(menu));
 }

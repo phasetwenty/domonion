@@ -11,30 +11,29 @@ public:
 
     int getCost(GameState& gamesState) const;
     int getDefaultCost() const;
+    std::string getDescription() const;
 private:
     /*
      * Cost
-     * Essentially an int (probably even something smaller). Peddler, for
-     * example, has adjustable cost also consider cards like bridge which
-     * changes all cards' costs. May need to change this to something more
-     * flexible.
+     * Essentially an int (probably even something smaller). Peddler, for example, has adjustable
+     * cost also consider cards like bridge which changes all cards' costs. May need to change this
+     * to something more flexible (such as if introducing Alchemy cards).
      */
-    Cost& cost;
+    int cost;
 
     /*
      * Card text
-     * After having messed with the console UI, I can already see there could
-     * be use for some formatting. Look into this later.
+     * A description of what the card does.
+     *
+     * After having messed with the console UI, I can already see there could be use for some
+     * formatting. Look into this later.
      */
     std::string text;
 
     /*
      * Effect
-     * Should be a collection of effect objects. For example, a copper
-     * has a + 1 coin effect (which could be indistinguishable from an
-     * action's + coin effect).
-     *
-     * The effects have an explicit (and often important) order.
+     * An ordered collection of effect objects. For example, a copper has a + 1 coin effect
+     * (which could be indistinguishable from an action's + coin effect).
      */
 
     /*
@@ -50,7 +49,7 @@ private:
      * of a specific type, it should look more like "if <type> is in the
      * types <card> has".
      */
-
+    std::string type;
 
     /*
      * Subtype
@@ -69,6 +68,8 @@ private:
      * * Dominion set
      * * Card categories like Trash and Defenses
      */
+    std::string set;
+
 };
 
 #endif // CARD_H

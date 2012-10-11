@@ -30,7 +30,10 @@ SimpleDeck::SimpleDeck() {
 }
 
 SimpleDeck::~SimpleDeck() {
-
+	delete discardPile;
+	delete drawPile;
+	delete hand;
+	delete tableau;
 }
 
 /*

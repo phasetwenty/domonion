@@ -70,12 +70,12 @@ int main() {
 			menu_driver(handMenu, REQ_UP_ITEM);
 			wrefresh(handWindowMain);
 			break;
-		/*
-		 * In example 22 of the menus tutorial:
-		 * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/menus.html
-		 * The example does not use the KEY_ENTER constant to compare the enter key. Why?
-		 */
 		} case 10: {
+			/*
+			 * In example 22 of the menus tutorial:
+			 * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/menus.html
+			 * The example does not use the KEY_ENTER constant to compare the enter key. Why?
+			 */
 			const char *name = item_name(current_item(handMenu));
 			deck.play(string(name));
 			playAction(handMenu, tableauMenu, deck);

@@ -1,17 +1,19 @@
-#ifndef CARD_H
-#define CARD_H
-
-#include "cost.h"
-#include "gamestate.h"
+#ifndef DOMONION_CARD_H
+#define DOMONION_CARD_H
 
 class Card {
 public:
-    Card(Cost& cost);
+    Card(std::string name, int cost, std::string text, std::string type);
     ~Card();
 
-    int getCost(GameState& gamesState) const;
-    int getDefaultCost() const;
-    std::string getDescription() const;
+    int cost() const;
+    std::string description() const;
+    std::string name() const;
+    /*
+     * This is called when the card is played. It will modify the game state in
+     * the course of resolving.
+     */
+    void play();
 private:
     /*
      * Cost
@@ -19,7 +21,7 @@ private:
      * cost also consider cards like bridge which changes all cards' costs. May need to change this
      * to something more flexible (such as if introducing Alchemy cards).
      */
-    int cost;
+    int cost_;
 
     /*
      * Card text
@@ -28,7 +30,7 @@ private:
      * After having messed with the console UI, I can already see there could be use for some
      * formatting. Look into this later.
      */
-    std::string text;
+    std::string text_;
 
     /*
      * Effect
@@ -49,7 +51,7 @@ private:
      * of a specific type, it should look more like "if <type> is in the
      * types <card> has".
      */
-    std::string type;
+    std::string type_;
 
     /*
      * Subtype
@@ -72,4 +74,4 @@ private:
 
 };
 
-#endif // CARD_H
+#endif // DOMONION_CARD_H

@@ -7,7 +7,9 @@
 #include <menu.h>
 #include <ncurses.h>
 
-#include <simpledeck.h>
+#include <cards/basictreasure.h>
+#include <cards/basicvictory.h>
+#include <deck.h>
 
 using namespace std;
 
@@ -15,9 +17,9 @@ void initializeScreen();
 SimpleDeck *initializeDeck();
 MENU *initializeMenu(WINDOW *window,
 		WINDOW *subwindow,
-		vector<string> initialItems);
+		vector<Card> initialItems);
 WINDOW *initializeWindow(int lines, int cols, int starty, int startx);
-ITEM **makeItems(const vector<string> source);
+ITEM **makeItems(const vector<Card> source);
 void playAction(MENU *handMenu, MENU *tableauMenu,  SimpleDeck& d);
 void updateMenu(MENU *menu, ITEM **newItems);
 
@@ -39,7 +41,7 @@ int main() {
 	getch();
 
 	SimpleDeck& deck = *initializeDeck();
-	deck.cleanupAndDraw();
+	deck.cleanup_and_draw();
 
 	WINDOW *handWindowMain = initializeWindow(WINDOW_LINES,
 			WINDOW_COLS,
@@ -54,10 +56,10 @@ int main() {
 
 	MENU *handMenu = initializeMenu(handWindowMain,
 			handWindowSub,
-			deck.getHand());
+			deck.hand());
 	MENU *tableauMenu = initializeMenu(tableauWindowMain,
 			tableauWindowSub,
-			deck.getTableau());
+			deck.tableau());
 
 	int ch = 0;
 	while ((ch = getch()) != 'q') {
@@ -81,8 +83,8 @@ int main() {
 			playAction(handMenu, tableauMenu, deck);
 			break;
 		} default: {
-			deck.cleanupAndDraw();
-			updateMenu(handMenu, makeItems(deck.getHand()));
+			deck.cleanup_and_draw();
+			updateMenu(handMenu, makeItems(deck.hand()));
 			break;
 		}
 		}
@@ -96,15 +98,15 @@ int main() {
  * Helper to convert data structures in the deck to data structures for the
  * menus.
  */
-ITEM **makeItems(const vector<string> source) {
+ITEM **makeItems(const vector<Card> source) {
 	/*
 	 * Perhaps there's a way to do this without copies?
 	 */
 	int numberOfChoices = source.size();
 	char **itemStrings = (char**)calloc(numberOfChoices + 1, sizeof(char*));
 	for (int i = 0; i < (int)source.size(); ++i) {
-		itemStrings[i] = (char*)calloc(source[i].length() + 1, sizeof(char));
-		strcpy(itemStrings[i], source[i].c_str());
+		itemStrings[i] = (char*)calloc(source[i].name().length() + 1, sizeof(char));
+		strcpy(itemStrings[i], source[i].name().c_str());
 	}
 
 	ITEM** items = (ITEM **)calloc(numberOfChoices + 1, sizeof(ITEM *));
@@ -121,11 +123,14 @@ SimpleDeck *initializeDeck() {
 	 * deallocate it, right?
 	 */
 	SimpleDeck *d = new SimpleDeck();
+
 	for (int i = 0; i < 7; ++i) {
-		d->gain("Copper");
+      BasicTreasure b = BasicTreasure("Copper", 1, 0, "(1)", "Treasure");
+	  d->gain(b);
 	}
 	for (int i = 0; i < 3; ++i) {
-		d->gain("Estate");
+	  BasicVictory v = BasicVictory("Estate", 2, ")1(", "Victory");
+	  d->gain(v);
 	}
 
 	return d;
@@ -147,7 +152,7 @@ void initializeScreen() {
 	noecho();  // Disables terminal echo.
 }
 
-MENU *initializeMenu(WINDOW *window, WINDOW *subwindow, vector<string> initialItems) {
+MENU *initializeMenu(WINDOW *window, WINDOW *subwindow, vector<Card> initialItems) {
 	ITEM **items = makeItems(initialItems);
 	MENU *result = new_menu(items);
 
@@ -172,10 +177,10 @@ WINDOW *initializeWindow(int lines, int cols, int starty, int startx) {
  * a card.
  */
 void playAction(MENU *handMenu, MENU *tableauMenu, SimpleDeck& d) {
-	ITEM **newHandItems = makeItems(d.getHand());
+	ITEM **newHandItems = makeItems(d.hand());
 	updateMenu(handMenu, newHandItems);
 
-	ITEM **newTableauItems = makeItems(d.getTableau());
+	ITEM **newTableauItems = makeItems(d.tableau());
 	updateMenu(tableauMenu, newTableauItems);
 }
 

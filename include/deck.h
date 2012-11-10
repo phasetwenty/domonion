@@ -1,16 +1,17 @@
 /*
- * simpledeck.h
+ * deck.h
  *
  *  Created on: Jun 29, 2012
  *      Author: chris
  */
 
-#ifndef SIMPLEDECK_H_
-#define SIMPLEDECK_H_
+#ifndef DOMONION_SIMPLEDECK_H_
+#define DOMONION_SIMPLEDECK_H_
 
 #include <string>
-#include <stack>
 #include <vector>
+
+class Card;
 
 class SimpleDeck {
 public:
@@ -21,7 +22,7 @@ public:
 	 * Run the standard C and D parts of the turn: (c)leanup the cards on the
 	 * table, discard any remaining cards, (d)raw a new hand.
 	 */
-	void cleanupAndDraw();
+	void cleanup_and_draw();
 
 	/*
      * Draw, optionally taking a number of cards to draw, into the player's
@@ -33,12 +34,12 @@ public:
 	 * Accepts a card into this deck. Default destination is the discard pile
 	 * but you can also gain a card into the hand or on top of the draw pile.
 	 */
-	void gain(std::string card);
+	void gain(Card card);
 
 	/*
 	 * Takes `card` from the hand and plays it. Returns the played card.
 	 */
-	std::string play(std::string card);
+	Card play(std::string card);
     /*
      * Reveal a card from the top of the deck, optionally taking a number of
      * cards to reveal (defaulting to 1).
@@ -54,36 +55,36 @@ public:
 	 * Take a card from the deck and remove it. Returns the card that was
 	 * trashed.
 	 */
-	std::string trash(std::string card);
+	std::string trash(Card card);
 
-	const std::vector<std::string>& getHand();
-	const std::vector<std::string>& getTableau();
+	const std::vector<Card>& hand() const;
+	const std::vector<Card>& tableau() const;
 
 private:
     /*
      * Cards in the discard pile.
      */
-    std::vector<std::string> discardPile;
+    std::vector<Card> discard_pile_;
 
     /*
      * Cards (immediately) available for drawing.
      */
-    std::vector<std::string> drawPile;
+    std::vector<Card> draw_pile_;
 
     /*
      * Cards in hand.
      */
-    std::vector<std::string> hand;
+    std::vector<Card> hand_;
 
     /*
      * Cards in play.
      */
-    std::vector<std::string> tableau;
+    std::vector<Card> tableau_;
 
 	/*
 	 * Return a count of the cards that can be drawn.
 	 */
-	int countDrawableCards();
+	int count_drawable_cards() const;
 };
 
 /*

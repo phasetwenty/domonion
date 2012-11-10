@@ -5,7 +5,7 @@
  *      Author: chris
  */
 
-#include <basictreasure.h>
+#include <cards/basictreasure.h>
 
 using namespace std;
 

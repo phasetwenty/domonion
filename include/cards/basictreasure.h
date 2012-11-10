@@ -8,7 +8,9 @@
 #ifndef DOMONION_BASICTREASURE_H_
 #define DOMONION_BASICTREASURE_H_
 
-class BasicTreasure : public Card {
+#include <card.h>
+
+class BasicTreasure: public Card {
 public:
   BasicTreasure(std::string name, int coins_provided, int cost,
                 std::string text, std::string type);

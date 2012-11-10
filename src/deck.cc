@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <simpledeck.h>
+#include <card.h>
+#include <deck.h>
 
 using namespace std;
 
@@ -21,67 +22,62 @@ using namespace std;
  * interface.
  */
 SimpleDeck::SimpleDeck() {
-	discardPile = vector<string>();
-	drawPile = vector<string>();
-	hand = vector<string>();
-	tableau = vector<string>();
+	discard_pile_ = vector<Card>();
+	draw_pile_ = vector<Card>();
+	hand_ = vector<Card>();
+	tableau_ = vector<Card>();
 
 	srand(time(NULL));
 }
 
-SimpleDeck::~SimpleDeck() {
-	delete discardPile;
-	delete drawPile;
-	delete hand;
-	delete tableau;
-}
+SimpleDeck::~SimpleDeck() { }
 
 /*
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
  */
-void SimpleDeck::cleanupAndDraw() {
-	while (!hand.empty()) {
-		discardPile.push_back(hand[0]);
-		hand.erase(hand.begin());
+void SimpleDeck::cleanup_and_draw() {
+	while (!hand_.empty()) {
+		discard_pile_.push_back(hand_[0]);
+		hand_.erase(hand_.begin());
 	}
 
-	while (!tableau.empty()) {
-		discardPile.push_back(tableau.back());
-		tableau.erase(tableau.end());
+	while (!tableau_.empty()) {
+		discard_pile_.push_back(tableau_.back());
+		tableau_.erase(tableau_.end());
 	}
 
 	draw(5);
 }
 
 int SimpleDeck::draw(int count) {
-	int drawnCount = 0;
-	while (!drawPile.empty() && drawnCount < count) {
-		hand.insert(hand.end(), drawPile.front());
-		drawPile.erase(drawPile.begin());
-		drawnCount++;
+	int drawn_count = 0;
+	while (!draw_pile_.empty() && drawn_count < count) {
+		hand_.insert(hand_.end(), draw_pile_.front());
+		draw_pile_.erase(draw_pile_.begin());
+		drawn_count++;
 	}
 
-	if (drawnCount < count && countDrawableCards() > 0) {
+	if (drawn_count < count && count_drawable_cards() > 0) {
 		// In the future, a shuffling event may be needed.
 		shuffle();
 
-		while (!drawPile.empty() && drawnCount < count) {
-			hand.insert(hand.end(), drawPile.front());
-			drawPile.erase(drawPile.begin());
-			drawnCount++;
+		while (!draw_pile_.empty() && drawn_count < count) {
+			hand_.insert(hand_.end(), draw_pile_.front());
+			draw_pile_.erase(draw_pile_.begin());
+			drawn_count++;
 		}
 	}
 
-	return drawnCount;
+	return drawn_count;
 }
 
 /*
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void SimpleDeck::gain(string card) {
-	discardPile.push_back(card);
+void SimpleDeck::gain(Card card) {
+	discard_pile_.push_back(card);
 }
 
 /*
@@ -90,7 +86,7 @@ void SimpleDeck::gain(string card) {
  *
  * The return value is the card played.
  */
-string SimpleDeck::play(string card) {
+Card SimpleDeck::play(string card) {
 	/*
 	 * At first I wanted to return a null value when the card isn't found. Then I
 	 * thought, this should be an uncommon case: the user should already know that
@@ -107,9 +103,9 @@ string SimpleDeck::play(string card) {
 	 * answer.
 	 */
 	bool done = false;
-	vector<string>::iterator it = hand.begin();
-	while (!done && it != hand.end()) {
-		if (card == *it) {
+	vector<Card>::iterator it = hand_.begin();
+	while (!done && it != hand_.end()) {
+		if (card == it->name()) {
 			done = true;
 		}
 
@@ -118,15 +114,15 @@ string SimpleDeck::play(string card) {
 		}
 	}
 
-	if (!done && it == hand.end()) {
+	if (!done && it == hand_.end()) {
 		// throw an exception
 	}
 
-	string foundCard = *it;
-	hand.erase(it);
-	tableau.push_back(foundCard);
+	Card found_card = *it;
+	hand_.erase(it);
+	tableau_.push_back(found_card);
 
-	return foundCard;
+	return found_card;
 }
 
 /*
@@ -163,22 +159,22 @@ void SimpleDeck::shuffle() {
 	 * initialization.
 	 */
 
-	assert(drawPile.empty());
+	assert(draw_pile_.empty());
 
-	random_shuffle(discardPile.begin(), discardPile.end());
+	random_shuffle(discard_pile_.begin(), discard_pile_.end());
 
-	drawPile = discardPile;
-	discardPile = vector<string>();
+	draw_pile_ = discard_pile_;
+	discard_pile_ = vector<Card>();
 }
 
-const vector<string>& SimpleDeck::getHand() {
-	return hand;
+const vector<Card>& SimpleDeck::hand() const {
+	return hand_;
 }
 
-const vector<string>& SimpleDeck::getTableau() {
-	return tableau;
+const vector<Card>& SimpleDeck::tableau() const {
+	return tableau_;
 }
 
-int SimpleDeck::countDrawableCards() {
-	return drawPile.size() + discardPile.size();
+int SimpleDeck::count_drawable_cards() const {
+	return draw_pile_.size() + discard_pile_.size();
 }

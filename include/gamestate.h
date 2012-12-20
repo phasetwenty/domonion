@@ -16,8 +16,6 @@ private:
      * all cards that need to be out. It would be inappropriate for the game 
      * state to have to track all that information on its own.
      */
-    
-
 };
 
 #endif // GAMESTATE_H

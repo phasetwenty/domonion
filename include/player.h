@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "deck.h"
+class SimpleDeck;
 
 class Player {
 
@@ -11,11 +11,22 @@ public:
 	Player();
 	~Player();
 
+	/*
+	 * Current state
+	 */
+	int actions() const;
+	int buys() const;
+	int coin() const;
+
 private:
     
     std::string name;
     
-    Deck& deck;
+    SimpleDeck& deck;
+
+    int actions_;
+    int buys_;
+    int coin_;
 
 };
 

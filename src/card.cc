@@ -1,7 +1,5 @@
 #include "card.h"
 
-using namespace std;
-
 Card::Card(std::string name, int cost, std::string text, std::string type) {
   name_ = name;
   cost_ = cost;
@@ -9,7 +7,7 @@ Card::Card(std::string name, int cost, std::string text, std::string type) {
   type_ = type;
 }
 
-string Card::name() const {
+std::string Card::name() const {
   return name_;
 }
 

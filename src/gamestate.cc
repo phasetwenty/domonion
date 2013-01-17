@@ -1,10 +1,10 @@
-#include "include/gamestate.h"
+#include <gamestate.h>
+#include <player.h>
 
-GameState::GameState()
-{
+GameState::GameState(Player *players, int length) {
+
 }
 
-GameState::~GameState()
-{
+GameState::~GameState() {
 }
 

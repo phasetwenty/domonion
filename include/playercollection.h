@@ -11,9 +11,6 @@ public:
 
 #endif // PLAYERCOLLECTION_H
 /*
- * This was an impulsive decision. I'm thinking I want to wrap something like a 
- * linked list. Operations I need are:
- * * Whose turn it is now
- * * Who is the player to the left/next
- * * Who is the player to the left/previous
+ * I don't need this class as much as I need to provide iteration over a basic
+ * data structure such as a linked list.
  */

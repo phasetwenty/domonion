@@ -7,15 +7,17 @@
  */
 class GameState {
 public:
-	GameState();
+	GameState(Player *players, int length);
 	~GameState();
-    
+
 private:
     /*
-     * Card bank? Some object that handles the collection of Supply piles for 
-     * all cards that need to be out. It would be inappropriate for the game 
+     * Card bank? Some object that handles the collection of Supply piles for
+     * all cards that need to be out. It would be inappropriate for the game
      * state to have to track all that information on its own.
      */
+	Player *players_;
+	int player_count_;
 };
 
 #endif // GAMESTATE_H

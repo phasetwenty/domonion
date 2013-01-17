@@ -1,10 +1,15 @@
-#include "player.h"
+#include <player.h>
 
-Player::Player()
-{
+class SimpleDeck;
+
+Player::Player(SimpleDeck& deck) {
+  deck_ = deck;
 }
 
-Player::~Player()
-{
+const SimpleDeck& Player::deck() const {
+  return deck_;
+}
+
+Player::~Player() {
 }
 

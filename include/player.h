@@ -6,10 +6,11 @@
 class SimpleDeck;
 
 class Player {
-
 public:
-	Player();
+	Player(SimpleDeck& deck);
 	~Player();
+
+	const SimpleDeck& deck() const;
 
 	/*
 	 * Current state
@@ -19,10 +20,10 @@ public:
 	int coin() const;
 
 private:
-    
-    std::string name;
-    
-    SimpleDeck& deck;
+
+    std::string name_;
+
+    SimpleDeck& deck_;
 
     int actions_;
     int buys_;
@@ -37,6 +38,6 @@ private:
  * * Deck
  * * Victory token count (Prosperity and beyond)
  * * Hand
- * * Tableau: belongs to GameState or Player? I think GameState because there 
+ * * Tableau: belongs to GameState or Player? I think GameState because there
  *   can only be one at a time.
  */

@@ -3,11 +3,11 @@
 class SimpleDeck;
 
 Player::Player(SimpleDeck& deck) {
-  deck_ = deck;
+  deck_ = &deck;
 }
 
 const SimpleDeck& Player::deck() const {
-  return deck_;
+  return *deck_;
 }
 
 Player::~Player() {

@@ -10,7 +10,10 @@
 #include <cards/basictreasure.h>
 #include <cards/basicvictory.h>
 #include <deck.h>
+#include <gamestate.h>
+#include <player.h>
 
+GameState* initializeGame();
 void initializeScreen();
 SimpleDeck *initializeDeck();
 MENU *initializeMenu(WINDOW *window,
@@ -37,7 +40,6 @@ void updateMenu(MENU *menu, ITEM **newItems);
 
 int main() {
   initializeScreen();
-  getch();
 
   SimpleDeck& deck = *initializeDeck();
   deck.cleanup_and_draw();
@@ -142,6 +144,17 @@ SimpleDeck *initializeDeck() {
   }
 
   return d;
+}
+
+GameState* initializeGame() {
+//  std::vector<Player> *players = new std::vector<Player>;
+//  for (int i = 0; i < 4; ++i) {
+//    Player *p = new Player(*initializeDeck());
+//    players->push_back(*p);
+//  }
+//
+//  GameState *result = new GameState(*players);
+//  return result;
 }
 
 void initializeScreen() {

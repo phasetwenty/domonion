@@ -1,27 +1,23 @@
-#include "../include/supplypile.h"
+#include <supplypile.h>
 
-SupplyPile::SupplyPile()
-{
-
-}
-
-SupplyPile::SupplyPile(const SupplyPile& other)
-{
+SupplyPile::SupplyPile(Card& card) {
 
 }
 
-SupplyPile::~SupplyPile()
-{
+SupplyPile::SupplyPile(const SupplyPile& other) {
 
 }
 
-SupplyPile& SupplyPile::operator=(const SupplyPile& other)
-{
-    return *this;
+SupplyPile::~SupplyPile() {
+
 }
 
-bool SupplyPile::operator==(const SupplyPile& other) const
-{
-///TODO: return ...;
+SupplyPile& SupplyPile::operator=(const SupplyPile& other) {
+  return *this;
+}
+
+bool SupplyPile::operator==(const SupplyPile& other) const {
+  return false;
+  ///TODO: return ...;
 }
 

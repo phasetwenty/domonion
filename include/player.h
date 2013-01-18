@@ -23,7 +23,7 @@ private:
 
     std::string name_;
 
-    SimpleDeck& deck_;
+    SimpleDeck *deck_;
 
     int actions_;
     int buys_;

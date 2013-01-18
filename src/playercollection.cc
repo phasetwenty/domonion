@@ -1,10 +1,17 @@
-#include "playercollection.h"
+#include <vector>
 
-PlayerCollection::PlayerCollection()
-{
+#include <player.h>
+#include <playercollection.h>
+
+PlayerCollection::PlayerCollection(std::vector<Player>& players) {
+  players_ = players;
+  players_it_ = players_.begin();
 }
 
-PlayerCollection::~PlayerCollection()
-{
+const Player* PlayerCollection::current() const {
+  return *players_it_;
+}
+
+PlayerCollection::~PlayerCollection() {
 }
 

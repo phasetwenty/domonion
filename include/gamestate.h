@@ -1,23 +1,28 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <vector>
+
+class Player;
+class PlayerCollection;
+
 /*
  * GameState
  * All of the state of the game in progress.
  */
 class GameState {
 public:
-	GameState(Player *players, int length);
-	~GameState();
+  GameState(std::vector<Player>& players);
+  ~GameState();
 
+  const PlayerCollection* players() const;
 private:
-    /*
-     * Card bank? Some object that handles the collection of Supply piles for
-     * all cards that need to be out. It would be inappropriate for the game
-     * state to have to track all that information on its own.
-     */
-	Player *players_;
-	int player_count_;
+  /*
+   * Card bank? Some object that handles the collection of Supply piles for
+   * all cards that need to be out. It would be inappropriate for the game
+   * state to have to track all that information on its own.
+   */
+  PlayerCollection *players_;
 };
 
 #endif // GAMESTATE_H

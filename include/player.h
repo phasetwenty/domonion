@@ -10,7 +10,7 @@ public:
 	Player(SimpleDeck& deck);
 	~Player();
 
-	const SimpleDeck& deck() const;
+	SimpleDeck& deck() const;
 
 	/*
 	 * Current state
@@ -20,7 +20,6 @@ public:
 	int coin() const;
 
 private:
-
     std::string name_;
 
     SimpleDeck *deck_;

@@ -6,7 +6,7 @@ Player::Player(SimpleDeck& deck) {
   deck_ = &deck;
 }
 
-const SimpleDeck& Player::deck() const {
+SimpleDeck& Player::deck() const {
   return *deck_;
 }
 

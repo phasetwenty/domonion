@@ -1,9 +1,9 @@
 #ifndef PLAYERCOLLECTION_H
 #define PLAYERCOLLECTION_H
 
-class Player;
-class std::vector<Player>;
-class std::vector<Player>::iterator;
+#include <player.h>
+
+template class std::vector<Player>;
 
 // TODO: I may want to make this more like a standard container.
 class PlayerCollection {
@@ -13,10 +13,10 @@ public:
 
   void advance();
 
-  const Player *current() const;
-  const Player *next() const;
-  const Player *players() const;
-  const Player *prev() const;
+  const Player& current() const;
+  const Player& next() const;
+  const Player& players() const;
+  const Player& prev() const;
 
 private:
   std::vector<Player> players_;

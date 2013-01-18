@@ -1,7 +1,6 @@
 #include <vector>
 
 #include <gamestate.h>
-#include <player.h>
 #include <playercollection.h>
 
 GameState::GameState(std::vector<Player>& players) {

@@ -3,8 +3,9 @@
 
 #include <vector>
 
+#include <playercollection.h>
+
 class Player;
-class PlayerCollection;
 
 /*
  * GameState

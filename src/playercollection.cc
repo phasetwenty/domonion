@@ -8,7 +8,7 @@ PlayerCollection::PlayerCollection(std::vector<Player>& players) {
   players_it_ = players_.begin();
 }
 
-const Player* PlayerCollection::current() const {
+const Player& PlayerCollection::current() const {
   return *players_it_;
 }
 

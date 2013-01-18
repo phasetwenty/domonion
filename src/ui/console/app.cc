@@ -40,9 +40,7 @@ void updateMenu(MENU *menu, ITEM **newItems);
 
 int main() {
   initializeScreen();
-
-  SimpleDeck& deck = *initializeDeck();
-  deck.cleanup_and_draw();
+  GameState *game = initializeGame();
 
   WINDOW *hand_window_main = initializeWindow(WINDOW_LINES,
     WINDOW_COLS,
@@ -58,6 +56,7 @@ int main() {
     TABLEAU_WINDOW_START_X);
   WINDOW *tableau_window_sub = derwin(tableau_window_main, 9, 18, 3, 1);
 
+  SimpleDeck& deck = game->players()->current().deck();
   MENU *hand_menu = initializeMenu(hand_window_main,
     hand_window_sub,
     deck.hand());
@@ -147,14 +146,14 @@ SimpleDeck *initializeDeck() {
 }
 
 GameState* initializeGame() {
-//  std::vector<Player> *players = new std::vector<Player>;
-//  for (int i = 0; i < 4; ++i) {
-//    Player *p = new Player(*initializeDeck());
-//    players->push_back(*p);
-//  }
-//
-//  GameState *result = new GameState(*players);
-//  return result;
+  std::vector<Player> *players = new std::vector<Player>;
+  for (int i = 0; i < 4; ++i) {
+    Player *p = new Player(*initializeDeck());
+    players->push_back(*p);
+  }
+
+  GameState *result = new GameState(*players);
+  return result;
 }
 
 void initializeScreen() {

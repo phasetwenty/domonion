@@ -17,6 +17,7 @@ public:
   ~GameState();
 
   const PlayerCollection* players() const;
+  const Player& CurrentPlayer() const;
 private:
   /*
    * Card bank? Some object that handles the collection of Supply piles for

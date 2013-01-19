@@ -3,7 +3,7 @@
 
 #include <string>
 
-class SimpleDeck;
+#include <deck.h>
 
 class Player {
 public:

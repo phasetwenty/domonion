@@ -12,8 +12,6 @@
 #include <card.h>
 #include <deck.h>
 
-using namespace std;
-
 /*
  * It had occurred to me to provide functionality to initialize the deck with
  * the starting cards, but it would require knowledge of things like supply
@@ -22,54 +20,55 @@ using namespace std;
  * interface.
  */
 SimpleDeck::SimpleDeck() {
-	discard_pile_ = vector<Card>();
-	draw_pile_ = vector<Card>();
-	hand_ = vector<Card>();
-	tableau_ = vector<Card>();
+  discard_pile_ = std::vector<Card>();
+  draw_pile_ = std::vector<Card>();
+  hand_ = std::vector<Card>();
+  tableau_ = std::vector<Card>();
 
-	srand(time(NULL));
+  srand(time(NULL));
 }
 
-SimpleDeck::~SimpleDeck() { }
+SimpleDeck::~SimpleDeck() {
+}
 
 /*
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
  */
 void SimpleDeck::cleanup_and_draw() {
-	while (!hand_.empty()) {
-		discard_pile_.push_back(hand_[0]);
-		hand_.erase(hand_.begin());
-	}
+  while (!hand_.empty()) {
+    discard_pile_.push_back(hand_[0]);
+    hand_.erase(hand_.begin());
+  }
 
-	while (!tableau_.empty()) {
-		discard_pile_.push_back(tableau_.back());
-		tableau_.erase(tableau_.end());
-	}
+  while (!tableau_.empty()) {
+    discard_pile_.push_back(tableau_.back());
+    tableau_.erase(tableau_.end());
+  }
 
-	draw(5);
+  draw(5);
 }
 
 int SimpleDeck::draw(int count) {
-	int drawn_count = 0;
-	while (!draw_pile_.empty() && drawn_count < count) {
-		hand_.insert(hand_.end(), draw_pile_.front());
-		draw_pile_.erase(draw_pile_.begin());
-		drawn_count++;
-	}
+  int drawn_count = 0;
+  while (!draw_pile_.empty() && drawn_count < count) {
+    hand_.insert(hand_.end(), draw_pile_.front());
+    draw_pile_.erase(draw_pile_.begin());
+    drawn_count++;
+  }
 
-	if (drawn_count < count && count_drawable_cards() > 0) {
-		// In the future, a shuffling event may be needed.
-		shuffle();
+  if (drawn_count < count && count_drawable_cards() > 0) {
+    // In the future, a shuffling event may be needed.
+    shuffle();
 
-		while (!draw_pile_.empty() && drawn_count < count) {
-			hand_.insert(hand_.end(), draw_pile_.front());
-			draw_pile_.erase(draw_pile_.begin());
-			drawn_count++;
-		}
-	}
+    while (!draw_pile_.empty() && drawn_count < count) {
+      hand_.insert(hand_.end(), draw_pile_.front());
+      draw_pile_.erase(draw_pile_.begin());
+      drawn_count++;
+    }
+  }
 
-	return drawn_count;
+  return drawn_count;
 }
 
 /*
@@ -77,7 +76,7 @@ int SimpleDeck::draw(int count) {
  * draw pile.
  */
 void SimpleDeck::gain(Card card) {
-	discard_pile_.push_back(card);
+  discard_pile_.push_back(card);
 }
 
 /*
@@ -86,43 +85,43 @@ void SimpleDeck::gain(Card card) {
  *
  * The return value is the card played.
  */
-Card SimpleDeck::play(string card) {
-	/*
-	 * At first I wanted to return a null value when the card isn't found. Then I
-	 * thought, this should be an uncommon case: the user should already know that
-	 * the card is in the hand and shouldn't be requesting plays of cards that
-	 * aren't there.
-	 */
-	/*
-	 * TODO: In the event a card cannot be played, such as plain victory cards
-	 * or curses, do something. It's not clear yet if introducing this
-	 * information into the deck will harm the separation of concerns.
-	 *
-	 * Perhaps a property isPlayable() would work: the card will have to be
-	 * aware of the game state anyway, so it would be appropriate to know the
-	 * answer.
-	 */
-	bool done = false;
-	vector<Card>::iterator it = hand_.begin();
-	while (!done && it != hand_.end()) {
-		if (card == it->name()) {
-			done = true;
-		}
+Card SimpleDeck::play(std::string card) {
+  /*
+   * At first I wanted to return a null value when the card isn't found. Then I
+   * thought, this should be an uncommon case: the user should already know that
+   * the card is in the hand and shouldn't be requesting plays of cards that
+   * aren't there.
+   */
+  /*
+   * TODO: In the event a card cannot be played, such as plain victory cards
+   * or curses, do something. It's not clear yet if introducing this
+   * information into the deck will harm the separation of concerns.
+   *
+   * Perhaps a property isPlayable() would work: the card will have to be
+   * aware of the game state anyway, so it would be appropriate to know the
+   * answer.
+   */
+  bool done = false;
+  std::vector<Card>::iterator it = hand_.begin();
+  while (!done && it != hand_.end()) {
+    if (card == it->name()) {
+      done = true;
+    }
 
-		if (!done) {
-			it++;
-		}
-	}
+    if (!done) {
+      it++;
+    }
+  }
 
-	if (!done && it == hand_.end()) {
-		// throw an exception
-	}
+  if (!done && it == hand_.end()) {
+    // throw an exception
+  }
 
-	Card found_card = *it;
-	hand_.erase(it);
-	tableau_.push_back(found_card);
+  Card found_card = *it;
+  hand_.erase(it);
+  tableau_.push_back(found_card);
 
-	return found_card;
+  return found_card;
 }
 
 /*
@@ -154,27 +153,27 @@ void SimpleDeck::reveal(int count) {
  * This won't be the case in future sets (Inn, for example, will break it).
  */
 void SimpleDeck::shuffle() {
-	/*
-	 * Publicized this method to provide an interface for the game start
-	 * initialization.
-	 */
+  /*
+   * Publicized this method to provide an interface for the game start
+   * initialization.
+   */
 
-	assert(draw_pile_.empty());
+  assert(draw_pile_.empty());
 
-	random_shuffle(discard_pile_.begin(), discard_pile_.end());
+  random_shuffle(discard_pile_.begin(), discard_pile_.end());
 
-	draw_pile_ = discard_pile_;
-	discard_pile_ = vector<Card>();
+  draw_pile_ = discard_pile_;
+  discard_pile_ = std::vector<Card>();
 }
 
-const vector<Card>& SimpleDeck::hand() const {
-	return hand_;
+const std::vector<Card>& SimpleDeck::hand() const {
+  return hand_;
 }
 
-const vector<Card>& SimpleDeck::tableau() const {
-	return tableau_;
+const std::vector<Card>& SimpleDeck::tableau() const {
+  return tableau_;
 }
 
 int SimpleDeck::count_drawable_cards() const {
-	return draw_pile_.size() + discard_pile_.size();
+  return draw_pile_.size() + discard_pile_.size();
 }

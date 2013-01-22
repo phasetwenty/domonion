@@ -6,66 +6,44 @@
  */
 #include <menu.h>
 #include <ncurses.h>
+#include <cstdlib>
 
 #include <gamestate.h>
-#include <ui/console/handview.h>
-#include <ui/console/infoview.h>
-#include <ui/console/tableauview.h>
+#include <ui/console/playerview.h>
+#include <ui/console/viewport.h>
 
-class Viewport {
-public:
-  Viewport(GameState *game) {
-    game_ = game;
+Viewport::Viewport(GameState *game) {
+  game_ = game;
 
-    hand_view_ = new HandView(game_->CurrentPlayer().deck().hand());
-    info_view_ = new InfoView();
-    tableau_view_ = new TableauView(game_->CurrentPlayer().deck().tableau());
-  }
+  player_view_ = new PlayerView(game_->players()->current());
 
-  ~Viewport() {
+  initscr();
+
+  if (LINES < kMinLines || COLS < kMinCols) {
+    printw("This screen is too small!");
+    refresh();
+    getch();
     endwin();
+    exit(1);
   }
 
-  void RunForever() {
-/*    int ch = 0;
+  keypad(stdscr, TRUE);
+  cbreak(); // In case you forget, this disables line buffering.
+  noecho(); // Disables terminal echo.
+}
 
-    while ((ch = getch()) != 'q') {
-      switch (ch) {
-      case KEY_DOWN: {
-        menu_driver(menu_hand_, REQ_DOWN_ITEM);
-        wrefresh(window_hand_);
-        UpdateInfo();
-        break;
-      }
-      case KEY_UP: {
-        menu_driver(menu_hand_, REQ_UP_ITEM);
-        wrefresh(hand_window_main);
-        UpdateInfo();
-        break;
-      }
-      case 10: {
+Viewport::~Viewport() {
+  endwin();
+}
 
-         * In example 22 of the menus tutorial:
-         * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/menus.html
-         * The example does not use the KEY_ENTER constant to compare the enter key. Why?
+void Viewport::ItemDown() {
+  player_view_->ItemDown();
+}
 
-        const char *name = item_name(current_item(menu_hand_));
-        deck.play(std::string(name));
-        playAction(hand_menu, tableau_menu, deck);
-        break;
-      }
-      default: {
-        deck.cleanup_and_draw();
-        updateMenu(hand_menu, makeItems(deck.hand()));
-        break;
-      }
-      }
-    }*/
-  }
+void Viewport::ItemUp() {
+  player_view_->ItemUp();
+}
 
-private:
-  GameState *game_;
-  HandView* hand_view_;
-  InfoView *info_view_;
-  TableauView *tableau_view_;
-};
+void Viewport::PlayCard() {
+  player_view_->PlayCard();
+}

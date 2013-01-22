@@ -35,7 +35,7 @@ SimpleDeck::~SimpleDeck() {
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
  */
-void SimpleDeck::cleanup_and_draw() {
+void SimpleDeck::CleanupAndDraw() {
   while (!hand_.empty()) {
     discard_pile_.push_back(hand_[0]);
     hand_.erase(hand_.begin());
@@ -46,10 +46,10 @@ void SimpleDeck::cleanup_and_draw() {
     tableau_.erase(tableau_.end());
   }
 
-  draw(5);
+  Draw(5);
 }
 
-int SimpleDeck::draw(int count) {
+int SimpleDeck::Draw(int count) {
   int drawn_count = 0;
   while (!draw_pile_.empty() && drawn_count < count) {
     hand_.insert(hand_.end(), draw_pile_.front());
@@ -59,7 +59,7 @@ int SimpleDeck::draw(int count) {
 
   if (drawn_count < count && count_drawable_cards() > 0) {
     // In the future, a shuffling event may be needed.
-    shuffle();
+    Shuffle();
 
     while (!draw_pile_.empty() && drawn_count < count) {
       hand_.insert(hand_.end(), draw_pile_.front());
@@ -75,7 +75,7 @@ int SimpleDeck::draw(int count) {
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void SimpleDeck::gain(Card card) {
+void SimpleDeck::Gain(Card card) {
   discard_pile_.push_back(card);
 }
 
@@ -85,7 +85,7 @@ void SimpleDeck::gain(Card card) {
  *
  * The return value is the card played.
  */
-Card SimpleDeck::play(std::string card) {
+Card SimpleDeck::Play(std::string card) {
   /*
    * At first I wanted to return a null value when the card isn't found. Then I
    * thought, this should be an uncommon case: the user should already know that
@@ -144,7 +144,7 @@ Card SimpleDeck::play(std::string card) {
  * * Adding a member `revealedCards` which is populated by this method? Might
  *   need more thought.
  */
-void SimpleDeck::reveal(int count) {
+void SimpleDeck::Reveal(int count) {
 
 }
 
@@ -152,7 +152,7 @@ void SimpleDeck::reveal(int count) {
  * In base Dominion, you can assume that the draw pile is empty when shuffling.
  * This won't be the case in future sets (Inn, for example, will break it).
  */
-void SimpleDeck::shuffle() {
+void SimpleDeck::Shuffle() {
   /*
    * Publicized this method to provide an interface for the game start
    * initialization.

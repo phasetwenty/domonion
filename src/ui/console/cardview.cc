@@ -6,37 +6,27 @@
  */
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include <ui/console/cardview.h>
 
 CardView::CardView(const std::vector<Card>& items,
     int window_starty,
     int window_startx) {
-  items_ = &items;
   window_ = InitializeWindow(kWindowLines,
     kWindowCols,
     window_starty,
     window_startx);
-  WINDOW *window_sub = derwin(window_,
+  sub_ = derwin(window_,
     kMenuLines,
     kMenuCols,
     kMenuStarty,
     kMenuStartx);
-  menu_ = InitializeMenu(window_, window_sub, *items_);
+  menu_ = UpdateMenu(items);
 }
 
-MENU* CardView::InitializeMenu(WINDOW *window,
-    WINDOW *subwindow,
-    std::vector<Card> initialItems) {
-  ITEM **items = MakeItems(initialItems);
-  MENU *result = new_menu(items);
-
-  set_menu_win(result, window);
-  set_menu_sub(result, subwindow);
-  set_menu_mark(result, " ");
-  post_menu(result);
-
-  return result;
+const std::string CardView::Current() const {
+  return std::string(item_description(current_item(menu_)));
 }
 
 WINDOW* CardView::InitializeWindow(int lines,
@@ -50,8 +40,14 @@ WINDOW* CardView::InitializeWindow(int lines,
   return result;
 }
 
-const std::vector<Card>& CardView::items() const {
-  return *items_;
+void CardView::ItemDown() {
+  menu_driver(menu_, REQ_DOWN_ITEM);
+  wrefresh(window_);
+}
+
+void CardView::ItemUp() {
+  menu_driver(menu_, REQ_UP_ITEM);
+  wrefresh(window_);
 }
 
 ITEM** CardView::MakeItems(const std::vector<Card> source) {
@@ -74,8 +70,14 @@ ITEM** CardView::MakeItems(const std::vector<Card> source) {
   return items;
 }
 
-void CardView::set_items(std::vector<Card>& value) {
-  // TODO: probably not instant update but some bookkeeping surely.
-  items_ = &value;
-}
+MENU* CardView::UpdateMenu(const std::vector<Card>& items) {
+  ITEM **new_items = MakeItems(items);
+  MENU *result = new_menu(new_items);
 
+  set_menu_win(result, window_);
+  set_menu_sub(result, sub_);
+  set_menu_mark(result, " ");
+  post_menu(result);
+
+  return result;
+}

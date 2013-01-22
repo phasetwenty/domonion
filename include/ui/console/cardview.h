@@ -9,37 +9,35 @@
 
 #include <menu.h>
 #include <ncurses.h>
+#include <string>
 #include <vector>
 
 #include <card.h>
 
 class CardView {
 public:
-  const std::vector<Card>& items() const;
-  void set_items(std::vector<Card>& value);
-protected:
-  const std::vector<Card> *items_;
-  MENU *menu_;
-  WINDOW *window_;
-
   CardView(const std::vector<Card>& items, int window_starty, int window_startx);
   virtual ~CardView() { }
 
-  virtual MENU* InitializeMenu(WINDOW *window,
-    WINDOW *subwindow,
-    std::vector<Card> initialItems);
+  const std::string Current() const;
+  void ItemDown();
+  void ItemUp();
+  virtual MENU* UpdateMenu(const std::vector<Card>& items);
+protected:
+  MENU *menu_;
+  WINDOW *sub_;
+  WINDOW *window_;
 
   virtual WINDOW* InitializeWindow(int lines,
-      int cols,
-      int starty,
-      int startx);
+    int cols,
+    int starty,
+    int startx);
 
   /*
    * Helper to convert data structures in the deck to data structures for the
    * menus.
    */
   virtual ITEM **MakeItems(const std::vector<Card> source);
-
 private:
   static const int kMenuLines = 9;
   static const int kMenuCols = 18;

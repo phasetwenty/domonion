@@ -9,7 +9,7 @@ SRC := $(PROJECT_DIR)/src
 RM := rm -f
 
 _objects := app.o deck.o card.o basicvictory.o basictreasure.o cardview.o \
-gamestate.o infoview.o player.o playercollection.o viewport.o
+gamestate.o infoview.o player.o playercollection.o playerview.o viewport.o
 objects := $(addprefix $(OBJ)/,$(_objects))
 
 vpath %.cc $(SRC):$(SRC)/cards:$(SRC)/ui/console

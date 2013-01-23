@@ -22,10 +22,9 @@ public:
   const std::string Current() const;
   void ItemDown();
   void ItemUp();
-  virtual MENU* UpdateMenu(const std::vector<Card>& items);
+  virtual void UpdateMenu(const std::vector<Card>& items);
 protected:
   MENU *menu_;
-  WINDOW *sub_;
   WINDOW *window_;
 
   virtual WINDOW* InitializeWindow(int lines,
@@ -41,7 +40,7 @@ protected:
 private:
   static const int kMenuLines = 9;
   static const int kMenuCols = 18;
-  static const int kMenuStartx = 3;
+  static const int kMenuStartx = 1;
   static const int kMenuStarty = 1;
   static const int kWindowCols = 20;
   static const int kWindowLines = 12;

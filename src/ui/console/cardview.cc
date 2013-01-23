@@ -17,12 +17,16 @@ CardView::CardView(const std::vector<Card>& items,
     kWindowCols,
     window_starty,
     window_startx);
-  sub_ = derwin(window_,
-    kMenuLines,
-    kMenuCols,
-    kMenuStarty,
-    kMenuStartx);
-  menu_ = UpdateMenu(items);
+
+  ITEM **new_items = MakeItems(items);
+  menu_ = new_menu(new_items);
+
+  set_menu_win(menu_, window_);
+  set_menu_sub(menu_,
+    derwin(window_, kMenuLines, kMenuCols, kMenuStarty, kMenuStartx));
+  set_menu_mark(menu_, " ");
+  post_menu(menu_);
+  wrefresh(window_);
 }
 
 const std::string CardView::Current() const {
@@ -70,14 +74,17 @@ ITEM** CardView::MakeItems(const std::vector<Card> source) {
   return items;
 }
 
-MENU* CardView::UpdateMenu(const std::vector<Card>& items) {
+void CardView::UpdateMenu(const std::vector<Card>& items) {
   ITEM **new_items = MakeItems(items);
-  MENU *result = new_menu(new_items);
 
-  set_menu_win(result, window_);
-  set_menu_sub(result, sub_);
-  set_menu_mark(result, " ");
-  post_menu(result);
+  unpost_menu(menu_);
+  ITEM **old_items = menu_items(menu_);
+  int count = item_count(menu_);
+  for (int i = 0; i < count; ++i) {
+    free_item(old_items[i]);
+  }
 
-  return result;
+  set_menu_items(menu_, new_items);
+  post_menu(menu_);
+  wrefresh(window_);
 }

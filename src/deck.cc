@@ -57,7 +57,7 @@ int SimpleDeck::Draw(int count) {
     drawn_count++;
   }
 
-  if (drawn_count < count && count_drawable_cards() > 0) {
+  if (drawn_count < count && CountDrawableCards() > 0) {
     // In the future, a shuffling event may be needed.
     Shuffle();
 
@@ -174,6 +174,6 @@ const std::vector<Card>& SimpleDeck::tableau() const {
   return tableau_;
 }
 
-int SimpleDeck::count_drawable_cards() const {
+int SimpleDeck::CountDrawableCards() const {
   return draw_pile_.size() + discard_pile_.size();
 }

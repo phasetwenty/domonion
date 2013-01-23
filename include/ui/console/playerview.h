@@ -17,6 +17,7 @@ public:
   PlayerView(const Player& player);
   ~PlayerView();
 
+  void CleanupAndDraw();
   void ItemDown();
   void ItemUp();
   void PlayCard();

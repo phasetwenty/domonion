@@ -37,6 +37,10 @@ Viewport::~Viewport() {
   endwin();
 }
 
+void Viewport::CleanupAndDraw() {
+  player_view_->CleanupAndDraw();
+}
+
 void Viewport::ItemDown() {
   player_view_->ItemDown();
 }

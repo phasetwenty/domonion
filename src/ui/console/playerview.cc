@@ -20,6 +20,13 @@ PlayerView::PlayerView(const Player& player) {
     kWindowTableauStartX);
 }
 
+void PlayerView::CleanupAndDraw() {
+  player_->deck().CleanupAndDraw();
+
+  hand_view_->UpdateMenu(player_->deck().hand());
+  tableau_view_->UpdateMenu(player_->deck().tableau());
+}
+
 void PlayerView::ItemDown() {
   hand_view_->ItemDown();
 }

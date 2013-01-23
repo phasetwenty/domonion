@@ -24,6 +24,7 @@ public:
   Viewport(GameState *game);
   ~Viewport();
 
+  void CleanupAndDraw();
   void ItemDown();
   void ItemUp();
   void PlayCard();

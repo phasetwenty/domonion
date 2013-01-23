@@ -12,6 +12,10 @@
 SimpleDeck* InitializeDeck();
 
 int main() {
+  /*
+   * This pair of statements is to pause the game so that the debugger can be
+   * attached.
+   */
   initscr();
   getch();
 
@@ -44,9 +48,10 @@ int main() {
       viewport->PlayCard();
       break;
     }
-//    default: {
-//      break;
-//    }
+    default: {
+      viewport->CleanupAndDraw();
+      break;
+    }
     }
   }
 

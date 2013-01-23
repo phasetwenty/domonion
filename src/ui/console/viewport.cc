@@ -15,9 +15,11 @@
 Viewport::Viewport(GameState *game) {
   game_ = game;
 
-  player_view_ = new PlayerView(game_->players()->current());
-
   initscr();
+  keypad(stdscr, TRUE);
+  cbreak(); // In case you forget, this disables line buffering.
+  noecho(); // Disables terminal echo.
+  getch();
 
   if (LINES < kMinLines || COLS < kMinCols) {
     printw("This screen is too small!");
@@ -27,9 +29,8 @@ Viewport::Viewport(GameState *game) {
     exit(1);
   }
 
-  keypad(stdscr, TRUE);
-  cbreak(); // In case you forget, this disables line buffering.
-  noecho(); // Disables terminal echo.
+  game_->players()->current().deck().CleanupAndDraw();
+  player_view_ = new PlayerView(game_->players()->current());
 }
 
 Viewport::~Viewport() {

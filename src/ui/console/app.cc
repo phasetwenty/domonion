@@ -12,11 +12,15 @@
 SimpleDeck* InitializeDeck();
 
 int main() {
+  initscr();
+  getch();
+
   std::vector<Player> *players = new std::vector<Player>;
   for (int i = 0; i < 4; ++i) {
     Player *p = new Player(*InitializeDeck());
     players->push_back(*p);
   }
+
   GameState *game = new GameState(*players);
   Viewport *viewport = new Viewport(game);
 
@@ -46,7 +50,7 @@ int main() {
     }
   }
 
-  endwin();
+  delete viewport;
   return 0;
 }
 

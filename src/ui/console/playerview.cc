@@ -29,10 +29,14 @@ void PlayerView::CleanupAndDraw() {
 
 void PlayerView::ItemDown() {
   hand_view_->ItemDown();
+  int index = hand_view_->CurrentIndex();
+  info_view_->Update(player_->deck().hand()[index].text());
 }
 
 void PlayerView::ItemUp() {
   hand_view_->ItemUp();
+  int index = hand_view_->CurrentIndex();
+  info_view_->Update(player_->deck().hand()[index].text());
 }
 
 void PlayerView::PlayCard() {
@@ -40,4 +44,7 @@ void PlayerView::PlayCard() {
 
   hand_view_->UpdateMenu(player_->deck().hand());
   tableau_view_->UpdateMenu(player_->deck().tableau());
+
+  int index = hand_view_->CurrentIndex();
+  info_view_->Update(player_->deck().hand()[index].text());
 }

@@ -7,10 +7,14 @@ Card::Card(std::string name, int cost, std::string text, std::string type) {
   type_ = type;
 }
 
+Card::~Card() {
+
+}
+
 std::string Card::name() const {
   return name_;
 }
 
-Card::~Card() {
-
+std::string Card::text() const {
+  return text_;
 }

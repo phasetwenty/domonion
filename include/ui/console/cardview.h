@@ -20,6 +20,7 @@ public:
   virtual ~CardView() { }
 
   const std::string Current() const;
+  const int CurrentIndex() const;
   void ItemDown();
   void ItemUp();
   virtual void UpdateMenu(const std::vector<Card>& items);

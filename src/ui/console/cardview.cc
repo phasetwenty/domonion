@@ -33,6 +33,10 @@ const std::string CardView::Current() const {
   return std::string(item_name(current_item(menu_)));
 }
 
+const int CardView::CurrentIndex() const {
+  return item_index(current_item(menu_));
+}
+
 WINDOW* CardView::InitializeWindow(int lines,
     int cols,
     int starty,

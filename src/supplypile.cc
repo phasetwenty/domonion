@@ -1,12 +1,10 @@
 #include <supplypile.h>
 
-SupplyPile::SupplyPile(const Card& card, int initial_count) : card_(card) {
-  count_ = initial_count;
-}
+SupplyPile::SupplyPile(const Card& card, int initial_count) :
+  card_(card), count_(initial_count) { }
 
-SupplyPile::SupplyPile(const SupplyPile& other) : card_(other.card()) {
-  count_ = other.count();
-}
+SupplyPile::SupplyPile(const SupplyPile& other) :
+  card_(other.card()), count_(other.count()) { }
 
 SupplyPile::~SupplyPile() {
 
@@ -16,10 +14,22 @@ bool SupplyPile::operator==(const SupplyPile& other) const {
   return false;
 }
 
+bool SupplyPile::BuyOrGain() {
+  bool result = count == 0;
+  if (count > 0) {
+    count--;
+  }
+  return result;
+}
+
 const Card& SupplyPile::card() const {
   return card_;
 }
 
 int SupplyPile::count() const {
   return count_;
+}
+
+std::string SupplyPile::name() const {
+  return card_.name();
 }

@@ -11,11 +11,14 @@ public:
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
 
+    /*
+     *
+     */
     bool BuyOrGain();
 
     const Card& card() const;
     int count() const;
-
+    std::string name() const;
 private:
     /*
      * The card that this pile represents. I don't expect any manipulation on

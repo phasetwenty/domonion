@@ -7,11 +7,13 @@
 
 #include <cards/basictreasure.h>
 
-using namespace std;
-
-BasicTreasure::BasicTreasure(string name, int coin_provided, int cost,
-                             string text, string type)
-    : Card(name, cost, text, type) {
+BasicTreasure::BasicTreasure(std::string name,
+    int coin_provided,
+    int cost,
+    int initial_supply,
+    std::string text,
+    std::string type) :
+    Card(name, cost, initial_supply, text, type) {
   coin_provided_ = coin_provided;
 }
 

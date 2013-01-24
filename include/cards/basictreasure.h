@@ -12,8 +12,12 @@
 
 class BasicTreasure: public Card {
 public:
-  BasicTreasure(std::string name, int coins_provided, int cost,
-                std::string text, std::string type);
+  BasicTreasure(std::string name,
+    int coins_provided,
+    int cost,
+    int initial_supply,
+    std::string text,
+    std::string type);
   virtual ~BasicTreasure();
 
   int coin_provided() const;
@@ -22,3 +26,7 @@ private:
 };
 
 #endif /* DOMONION_BASICTREASURE_H_ */
+
+/*
+ * Remember: treasures initial supply depends on the type.
+ */

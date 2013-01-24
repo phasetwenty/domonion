@@ -12,7 +12,11 @@
 
 class BasicVictory: public Card {
 public:
-  BasicVictory(std::string name, int cost, std::string text, std::string type);
+  BasicVictory(std::string name,
+    int cost,
+    int initial_supply,
+    std::string text,
+    std::string type);
   virtual ~BasicVictory();
 };
 

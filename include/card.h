@@ -5,7 +5,11 @@
 
 class Card {
 public:
-  Card(std::string name, int cost, std::string text, std::string type);
+  Card(std::string name,
+    int cost,
+    int initial_supply,
+    std::string text,
+    std::string type);
   ~Card();
 
   /*
@@ -15,6 +19,7 @@ public:
   void play();
 
   int cost() const;
+  int initial_supply() const;
   std::string name() const;
   std::string text() const;
 private:
@@ -25,6 +30,12 @@ private:
    * to something more flexible (such as if introducing Alchemy cards).
    */
   int cost_;
+
+  /*
+   * Initial supply count
+   * How many of this card should its corresponding supply pile contain?
+   */
+  int initial_supply_;
 
   std::string name_;
   /*

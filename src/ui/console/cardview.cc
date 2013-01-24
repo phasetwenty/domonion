@@ -30,7 +30,7 @@ CardView::CardView(const std::vector<Card>& items,
 }
 
 const std::string CardView::Current() const {
-  return std::string(item_description(current_item(menu_)));
+  return std::string(item_name(current_item(menu_)));
 }
 
 WINDOW* CardView::InitializeWindow(int lines,

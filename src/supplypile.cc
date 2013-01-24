@@ -15,9 +15,9 @@ bool SupplyPile::operator==(const SupplyPile& other) const {
 }
 
 bool SupplyPile::BuyOrGain() {
-  bool result = count == 0;
-  if (count > 0) {
-    count--;
+  bool result = (count_ == 0);
+  if (count_ > 0) {
+    count_--;
   }
   return result;
 }

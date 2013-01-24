@@ -1,7 +1,7 @@
 #ifndef DOMONION_SUPPLYPILE_H
 #define DOMONION_SUPPLYPILE_H
 
-class Card;
+#include <card.h>
 
 class SupplyPile {
 

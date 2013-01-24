@@ -67,11 +67,11 @@ SimpleDeck *InitializeDeck() {
   SimpleDeck *d = new SimpleDeck();
 
   for (int i = 0; i < 7; ++i) {
-    BasicTreasure b = BasicTreasure("Copper", 1, 0, "(1)", "Treasure");
+    BasicTreasure b = BasicTreasure("Copper", 1, 0, 10, "(1)", "Treasure");
     d->Gain(b);
   }
   for (int i = 0; i < 3; ++i) {
-    BasicVictory v = BasicVictory("Estate", 2, ")1(", "Victory");
+    BasicVictory v = BasicVictory("Estate", 2, 10, ")1(", "Victory");
     d->Gain(v);
   }
 

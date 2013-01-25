@@ -19,6 +19,7 @@ Viewport::Viewport(GameState *game) {
   keypad(stdscr, TRUE);
   cbreak(); // In case you forget, this disables line buffering.
   noecho(); // Disables terminal echo.
+  curs_set(0); // Hides the terminal cursor.
   getch();
 
   if (LINES < kMinLines || COLS < kMinCols) {

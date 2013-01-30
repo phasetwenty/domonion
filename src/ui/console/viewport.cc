@@ -20,6 +20,7 @@ Viewport::Viewport(GameState *game) {
   cbreak(); // In case you forget, this disables line buffering.
   noecho(); // Disables terminal echo.
   curs_set(0); // Hides the terminal cursor.
+  start_color();
   getch();
 
   if (LINES < kMinLines || COLS < kMinCols) {
@@ -52,4 +53,8 @@ void Viewport::ItemUp() {
 
 void Viewport::PlayCard() {
   player_view_->PlayCard();
+}
+
+PlayerView& Viewport::player_view() const {
+  return *player_view_;
 }

@@ -29,9 +29,13 @@ public:
   void ItemUp();
   void PlayCard();
 
+  PlayerView& player_view() const;
+
 private:
   static const int kMinLines = 12;
   static const int kMinCols = 80;
+
+
 
   GameState *game_;
   PlayerView *player_view_;

@@ -32,11 +32,19 @@ int main() {
   while ((ch = getch()) != 'q') {
     switch (ch) {
     case KEY_DOWN: {
-      viewport->ItemDown();
+      viewport->player_view().ItemDown();
       break;
     }
     case KEY_UP: {
-      viewport->ItemUp();
+      viewport->player_view().ItemUp();
+      break;
+    }
+    case KEY_LEFT: {
+      viewport->player_view().WindowLeft();
+      break;
+    }
+    case KEY_RIGHT: {
+      viewport->player_view().WindowRight();
       break;
     }
     case 10: {

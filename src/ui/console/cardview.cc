@@ -18,6 +18,9 @@ CardView::CardView(const std::vector<Card>& items,
     window_starty,
     window_startx);
 
+  init_pair(kColorPairActive, COLOR_WHITE, COLOR_BLACK);
+  init_pair(kColorPairInactive, COLOR_BLACK, COLOR_WHITE);
+
   ITEM **new_items = MakeItems(items);
   menu_ = new_menu(new_items);
 
@@ -26,6 +29,7 @@ CardView::CardView(const std::vector<Card>& items,
     derwin(window_, kMenuLines, kMenuCols, kMenuStarty, kMenuStartx));
   set_menu_mark(menu_, " ");
   post_menu(menu_);
+
   wrefresh(window_);
 }
 
@@ -76,6 +80,14 @@ ITEM** CardView::MakeItems(const std::vector<Card> source) {
   }
 
   return items;
+}
+
+void CardView::SetActive() {
+  wattron(window_, COLOR_PAIR(kColorPairActive));
+}
+
+void CardView::SetInactive() {
+  wattron(window_, COLOR_PAIR(kColorPairInactive));
 }
 
 void CardView::UpdateMenu(const std::vector<Card>& items) {

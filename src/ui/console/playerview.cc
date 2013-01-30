@@ -8,43 +8,70 @@
 #include <ui/console/infoview.h>
 #include <ui/console/playerview.h>
 
-PlayerView::PlayerView(const Player& player) {
-  player_ = &player;
-
-  hand_view_ = new CardView(player_->deck().hand(),
+PlayerView::PlayerView(const Player& player) :
+  player_(&player), info_view_(new InfoView()) {
+  /*
+   * Hardcoding the hand to be the first view, arbitrarily.
+   */
+  card_views_[0] = new CardView(player_->deck().hand(),
     kWindowHandStartY,
     kWindowHandStartX);
-  info_view_ = new InfoView();
-  tableau_view_ = new CardView(player_->deck().tableau(),
+  card_views_[1] = new CardView(player_->deck().tableau(),
     kWindowTableauStartY,
     kWindowTableauStartX);
+  active_ = card_views_[0];
+  active_->SetActive();
+
+  card_views_[1]->SetInactive();
 }
 
 void PlayerView::CleanupAndDraw() {
   player_->deck().CleanupAndDraw();
 
-  hand_view_->UpdateMenu(player_->deck().hand());
-  tableau_view_->UpdateMenu(player_->deck().tableau());
+  active_->UpdateMenu(player_->deck().hand());
+  active_->UpdateMenu(player_->deck().tableau());
 }
 
 void PlayerView::ItemDown() {
-  hand_view_->ItemDown();
-  int index = hand_view_->CurrentIndex();
+  active_->ItemDown();
+  int index = active_->CurrentIndex();
   info_view_->Update(player_->deck().hand()[index].text());
 }
 
 void PlayerView::ItemUp() {
-  hand_view_->ItemUp();
-  int index = hand_view_->CurrentIndex();
+  active_->ItemUp();
+  int index = active_->CurrentIndex();
   info_view_->Update(player_->deck().hand()[index].text());
 }
 
 void PlayerView::PlayCard() {
-  player_->deck().Play(hand_view_->Current());
+  player_->deck().Play(active_->Current());
 
-  hand_view_->UpdateMenu(player_->deck().hand());
-  tableau_view_->UpdateMenu(player_->deck().tableau());
+  /*
+   * This is an irresponsible hard code but I'm doing it anyway to prototype my
+   * idea.
+   */
+  card_views_[0]->UpdateMenu(player_->deck().hand());
+  card_views_[1]->UpdateMenu(player_->deck().tableau());
+  int index = card_views_[0]->CurrentIndex();
 
-  int index = hand_view_->CurrentIndex();
   info_view_->Update(player_->deck().hand()[index].text());
+}
+
+void PlayerView::WindowLeft() {
+  if (active_ != card_views_[1]) {
+    active_->SetInactive();
+  }
+
+  active_ = card_views_[1];
+  active_->SetActive();
+}
+
+void PlayerView::WindowRight() {
+  if (active_ != card_views_[0]) {
+    active_->SetInactive();
+  }
+  active_ = card_views_[0];
+
+  active_->SetActive();
 }

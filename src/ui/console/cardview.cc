@@ -83,11 +83,15 @@ ITEM** CardView::MakeItems(const std::vector<Card> source) {
 }
 
 void CardView::SetActive() {
+  wbkgd(window_, COLOR_PAIR(kColorPairActive));
   wattron(window_, COLOR_PAIR(kColorPairActive));
+  wrefresh(window_);
 }
 
 void CardView::SetInactive() {
+  wbkgd(window_, COLOR_PAIR(kColorPairInactive));
   wattron(window_, COLOR_PAIR(kColorPairInactive));
+  wrefresh(window_);
 }
 
 void CardView::UpdateMenu(const std::vector<Card>& items) {

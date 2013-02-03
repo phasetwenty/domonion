@@ -18,8 +18,8 @@ CardView::CardView(const std::vector<Card>& items,
     window_starty,
     window_startx);
 
-  init_pair(kColorPairActive, COLOR_WHITE, COLOR_BLACK);
-  init_pair(kColorPairInactive, COLOR_BLACK, COLOR_WHITE);
+  init_pair(kColorPairActive, COLOR_BLACK, COLOR_WHITE);
+  init_pair(kColorPairInactive, COLOR_WHITE, COLOR_BLACK);
 
   ITEM **new_items = MakeItems(items);
   menu_ = new_menu(new_items);

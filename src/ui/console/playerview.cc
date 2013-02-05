@@ -20,8 +20,8 @@ PlayerView::PlayerView(const Player& player) :
     kWindowTableauStartY,
     kWindowTableauStartX);
   active_ = card_views_[0];
-  active_->SetActive();
 
+  active_->SetActive();
   card_views_[1]->SetInactive();
 }
 
@@ -59,19 +59,13 @@ void PlayerView::PlayCard() {
 }
 
 void PlayerView::WindowLeft() {
-  if (active_ != card_views_[1]) {
-    active_->SetInactive();
-  }
-
+  active_->SetInactive();
   active_ = card_views_[1];
   active_->SetActive();
 }
 
 void PlayerView::WindowRight() {
-  if (active_ != card_views_[0]) {
-    active_->SetInactive();
-  }
+  active_->SetInactive();
   active_ = card_views_[0];
-
   active_->SetActive();
 }

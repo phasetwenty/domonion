@@ -36,6 +36,8 @@ private:
   CardView *active_;
   InfoView *info_view_;
 
+  void UpdateInfoView();
+
 };
 
 #endif /* DOMONION_PLAYERVIEW_H_ */

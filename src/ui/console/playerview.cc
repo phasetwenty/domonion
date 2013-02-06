@@ -23,6 +23,7 @@ PlayerView::PlayerView(const Player& player) :
   active_->SetActive();
 
   card_views_[1]->SetInactive();
+  UpdateInfoView();
 }
 
 void PlayerView::CleanupAndDraw() {
@@ -34,14 +35,12 @@ void PlayerView::CleanupAndDraw() {
 
 void PlayerView::ItemDown() {
   active_->ItemDown();
-  int index = active_->CurrentIndex();
-  info_view_->Update(player_->deck().hand()[index].text());
+  UpdateInfoView();
 }
 
 void PlayerView::ItemUp() {
   active_->ItemUp();
-  int index = active_->CurrentIndex();
-  info_view_->Update(player_->deck().hand()[index].text());
+  UpdateInfoView();
 }
 
 void PlayerView::PlayCard() {
@@ -53,25 +52,34 @@ void PlayerView::PlayCard() {
    */
   card_views_[0]->UpdateMenu(player_->deck().hand());
   card_views_[1]->UpdateMenu(player_->deck().tableau());
-  int index = card_views_[0]->CurrentIndex();
+  UpdateInfoView();
+}
 
+void PlayerView::UpdateInfoView() {
+  int index = active_->CurrentIndex();
   info_view_->Update(player_->deck().hand()[index].text());
 }
 
 void PlayerView::WindowLeft() {
-  if (active_ != card_views_[1]) {
-    active_->SetInactive();
-  }
+  if (player_->deck().tableau().size() > 0) {
+    if (active_ != card_views_[1]) {
+      active_->SetInactive();
+    }
 
-  active_ = card_views_[1];
-  active_->SetActive();
+    active_ = card_views_[1];
+    active_->SetActive();
+    UpdateInfoView();
+  }
 }
 
 void PlayerView::WindowRight() {
-  if (active_ != card_views_[0]) {
-    active_->SetInactive();
-  }
-  active_ = card_views_[0];
+  if (player_->deck().hand().size() > 0) {
+    if (active_ != card_views_[0]) {
+      active_->SetInactive();
+    }
 
-  active_->SetActive();
+    active_ = card_views_[0];
+    active_->SetActive();
+    UpdateInfoView();
+  }
 }

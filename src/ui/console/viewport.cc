@@ -21,6 +21,7 @@ Viewport::Viewport(GameState *game) {
   noecho(); // Disables terminal echo.
   curs_set(0); // Hides the terminal cursor.
   start_color();
+  use_default_colors();  // After activating color, this prevents white-on-gray.
   getch();
 
   if (LINES < kMinLines || COLS < kMinCols) {
@@ -33,6 +34,7 @@ Viewport::Viewport(GameState *game) {
 
   game_->players()->current().deck().CleanupAndDraw();
   player_view_ = new PlayerView(game_->players()->current());
+  // TODO: initialize color pairs game-wide here.
 }
 
 Viewport::~Viewport() {

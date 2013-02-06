@@ -18,7 +18,7 @@ CardView::CardView(const std::vector<Card>& items,
     window_starty,
     window_startx);
 
-  init_pair(kColorPairActive, COLOR_BLACK, COLOR_WHITE);
+  init_pair(kColorPairActive, COLOR_WHITE, COLOR_RED);
   init_pair(kColorPairInactive, COLOR_WHITE, COLOR_BLACK);
 
   ITEM **new_items = MakeItems(items);
@@ -83,16 +83,12 @@ ITEM** CardView::MakeItems(const std::vector<Card> source) {
 }
 
 void CardView::SetActive() {
-  wbkgd(window_, COLOR_PAIR(kColorPairActive));
-  wattroff(window_, COLOR_PAIR(kColorPairInactive));
-  wattron(window_, COLOR_PAIR(kColorPairActive));
+  set_menu_fore(menu_, COLOR_PAIR(kColorPairActive));
   wrefresh(window_);
 }
 
 void CardView::SetInactive() {
-  wbkgd(window_, COLOR_PAIR(kColorPairInactive));
-  wattroff(window_, COLOR_PAIR(kColorPairActive));
-  wattron(window_, COLOR_PAIR(kColorPairInactive));
+  set_menu_fore(menu_, COLOR_PAIR(kColorPairInactive));
   wrefresh(window_);
 }
 

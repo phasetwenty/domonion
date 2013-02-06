@@ -29,6 +29,7 @@ private:
   static const int kWindowHandStartY = 0;
   static const int kWindowTableauStartX = 39;
   static const int kWindowTableauStartY = 0;
+  static const int kCardViewCount = 2;
 
   const Player *player_;
 

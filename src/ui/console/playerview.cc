@@ -29,8 +29,11 @@ PlayerView::PlayerView(const Player& player) :
 void PlayerView::CleanupAndDraw() {
   player_->deck().CleanupAndDraw();
 
-  active_->UpdateMenu(player_->deck().hand());
-  active_->UpdateMenu(player_->deck().tableau());
+  for (int i = 0; i < kCardViewCount; ++i) {
+    card_views_[i]->Update();
+  }
+
+  UpdateInfoView();
 }
 
 void PlayerView::ItemDown() {
@@ -44,20 +47,20 @@ void PlayerView::ItemUp() {
 }
 
 void PlayerView::PlayCard() {
-  player_->deck().Play(active_->Current());
+  player_->deck().Play(active_->CurrentCard().name());
 
   /*
    * This is an irresponsible hard code but I'm doing it anyway to prototype my
    * idea.
    */
-  card_views_[0]->UpdateMenu(player_->deck().hand());
-  card_views_[1]->UpdateMenu(player_->deck().tableau());
+  for (int i = 0; i < kCardViewCount; ++i) {
+    card_views_[i]->Update();
+  }
   UpdateInfoView();
 }
 
 void PlayerView::UpdateInfoView() {
-  int index = active_->CurrentIndex();
-  info_view_->Update(player_->deck().hand()[index].text());
+  info_view_->Update(active_->CurrentCard().text());
 }
 
 void PlayerView::WindowLeft() {

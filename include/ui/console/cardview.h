@@ -19,17 +19,14 @@ public:
   CardView(const std::vector<Card>& items, int window_starty, int window_startx);
   virtual ~CardView() { }
 
-  const std::string Current() const;
+  const Card& CurrentCard() const;
   const int CurrentIndex() const;
   void ItemDown();
   void ItemUp();
   void SetActive();
   void SetInactive();
-  virtual void UpdateMenu(const std::vector<Card>& items);
+  virtual void Update();
 protected:
-  MENU *menu_;
-  WINDOW *window_;
-
   virtual WINDOW* InitializeWindow(int lines,
     int cols,
     int starty,
@@ -50,6 +47,11 @@ private:
   static const int kMenuStarty = 1;
   static const int kWindowCols = 20;
   static const int kWindowLines = 12;
+
+  const std::vector<Card>& items_;
+
+  MENU *menu_;
+  WINDOW *window_;
 };
 
 #endif // DOMONION_CARDVIEW_H

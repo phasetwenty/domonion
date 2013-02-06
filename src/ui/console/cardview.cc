@@ -12,7 +12,7 @@
 
 CardView::CardView(const std::vector<Card>& items,
     int window_starty,
-    int window_startx) {
+    int window_startx) : items_(items) {
   window_ = InitializeWindow(kWindowLines,
     kWindowCols,
     window_starty,
@@ -33,8 +33,8 @@ CardView::CardView(const std::vector<Card>& items,
   wrefresh(window_);
 }
 
-const std::string CardView::Current() const {
-  return std::string(item_name(current_item(menu_)));
+const Card& CardView::CurrentCard() const {
+  return items_[CurrentIndex()];
 }
 
 const int CardView::CurrentIndex() const {
@@ -92,8 +92,8 @@ void CardView::SetInactive() {
   wrefresh(window_);
 }
 
-void CardView::UpdateMenu(const std::vector<Card>& items) {
-  ITEM **new_items = MakeItems(items);
+void CardView::Update() {
+  ITEM **new_items = MakeItems(items_);
 
   unpost_menu(menu_);
   ITEM **old_items = menu_items(menu_);

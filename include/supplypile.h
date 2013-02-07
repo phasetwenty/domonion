@@ -29,7 +29,7 @@ private:
     int count_;
 
     /*
-     * Properties added in other sets?
+     * Properties added in other sets:
      * * Trade Route tokens
      * * Embargo tokens
      */

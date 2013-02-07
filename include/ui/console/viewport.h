@@ -18,6 +18,7 @@
 
 #include <gamestate.h>
 #include <ui/console/playerview.h>
+#include <ui/console/supplypileview.h>
 
 class Viewport {
 public:
@@ -29,15 +30,15 @@ public:
   void ItemUp();
   void PlayCard();
 
-  PlayerView& player_view() const;
+  PlayerView& player_view();
+  SupplyPileView& supply_view();
 
 private:
   static const int kMinLines = 12;
   static const int kMinCols = 80;
 
-
-
   GameState *game_;
+  SupplyPileView *supply_view_;
   PlayerView *player_view_;
 };
 

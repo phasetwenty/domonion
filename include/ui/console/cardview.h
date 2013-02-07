@@ -1,5 +1,5 @@
 /*
- * objectview.h
+ * cardview.h
  *
  *  Created on: Jan 18, 2013
  *      Author: chris

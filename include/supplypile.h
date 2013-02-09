@@ -2,8 +2,9 @@
 #define DOMONION_SUPPLYPILE_H
 
 #include <card.h>
+#include <interfaces.h>
 
-class SupplyPile {
+class SupplyPile : public IInfo {
 
 public:
     SupplyPile(const Card& card, int initial_count);
@@ -15,6 +16,8 @@ public:
      *
      */
     bool BuyOrGain();
+    std::string Info() const;
+    std::string ToString() const;
 
     const Card& card() const;
     int count() const;

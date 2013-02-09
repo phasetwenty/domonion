@@ -16,6 +16,14 @@ Card::~Card() {
 
 }
 
+std::string Card::Info() const {
+  return text();
+}
+
+std::string Card::ToString() const {
+  return name();
+}
+
 std::string Card::name() const {
   return name_;
 }

@@ -3,7 +3,9 @@
 
 #include <string>
 
-class Card {
+#include <interfaces.h>
+
+class Card : public IInfo {
 public:
   Card(std::string name,
     int cost,
@@ -16,7 +18,9 @@ public:
    * Call to play the card. It will modify the game state in the course of
    * resolving.
    */
-  void play();
+  void Play();
+  std::string Info() const;
+  std::string ToString() const;
 
   int cost() const;
   int initial_supply() const;

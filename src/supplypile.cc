@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include <supplypile.h>
 
 SupplyPile::SupplyPile(const Card& card, int initial_count) :
@@ -20,6 +22,16 @@ bool SupplyPile::BuyOrGain() {
     count_--;
   }
   return result;
+}
+
+std::string SupplyPile::Info() const {
+  return card().Info();
+}
+
+std::string SupplyPile::ToString() const {
+  std::stringstream ss;
+  ss << card().name() << " (" << count() << ")";
+  return ss.str();
 }
 
 const Card& SupplyPile::card() const {

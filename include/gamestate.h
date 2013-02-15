@@ -4,8 +4,10 @@
 #include <vector>
 
 #include <playercollection.h>
+#include <supplypile.h>
 
 class Player;
+
 
 /*
  * GameState
@@ -13,11 +15,14 @@ class Player;
  */
 class GameState {
 public:
-  GameState(std::vector<Player>& players);
+  GameState(std::vector<Player>& players, std::vector<SupplyPile*> *supply_piles);
   ~GameState();
 
-  const PlayerCollection* players() const;
   const Player& CurrentPlayer() const;
+
+  const PlayerCollection* players() const;
+  const std::vector<SupplyPile*>& supply_piles() const;
+  const std::vector<IViewable*>* supply_piles_viewable() const;
 private:
   /*
    * Card bank? Some object that handles the collection of Supply piles for
@@ -25,6 +30,7 @@ private:
    * state to have to track all that information on its own.
    */
   PlayerCollection *players_;
+  std::vector<SupplyPile*> *supply_piles_;
 };
 
 #endif // GAMESTATE_H

@@ -1,42 +1,35 @@
 /*
- * cardview.h
+ * view.h
  *
  *  Created on: Jan 18, 2013
  *      Author: chris
  */
-#ifndef DOMONION_CARDVIEW_H
-#define DOMONION_CARDVIEW_H
+#ifndef DOMONION_VIEW_H
+#define DOMONION_VIEW_H
 
 #include <menu.h>
 #include <ncurses.h>
 #include <string>
 #include <vector>
 
-#include <card.h>
+#include <interfaces.h>
 
-class CardView {
+class View {
 public:
-  CardView(const std::vector<Card>& items, int window_starty, int window_startx);
-  virtual ~CardView() { }
+  View();
+  View(const std::vector<IViewable*> *initial_items,
+    int window_starty,
+    int window_startx);
+  virtual ~View() { }
 
-  const Card& CurrentCard() const;
+  const IViewable& CurrentItem() const;
   const int CurrentIndex() const;
   void ItemDown();
   void ItemUp();
   void SetActive();
   void SetInactive();
-  virtual void Update();
-protected:
-  virtual WINDOW* InitializeWindow(int lines,
-    int cols,
-    int starty,
-    int startx);
+  void Update(std::vector<IViewable*> *items);
 
-  /*
-   * Helper to convert data structures in the deck to data structures for the
-   * menus.
-   */
-  virtual ITEM **MakeItems(const std::vector<Card> source);
 private:
   static const int kColorPairActive = 1;
   static const int kColorPairInactive = 2;
@@ -48,10 +41,17 @@ private:
   static const int kWindowCols = 20;
   static const int kWindowLines = 12;
 
-  const std::vector<Card>& items_;
+  const std::vector<IViewable*> *current_items_;
 
   MENU *menu_;
   WINDOW *window_;
+
+  WINDOW* InitializeWindow(int lines,
+    int cols,
+    int starty,
+    int startx);
+
+  ITEM **MakeMenuItems(const std::vector<IViewable*> *items);
 };
 
-#endif // DOMONION_CARDVIEW_H
+#endif // DOMONION_VIEW_H

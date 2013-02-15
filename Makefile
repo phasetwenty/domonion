@@ -8,21 +8,23 @@ OBJ := obj
 SRC := $(PROJECT_DIR)/src
 RM := rm -f
 
-_objects := app.o deck.o card.o basicvictory.o basictreasure.o cardview.o \
-gamestate.o infoview.o player.o playercollection.o playerview.o viewport.o
+_objects := app.o deck.o card.o basicvictory.o basictreasure.o \
+gamestate.o infoview.o player.o playercollection.o supplypile.o view.o viewport.o
 objects := $(addprefix $(OBJ)/,$(_objects))
 
 vpath %.cc $(SRC):$(SRC)/cards:$(SRC)/ui/console
 
-all : decktest scratch app
+all : app
 
 app : $(objects)
 	$(CC) $(CFLAGS) $(objects) -o $@ $(LDFLAGS)
 
 scratch : $(OBJ)/scratch.o
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) 
 
-$(OBJ)/%.o : %.cc
+%.o : $(OBJ)/%.o
+
+$(OBJ)/%.o : %.cc 
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(objects) : | $(OBJ)

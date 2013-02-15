@@ -8,11 +8,13 @@
 #include <cstring>
 #include <string>
 
-#include <ui/console/cardview.h>
+#include <ui/console/view.h>
 
-CardView::CardView(const std::vector<Card>& items,
+View::View() { }
+
+View::View(const std::vector<IViewable*> *initial_items,
     int window_starty,
-    int window_startx) : items_(items) {
+    int window_startx) : current_items_(initial_items) {
   window_ = InitializeWindow(kWindowLines,
     kWindowCols,
     window_starty,
@@ -21,7 +23,7 @@ CardView::CardView(const std::vector<Card>& items,
   init_pair(kColorPairActive, COLOR_WHITE, COLOR_RED);
   init_pair(kColorPairInactive, COLOR_WHITE, COLOR_BLACK);
 
-  ITEM **new_items = MakeItems(items);
+  ITEM **new_items = MakeMenuItems(current_items_);
   menu_ = new_menu(new_items);
 
   set_menu_win(menu_, window_);
@@ -33,15 +35,12 @@ CardView::CardView(const std::vector<Card>& items,
   wrefresh(window_);
 }
 
-const Card& CardView::CurrentCard() const {
-  return items_[CurrentIndex()];
-}
 
-const int CardView::CurrentIndex() const {
+const int View::CurrentIndex() const {
   return item_index(current_item(menu_));
 }
 
-WINDOW* CardView::InitializeWindow(int lines,
+WINDOW* View::InitializeWindow(int lines,
     int cols,
     int starty,
     int startx) {
@@ -52,48 +51,48 @@ WINDOW* CardView::InitializeWindow(int lines,
   return result;
 }
 
-void CardView::ItemDown() {
+void View::ItemDown() {
   menu_driver(menu_, REQ_DOWN_ITEM);
   wrefresh(window_);
 }
 
-void CardView::ItemUp() {
+void View::ItemUp() {
   menu_driver(menu_, REQ_UP_ITEM);
   wrefresh(window_);
 }
 
-ITEM** CardView::MakeItems(const std::vector<Card> source) {
+ITEM** View::MakeMenuItems(const std::vector<IViewable*> *items) {
   /*
    * Perhaps there's a way to do this without copies?
    */
-  int number_of_choices = source.size();
+  int number_of_choices = items->size();
   char **item_strings = (char**) calloc(number_of_choices + 1, sizeof(char*));
-  for (int i = 0; i < (int) source.size(); ++i) {
-    item_strings[i] = (char*) calloc(source[i].name().length() + 1,
+  for (int i = 0; i < (int) items->size(); ++i) {
+    item_strings[i] = (char*) calloc((*items)[i]->ToString().length() + 1,
       sizeof(char));
-    strcpy(item_strings[i], source[i].name().c_str());
+    strcpy(item_strings[i], (*items)[i]->ToString().c_str());
   }
 
-  ITEM** items = (ITEM **) calloc(number_of_choices + 1, sizeof(ITEM *));
+  ITEM** result = (ITEM **) calloc(number_of_choices + 1, sizeof(ITEM *));
   for (int i = 0; i < number_of_choices; ++i) {
-    items[i] = new_item(item_strings[i], NULL);
+    result[i] = new_item(item_strings[i], NULL);
   }
 
-  return items;
+  return result;
 }
 
-void CardView::SetActive() {
+void View::SetActive() {
   set_menu_fore(menu_, COLOR_PAIR(kColorPairActive));
   wrefresh(window_);
 }
 
-void CardView::SetInactive() {
+void View::SetInactive() {
   set_menu_fore(menu_, COLOR_PAIR(kColorPairInactive));
   wrefresh(window_);
 }
 
-void CardView::Update() {
-  ITEM **new_items = MakeItems(items_);
+void View::Update(std::vector<IViewable*> *items) {
+  ITEM **new_items = MakeMenuItems(items);
 
   unpost_menu(menu_);
   ITEM **old_items = menu_items(menu_);
@@ -105,4 +104,9 @@ void CardView::Update() {
   set_menu_items(menu_, new_items);
   post_menu(menu_);
   wrefresh(window_);
+
+  while (!items->empty()) {
+    delete items->back();
+    items->pop_back();
+  }
 }

@@ -1,3 +1,5 @@
+#include <iostream>
+
 
 #include <menu.h>
 #include <ncurses.h>
@@ -25,26 +27,33 @@ int main() {
     players->push_back(*p);
   }
 
-  GameState *game = new GameState(*players);
+  const Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
+  const Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
+
+  std::vector<SupplyPile*> *piles = new std::vector<SupplyPile*>;
+  piles->push_back(new SupplyPile(chapel, chapel->initial_supply()));
+  piles->push_back(new SupplyPile(chancellor, chancellor->initial_supply()));
+
+  GameState *game = new GameState(*players, piles);
   Viewport *viewport = new Viewport(game);
 
   int ch = 0;
   while ((ch = getch()) != 'q') {
     switch (ch) {
     case KEY_DOWN: {
-      viewport->player_view().ItemDown();
+      viewport->ItemDown();
       break;
     }
     case KEY_UP: {
-      viewport->player_view().ItemUp();
+      viewport->ItemUp();
       break;
     }
     case KEY_LEFT: {
-      viewport->player_view().WindowLeft();
+      viewport->WindowLeft();
       break;
     }
     case KEY_RIGHT: {
-      viewport->player_view().WindowRight();
+      viewport->WindowRight();
       break;
     }
     case 10: {

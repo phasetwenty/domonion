@@ -49,6 +49,23 @@ void SimpleDeck::CleanupAndDraw() {
   Draw(5);
 }
 
+const std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card> items) const {
+  std::vector<IViewable*> *result = new std::vector<IViewable*>;
+
+  for (std::vector<Card>::iterator it = items.begin();
+      it != items.end();
+      ++it) {
+    result->push_back(new Card(*it));
+  }
+
+  return result;
+}
+
+int SimpleDeck::CountDrawableCards() const {
+  return draw_pile_.size() + discard_pile_.size();
+}
+
+
 int SimpleDeck::Draw(int count) {
   int drawn_count = 0;
   while (!draw_pile_.empty() && drawn_count < count) {
@@ -170,10 +187,14 @@ const std::vector<Card>& SimpleDeck::hand() const {
   return hand_;
 }
 
+const std::vector<IViewable*>* SimpleDeck::hand_viewable() const {
+  return CopyCards(hand_);
+}
+
 const std::vector<Card>& SimpleDeck::tableau() const {
   return tableau_;
 }
 
-int SimpleDeck::CountDrawableCards() const {
-  return draw_pile_.size() + discard_pile_.size();
+const std::vector<IViewable*>* SimpleDeck::tableau_viewable() const {
+  return CopyCards(tableau_);
 }

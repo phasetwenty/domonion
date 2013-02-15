@@ -8,12 +8,9 @@
 #include <ncurses.h>
 #include <cstdlib>
 
-#include <gamestate.h>
-#include <ui/console/playerview.h>
 #include <ui/console/viewport.h>
 
-Viewport::Viewport(GameState *game) {
-  game_ = game;
+Viewport::Viewport(GameState *game) : game_(game) {
 
   initscr();
   keypad(stdscr, TRUE);
@@ -22,7 +19,6 @@ Viewport::Viewport(GameState *game) {
   curs_set(0); // Hides the terminal cursor.
   start_color();
   use_default_colors();  // After activating color, this prevents white-on-gray.
-  getch();
 
   if (LINES < kMinLines || COLS < kMinCols) {
     printw("This screen is too small!");
@@ -33,7 +29,19 @@ Viewport::Viewport(GameState *game) {
   }
 
   game_->players()->current().deck().CleanupAndDraw();
-  player_view_ = new PlayerView(game_->players()->current());
+
+  hand_view_ = View(game_->CurrentPlayer().deck().hand_viewable(),
+    kWindowHandStartY,
+    kWindowHandStartX);
+  info_view_ = InfoView();
+  supply_view_ = View(game_->supply_piles_viewable(),
+    kWindowSupplyStartY,
+    kWindowSupplyStartX);
+  tableau_view_ = View(game_->CurrentPlayer().deck().tableau_viewable(),
+    kWindowTableauStartY,
+    kWindowTableauStartX);
+
+  active_ = &hand_view_;
   // TODO: initialize color pairs game-wide here.
 }
 
@@ -42,21 +50,25 @@ Viewport::~Viewport() {
 }
 
 void Viewport::CleanupAndDraw() {
-  player_view_->CleanupAndDraw();
+
 }
 
 void Viewport::ItemDown() {
-  player_view_->ItemDown();
+
 }
 
 void Viewport::ItemUp() {
-  player_view_->ItemUp();
+
 }
 
 void Viewport::PlayCard() {
-  player_view_->PlayCard();
+
 }
 
-PlayerView& Viewport::player_view() const {
-  return *player_view_;
+void Viewport::WindowLeft() {
+
+}
+
+void Viewport::WindowRight() {
+
 }

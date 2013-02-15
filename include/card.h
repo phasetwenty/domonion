@@ -5,7 +5,7 @@
 
 #include <interfaces.h>
 
-class Card : public IInfo {
+class Card : public IViewable {
 public:
   Card(std::string name,
     int cost,

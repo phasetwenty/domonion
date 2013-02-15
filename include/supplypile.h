@@ -4,10 +4,10 @@
 #include <card.h>
 #include <interfaces.h>
 
-class SupplyPile : public IInfo {
+class SupplyPile : public IViewable {
 
 public:
-    SupplyPile(const Card& card, int initial_count);
+    SupplyPile(const Card *card, int initial_count);
     SupplyPile(const SupplyPile& other);
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
@@ -23,11 +23,7 @@ public:
     int count() const;
     std::string name() const;
 private:
-    /*
-     * The card that this pile represents. I don't expect any manipulation on
-     * the card here so I'm going to const it.
-     */
-    const Card& card_;
+    const Card *card_;
 
     int count_;
 

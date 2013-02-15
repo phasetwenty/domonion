@@ -17,8 +17,8 @@
 #include <ncurses.h>
 
 #include <gamestate.h>
-#include <ui/console/playerview.h>
-#include <ui/console/supplypileview.h>
+#include <ui/console/infoview.h>
+#include <ui/console/view.h>
 
 class Viewport {
 public:
@@ -29,17 +29,25 @@ public:
   void ItemDown();
   void ItemUp();
   void PlayCard();
-
-  PlayerView& player_view();
-  SupplyPileView& supply_view();
+  void WindowLeft();
+  void WindowRight();
 
 private:
   static const int kMinLines = 12;
   static const int kMinCols = 80;
+  static const int kWindowHandStartX = 59;
+  static const int kWindowHandStartY = 0;
+  static const int kWindowSupplyStartX = 0;
+  static const int kWindowSupplyStartY = 0;
+  static const int kWindowTableauStartX = 39;
+  static const int kWindowTableauStartY = 0;
 
+  View *active_;
   GameState *game_;
-  SupplyPileView *supply_view_;
-  PlayerView *player_view_;
+  View hand_view_;
+  InfoView info_view_;
+  View supply_view_;
+  View tableau_view_;
 };
 
 #endif /* DOMONION_VIEWPORT_H_ */

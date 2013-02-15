@@ -12,14 +12,14 @@ class IToString {
 public:
   virtual std::string ToString() const = 0;
 
-  virtual ~IToString();
+  virtual ~IToString() { }
 };
 
-class IInfo : public IToString {
+class IViewable : public IToString {
 public:
   virtual std::string Info() const = 0;
-//  virtual std::string ToString() const = 0;
 
+  virtual ~IViewable() { }
 };
 
 #endif /* DOMONION_INTERFACES_H_ */

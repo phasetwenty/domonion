@@ -8,7 +8,7 @@ template class std::vector<Player>;
 // TODO: I may want to make this more like a standard container.
 class PlayerCollection {
 public:
-  PlayerCollection(std::vector<Player>& players);
+  PlayerCollection(std::vector<Player*> *players);
   ~PlayerCollection();
 
   void advance();
@@ -19,8 +19,8 @@ public:
   const Player& prev() const;
 
 private:
-  std::vector<Player> players_;
-  std::vector<Player>::iterator players_it_;
+  std::vector<Player*> *players_;
+  std::vector<Player*>::iterator players_it_;
 };
 
 #endif // PLAYERCOLLECTION_H

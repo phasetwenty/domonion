@@ -21,10 +21,10 @@ int main() {
   initscr();
   getch();
 
-  std::vector<Player> *players = new std::vector<Player>;
+  std::vector<Player*> *players = new std::vector<Player*>;
   for (int i = 0; i < 4; ++i) {
     Player *p = new Player(*InitializeDeck());
-    players->push_back(*p);
+    players->push_back(p);
   }
 
   const Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
@@ -34,7 +34,7 @@ int main() {
   piles->push_back(new SupplyPile(chapel, chapel->initial_supply()));
   piles->push_back(new SupplyPile(chancellor, chancellor->initial_supply()));
 
-  GameState *game = new GameState(*players, piles);
+  GameState *game = new GameState(players, piles);
   Viewport *viewport = new Viewport(game);
 
   int ch = 0;

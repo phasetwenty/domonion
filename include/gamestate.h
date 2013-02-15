@@ -15,14 +15,14 @@ class Player;
  */
 class GameState {
 public:
-  GameState(std::vector<Player>& players, std::vector<SupplyPile*> *supply_piles);
+  GameState(std::vector<Player*> *players, std::vector<SupplyPile*> *supply_piles);
   ~GameState();
 
   const Player& CurrentPlayer() const;
 
-  const PlayerCollection* players() const;
-  const std::vector<SupplyPile*>& supply_piles() const;
-  const std::vector<IViewable*>* supply_piles_viewable() const;
+  PlayerCollection const& players() const;
+  std::vector<SupplyPile*> const& supply_piles() const;
+  std::vector<IViewable*>* supply_piles_viewable() const;
 private:
   /*
    * Card bank? Some object that handles the collection of Supply piles for

@@ -12,7 +12,7 @@
 
 View::View() { }
 
-View::View(const std::vector<IViewable*> *initial_items,
+View::View(std::vector<IViewable*> *initial_items,
     int window_starty,
     int window_startx) : current_items_(initial_items) {
   window_ = InitializeWindow(kWindowLines,
@@ -35,9 +35,12 @@ View::View(const std::vector<IViewable*> *initial_items,
   wrefresh(window_);
 }
 
-
 const int View::CurrentIndex() const {
   return item_index(current_item(menu_));
+}
+
+const IViewable& View::CurrentItem() const {
+  return *((*current_items_)[CurrentIndex()]);
 }
 
 WINDOW* View::InitializeWindow(int lines,
@@ -105,8 +108,11 @@ void View::Update(std::vector<IViewable*> *items) {
   post_menu(menu_);
   wrefresh(window_);
 
-  while (!items->empty()) {
-    delete items->back();
-    items->pop_back();
+  while (!current_items_->empty()) {
+    delete current_items_->back();
+    current_items_->pop_back();
   }
+
+  delete current_items_;
+  current_items_ = items;
 }

@@ -49,7 +49,7 @@ void SimpleDeck::CleanupAndDraw() {
   Draw(5);
 }
 
-const std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card> items) const {
+std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card> items) const {
   std::vector<IViewable*> *result = new std::vector<IViewable*>;
 
   for (std::vector<Card>::iterator it = items.begin();
@@ -183,11 +183,11 @@ void SimpleDeck::Shuffle() {
   discard_pile_ = std::vector<Card>();
 }
 
-const std::vector<Card>& SimpleDeck::hand() const {
+std::vector<Card> const& SimpleDeck::hand() const {
   return hand_;
 }
 
-const std::vector<IViewable*>* SimpleDeck::hand_viewable() const {
+std::vector<IViewable*>* SimpleDeck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
@@ -195,6 +195,6 @@ const std::vector<Card>& SimpleDeck::tableau() const {
   return tableau_;
 }
 
-const std::vector<IViewable*>* SimpleDeck::tableau_viewable() const {
+std::vector<IViewable*>* SimpleDeck::tableau_viewable() const {
   return CopyCards(tableau_);
 }

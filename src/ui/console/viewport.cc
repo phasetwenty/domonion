@@ -28,7 +28,7 @@ Viewport::Viewport(GameState *game) : game_(game) {
     exit(1);
   }
 
-  game_->players()->current().deck().CleanupAndDraw();
+  game_->CurrentPlayer().deck().CleanupAndDraw();
 
   hand_view_ = View(game_->CurrentPlayer().deck().hand_viewable(),
     kWindowHandStartY,
@@ -54,11 +54,13 @@ void Viewport::CleanupAndDraw() {
 }
 
 void Viewport::ItemDown() {
-
+  active_->ItemDown();
+  info_view_.Update(active_->CurrentItem().Info());
 }
 
 void Viewport::ItemUp() {
-
+  active_->ItemUp();
+  info_view_.Update(active_->CurrentItem().Info());
 }
 
 void Viewport::PlayCard() {

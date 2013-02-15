@@ -17,7 +17,7 @@
 class View {
 public:
   View();
-  View(const std::vector<IViewable*> *initial_items,
+  View(std::vector<IViewable*> *initial_items,
     int window_starty,
     int window_startx);
   virtual ~View() { }
@@ -41,7 +41,7 @@ private:
   static const int kWindowCols = 20;
   static const int kWindowLines = 12;
 
-  const std::vector<IViewable*> *current_items_;
+  std::vector<IViewable*> *current_items_;
 
   MENU *menu_;
   WINDOW *window_;

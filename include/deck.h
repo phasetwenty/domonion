@@ -58,10 +58,10 @@ public:
 	 */
 	std::string Trash(Card card);
 
-	const std::vector<Card>& hand() const;
-	const std::vector<IViewable*>* hand_viewable() const;
-	const std::vector<Card>& tableau() const;
-	const std::vector<IViewable*>* tableau_viewable() const;
+	std::vector<Card> const& hand() const;
+	std::vector<IViewable*>* hand_viewable() const;
+	std::vector<Card> const& tableau() const;
+	std::vector<IViewable*>* tableau_viewable() const;
 
 private:
     /*
@@ -84,7 +84,7 @@ private:
      */
     std::vector<Card> tableau_;
 
-    const std::vector<IViewable*>* CopyCards(std::vector<Card> items) const;
+    std::vector<IViewable*>* CopyCards(std::vector<Card> items) const;
 
 	/*
 	 * Return a count of the cards that can be drawn.

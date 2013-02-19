@@ -35,6 +35,7 @@ public:
 private:
   static const int kMinLines = 12;
   static const int kMinCols = 80;
+  static const int kSelectableViewCount = 3;
   static const int kWindowHandStartX = 59;
   static const int kWindowHandStartY = 0;
   static const int kWindowSupplyStartX = 0;
@@ -46,6 +47,7 @@ private:
   GameState *game_;
   View hand_view_;
   InfoView info_view_;
+  View selectable_views_[kSelectableViewCount];
   View supply_view_;
   View tableau_view_;
 };

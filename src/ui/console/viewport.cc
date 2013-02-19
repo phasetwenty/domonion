@@ -41,16 +41,26 @@ Viewport::Viewport(GameState *game) : game_(game) {
     kWindowTableauStartY,
     kWindowTableauStartX);
 
+  selectable_views_[0] = supply_view_;
+  selectable_views_[1] = tableau_view_;
+  selectable_views_[2] = hand_view_;
+
   active_ = &hand_view_;
+
   // TODO: initialize color pairs game-wide here.
 }
 
 Viewport::~Viewport() {
+  delete game_;
+
   endwin();
 }
 
 void Viewport::CleanupAndDraw() {
+  game_->CurrentPlayer().deck().CleanupAndDraw();
 
+  hand_view_.Update(game_->CurrentPlayer().deck().hand_viewable());
+  info_view_.Update(hand_view_.CurrentItem().Info());
 }
 
 void Viewport::ItemDown() {
@@ -64,7 +74,10 @@ void Viewport::ItemUp() {
 }
 
 void Viewport::PlayCard() {
-
+  game_->CurrentPlayer().deck().Play(hand_view_.CurrentItem().ToString());
+  tableau_view_.Update(game_->CurrentPlayer().deck().tableau_viewable());
+  hand_view_.Update(game_->CurrentPlayer().deck().hand_viewable());
+  info_view_.Update(hand_view_.CurrentItem().Info());
 }
 
 void Viewport::WindowLeft() {

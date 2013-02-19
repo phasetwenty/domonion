@@ -27,8 +27,8 @@ int main() {
     players->push_back(p);
   }
 
-  const Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
-  const Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
+  Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
+  Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
 
   std::vector<SupplyPile*> *piles = new std::vector<SupplyPile*>;
   piles->push_back(new SupplyPile(chapel, chapel->initial_supply()));
@@ -84,11 +84,11 @@ SimpleDeck *InitializeDeck() {
   SimpleDeck *d = new SimpleDeck();
 
   for (int i = 0; i < 7; ++i) {
-    BasicTreasure b = BasicTreasure("Copper", 1, 0, 10, "(1)", "Treasure");
+    BasicTreasure *b =  new BasicTreasure("Copper", 1, 0, 10, "(1)", "Treasure");
     d->Gain(b);
   }
   for (int i = 0; i < 3; ++i) {
-    BasicVictory v = BasicVictory("Estate", 2, 10, ")1(", "Victory");
+    BasicVictory *v =  new BasicVictory("Estate", 2, 10, ")1(", "Victory");
     d->Gain(v);
   }
 

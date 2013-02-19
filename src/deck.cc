@@ -20,15 +20,25 @@
  * interface.
  */
 SimpleDeck::SimpleDeck() {
-  discard_pile_ = std::vector<Card>();
-  draw_pile_ = std::vector<Card>();
-  hand_ = std::vector<Card>();
-  tableau_ = std::vector<Card>();
+  discard_pile_ = std::vector<Card*>();
+  draw_pile_ = std::vector<Card*>();
+  hand_ = std::vector<Card*>();
+  tableau_ = std::vector<Card*>();
 
   srand(time(NULL));
 }
 
 SimpleDeck::~SimpleDeck() {
+  std::vector<Card*> items[4] = { discard_pile_, draw_pile_, hand_, tableau_ };
+
+  for (int i = 0; i < 4; ++i) {
+    std::vector<Card*> item = items[i];
+    for (std::vector<Card*>::iterator it = item.begin();
+        it != item.end();
+        ++it) {
+      delete *it;
+    }
+  }
 }
 
 /*
@@ -49,13 +59,13 @@ void SimpleDeck::CleanupAndDraw() {
   Draw(5);
 }
 
-std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card> items) const {
+std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card*> items) const {
   std::vector<IViewable*> *result = new std::vector<IViewable*>;
 
-  for (std::vector<Card>::iterator it = items.begin();
+  for (std::vector<Card*>::iterator it = items.begin();
       it != items.end();
       ++it) {
-    result->push_back(new Card(*it));
+    result->push_back(new Card(**it));
   }
 
   return result;
@@ -92,7 +102,7 @@ int SimpleDeck::Draw(int count) {
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void SimpleDeck::Gain(Card card) {
+void SimpleDeck::Gain(Card *card) {
   discard_pile_.push_back(card);
 }
 
@@ -102,7 +112,7 @@ void SimpleDeck::Gain(Card card) {
  *
  * The return value is the card played.
  */
-Card SimpleDeck::Play(std::string card) {
+Card* SimpleDeck::Play(std::string card) {
   /*
    * At first I wanted to return a null value when the card isn't found. Then I
    * thought, this should be an uncommon case: the user should already know that
@@ -119,9 +129,9 @@ Card SimpleDeck::Play(std::string card) {
    * answer.
    */
   bool done = false;
-  std::vector<Card>::iterator it = hand_.begin();
+  std::vector<Card*>::iterator it = hand_.begin();
   while (!done && it != hand_.end()) {
-    if (card == it->name()) {
+    if (card == (*it)->name()) {
       done = true;
     }
 
@@ -134,7 +144,7 @@ Card SimpleDeck::Play(std::string card) {
     // throw an exception
   }
 
-  Card found_card = *it;
+  Card *found_card = *it;
   hand_.erase(it);
   tableau_.push_back(found_card);
 
@@ -180,10 +190,10 @@ void SimpleDeck::Shuffle() {
   random_shuffle(discard_pile_.begin(), discard_pile_.end());
 
   draw_pile_ = discard_pile_;
-  discard_pile_ = std::vector<Card>();
+  discard_pile_ = std::vector<Card*>();
 }
 
-std::vector<Card> const& SimpleDeck::hand() const {
+std::vector<Card*> const& SimpleDeck::hand() const {
   return hand_;
 }
 
@@ -191,7 +201,7 @@ std::vector<IViewable*>* SimpleDeck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
-const std::vector<Card>& SimpleDeck::tableau() const {
+std::vector<Card*> const& SimpleDeck::tableau() const {
   return tableau_;
 }
 

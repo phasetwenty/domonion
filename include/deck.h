@@ -35,12 +35,12 @@ public:
 	 * Accepts a card into this deck. Default destination is the discard pile
 	 * but you can also gain a card into the hand or on top of the draw pile.
 	 */
-	void Gain(Card card);
+	void Gain(Card *card);
 
 	/*
 	 * Takes `card` from the hand and plays it. Returns the played card.
 	 */
-	Card Play(std::string card);
+	Card* Play(std::string card);
     /*
      * Reveal a card from the top of the deck, optionally taking a number of
      * cards to reveal (defaulting to 1).
@@ -58,33 +58,33 @@ public:
 	 */
 	std::string Trash(Card card);
 
-	std::vector<Card> const& hand() const;
+	std::vector<Card*> const& hand() const;
 	std::vector<IViewable*>* hand_viewable() const;
-	std::vector<Card> const& tableau() const;
+	std::vector<Card*> const& tableau() const;
 	std::vector<IViewable*>* tableau_viewable() const;
 
 private:
     /*
      * Cards in the discard pile.
      */
-    std::vector<Card> discard_pile_;
+    std::vector<Card*> discard_pile_;
 
     /*
      * Cards (immediately) available for drawing.
      */
-    std::vector<Card> draw_pile_;
+    std::vector<Card*> draw_pile_;
 
     /*
      * Cards in hand.
      */
-    std::vector<Card> hand_;
+    std::vector<Card*> hand_;
 
     /*
      * Cards in play.
      */
-    std::vector<Card> tableau_;
+    std::vector<Card*> tableau_;
 
-    std::vector<IViewable*>* CopyCards(std::vector<Card> items) const;
+    std::vector<IViewable*>* CopyCards(std::vector<Card*> items) const;
 
 	/*
 	 * Return a count of the cards that can be drawn.

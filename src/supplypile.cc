@@ -2,7 +2,7 @@
 
 #include <supplypile.h>
 
-SupplyPile::SupplyPile(const Card *card, int initial_count) :
+SupplyPile::SupplyPile(Card *card, int initial_count) :
   card_(card), count_(initial_count) { }
 
 SupplyPile::SupplyPile(const SupplyPile& other) :
@@ -34,7 +34,7 @@ std::string SupplyPile::ToString() const {
   return ss.str();
 }
 
-const Card& SupplyPile::card() const {
+Card const& SupplyPile::card() const {
   return *card_;
 }
 

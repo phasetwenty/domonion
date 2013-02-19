@@ -16,6 +16,10 @@ std::string Card::Info() const {
   return text();
 }
 
+bool Card::IsPlayable() const {
+  return true;
+}
+
 std::string Card::ToString() const {
   return name();
 }

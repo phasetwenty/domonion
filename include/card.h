@@ -20,6 +20,7 @@ public:
    */
   void Play();
   std::string Info() const;
+  bool IsPlayable() const;
   std::string ToString() const;
 
   int cost() const;

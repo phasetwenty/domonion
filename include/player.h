@@ -7,10 +7,10 @@
 
 class Player {
 public:
-	Player(SimpleDeck& deck);
+	Player(SimpleDeck *deck);
 	~Player();
 
-	SimpleDeck& deck() const;
+	SimpleDeck const& deck() const;
 
 	/*
 	 * Current state

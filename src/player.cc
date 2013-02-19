@@ -2,14 +2,14 @@
 
 class SimpleDeck;
 
-Player::Player(SimpleDeck& deck) {
-  deck_ = &deck;
+Player::Player(SimpleDeck *deck) : deck_(deck) { }
+
+Player::~Player() {
+  delete deck_;
 }
 
-SimpleDeck& Player::deck() const {
+SimpleDeck const& Player::deck() const {
   return *deck_;
 }
 
-Player::~Player() {
-}
 

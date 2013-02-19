@@ -23,7 +23,7 @@ int main() {
 
   std::vector<Player*> *players = new std::vector<Player*>;
   for (int i = 0; i < 4; ++i) {
-    Player *p = new Player(*InitializeDeck());
+    Player *p = new Player(InitializeDeck());
     players->push_back(p);
   }
 
@@ -76,7 +76,7 @@ int main() {
   return 0;
 }
 
-SimpleDeck *InitializeDeck() {
+SimpleDeck* InitializeDeck() {
   /*
    * Since I just put this deck on the heap, it's my responsibility to
    * deallocate it, right?

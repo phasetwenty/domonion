@@ -74,7 +74,9 @@ void Viewport::ItemUp() {
 }
 
 void Viewport::PlayCard() {
-  game_->CurrentPlayer().deck().Play(hand_view_.CurrentItem().ToString());
+  std::string s = hand_view_.CurrentItem().ToString();
+
+  game_->CurrentPlayer().deck().Play(s);
   tableau_view_.Update(game_->CurrentPlayer().deck().tableau_viewable());
   hand_view_.Update(game_->CurrentPlayer().deck().hand_viewable());
   info_view_.Update(hand_view_.CurrentItem().Info());

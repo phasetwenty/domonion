@@ -7,7 +7,7 @@
 #include <supplypile.h>
 
 class Player;
-
+class SimpleDeck;
 
 /*
  * GameState
@@ -18,7 +18,8 @@ public:
   GameState(std::vector<Player*> *players, std::vector<SupplyPile*> *supply_piles);
   ~GameState();
 
-  const Player& CurrentPlayer() const;
+  SimpleDeck& CurrentDeck() const;
+  Player const& CurrentPlayer() const;
 
   PlayerCollection const& players() const;
   std::vector<SupplyPile*> const& supply_piles() const;

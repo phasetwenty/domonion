@@ -10,7 +10,11 @@ GameState::GameState(std::vector<Player*> *players,
 
 GameState::~GameState() { }
 
-const Player& GameState::CurrentPlayer() const {
+SimpleDeck& GameState::CurrentDeck() const {
+  return CurrentPlayer().deck();
+}
+
+Player const& GameState::CurrentPlayer() const {
   return players_->current();
 }
 

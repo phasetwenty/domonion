@@ -58,9 +58,9 @@ public:
 	 */
 	std::string Trash(Card card);
 
-	std::vector<Card*> const& hand() const;
+	const std::vector<Card*>& hand() const;
 	std::vector<IViewable*>* hand_viewable() const;
-	std::vector<Card*> const& tableau() const;
+	const std::vector<Card*>& tableau() const;
 	std::vector<IViewable*>* tableau_viewable() const;
 
 private:

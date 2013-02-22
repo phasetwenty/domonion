@@ -8,7 +8,7 @@ Player::~Player() {
   delete deck_;
 }
 
-SimpleDeck const& Player::deck() const {
+SimpleDeck& Player::deck() const {
   return *deck_;
 }
 

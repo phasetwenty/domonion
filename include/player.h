@@ -10,7 +10,7 @@ public:
 	Player(SimpleDeck *deck);
 	~Player();
 
-	SimpleDeck const& deck() const;
+	SimpleDeck& deck() const;
 
 	/*
 	 * Current state

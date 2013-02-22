@@ -10,8 +10,6 @@
 
 #include <ui/console/view.h>
 
-View::View() { }
-
 View::View(std::vector<IViewable*> *initial_items,
     int window_starty,
     int window_startx) : current_items_(initial_items) {
@@ -23,7 +21,7 @@ View::View(std::vector<IViewable*> *initial_items,
   init_pair(kColorPairActive, COLOR_WHITE, COLOR_RED);
   init_pair(kColorPairInactive, COLOR_WHITE, COLOR_BLACK);
 
-  ITEM **new_items = MakeMenuItems(current_items_);
+  ITEM **new_items = MakeMenuItems();
   menu_ = new_menu(new_items);
 
   set_menu_win(menu_, window_);
@@ -35,12 +33,36 @@ View::View(std::vector<IViewable*> *initial_items,
   wrefresh(window_);
 }
 
-const int View::CurrentIndex() const {
+View::~View() {
+  EmptyCurrentItemStrings();
+
+  current_items_->clear();
+  delete current_items_;
+
+  int count = item_count(menu_);
+  ITEM **items = menu_items(menu_);
+  for (int i = 0; i < count; ++i) {
+    free_item(items[i]);
+  }
+
+  free_menu(menu_);
+}
+
+int View::CurrentIndex() const {
   return item_index(current_item(menu_));
 }
 
 const IViewable& View::CurrentItem() const {
   return *((*current_items_)[CurrentIndex()]);
+}
+
+void View::EmptyCurrentItemStrings() {
+  for (std::vector<std::string*>::iterator it = current_item_strings_.begin();
+      it != current_item_strings_.end();
+      ++it) {
+    delete *it;
+  }
+  current_item_strings_.clear();
 }
 
 WINDOW* View::InitializeWindow(int lines,
@@ -54,6 +76,10 @@ WINDOW* View::InitializeWindow(int lines,
   return result;
 }
 
+bool View::IsEmpty() const {
+  return current_items_->empty();
+}
+
 void View::ItemDown() {
   menu_driver(menu_, REQ_DOWN_ITEM);
   wrefresh(window_);
@@ -64,23 +90,19 @@ void View::ItemUp() {
   wrefresh(window_);
 }
 
-ITEM** View::MakeMenuItems(const std::vector<IViewable*> *items) {
+ITEM** View::MakeMenuItems() {
   /*
    * Perhaps there's a way to do this without copies?
    */
-  int number_of_choices = items->size();
-  char **item_strings = (char**) calloc(number_of_choices + 1, sizeof(char*));
-  for (int i = 0; i < (int) items->size(); ++i) {
-    item_strings[i] = (char*) calloc((*items)[i]->ToString().length() + 1,
-      sizeof(char));
-    strcpy(item_strings[i], (*items)[i]->ToString().c_str());
-  }
+  EmptyCurrentItemStrings();
 
-  ITEM** result = (ITEM **) calloc(number_of_choices + 1, sizeof(ITEM *));
+  int number_of_choices = current_items_->size();
+  ITEM **result = (ITEM**) calloc(number_of_choices + 1, sizeof(ITEM*));
   for (int i = 0; i < number_of_choices; ++i) {
-    result[i] = new_item(item_strings[i], NULL);
+    std::string *item = (*current_items_)[i]->ToString();
+    current_item_strings_.push_back(item);
+    result[i] = new_item(item->c_str(), "");
   }
-
   return result;
 }
 
@@ -95,7 +117,11 @@ void View::SetInactive() {
 }
 
 void View::Update(std::vector<IViewable*> *items) {
-  ITEM **new_items = MakeMenuItems(items);
+  current_items_->clear();
+  delete current_items_;
+  current_items_ = items;
+
+  ITEM **new_items = MakeMenuItems();
 
   unpost_menu(menu_);
   ITEM **old_items = menu_items(menu_);
@@ -107,12 +133,4 @@ void View::Update(std::vector<IViewable*> *items) {
   set_menu_items(menu_, new_items);
   post_menu(menu_);
   wrefresh(window_);
-
-  while (!current_items_->empty()) {
-    delete current_items_->back();
-    current_items_->pop_back();
-  }
-
-  delete current_items_;
-  current_items_ = items;
 }

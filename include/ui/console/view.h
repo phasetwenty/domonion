@@ -16,14 +16,14 @@
 
 class View {
 public:
-  View();
   View(std::vector<IViewable*> *initial_items,
     int window_starty,
     int window_startx);
-  virtual ~View() { }
+  virtual ~View();
 
   const IViewable& CurrentItem() const;
-  const int CurrentIndex() const;
+  int CurrentIndex() const;
+  bool IsEmpty() const;
   void ItemDown();
   void ItemUp();
   void SetActive();
@@ -42,16 +42,24 @@ private:
   static const int kWindowLines = 12;
 
   std::vector<IViewable*> *current_items_;
+  std::vector<std::string*> current_item_strings_;
 
   MENU *menu_;
   WINDOW *window_;
+
+  View() { };
+  View(const View& other) { };
+
+  void EmptyCurrentItemStrings();
 
   WINDOW* InitializeWindow(int lines,
     int cols,
     int starty,
     int startx);
 
-  ITEM **MakeMenuItems(const std::vector<IViewable*> *items);
+  ITEM **MakeMenuItems();
+
+
 };
 
 #endif // DOMONION_VIEW_H

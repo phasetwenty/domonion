@@ -8,15 +8,18 @@
 #define DOMONION_INFOVIEW_H
 
 #include <ncurses.h>
-#include <string>
+#include <interfaces.h>
 
 class InfoView {
 public:
   InfoView();
-
-  void Update(std::string text);
+  ~InfoView();
+  void Update(const IViewable& viewable);
 private:
+  std::string *current_info_;
   WINDOW *window_;
+
+  void ReinitializeWindow();
 };
 
 #endif // DOMONION_INFOVIEW_H

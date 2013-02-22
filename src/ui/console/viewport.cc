@@ -28,16 +28,16 @@ Viewport::Viewport(GameState *game) : game_(game) {
     exit(1);
   }
 
-  game_->CurrentPlayer().deck().CleanupAndDraw();
+  game_->CurrentDeck().CleanupAndDraw();
 
-  hand_view_ = View(game_->CurrentPlayer().deck().hand_viewable(),
+  hand_view_ = new View(game_->CurrentDeck().hand_viewable(),
     kWindowHandStartY,
     kWindowHandStartX);
   info_view_ = InfoView();
-  supply_view_ = View(game_->supply_piles_viewable(),
+  supply_view_ = new View(game_->supply_piles_viewable(),
     kWindowSupplyStartY,
     kWindowSupplyStartX);
-  tableau_view_ = View(game_->CurrentPlayer().deck().tableau_viewable(),
+  tableau_view_ = new View(game_->CurrentDeck().tableau_viewable(),
     kWindowTableauStartY,
     kWindowTableauStartX);
 
@@ -45,7 +45,11 @@ Viewport::Viewport(GameState *game) : game_(game) {
   selectable_views_[1] = tableau_view_;
   selectable_views_[2] = hand_view_;
 
-  active_ = &hand_view_;
+  supply_view_->SetInactive();
+  tableau_view_->SetInactive();
+
+  hand_view_->SetActive();
+  active_index_ = 2;
 
   // TODO: initialize color pairs game-wide here.
 }
@@ -53,39 +57,55 @@ Viewport::Viewport(GameState *game) : game_(game) {
 Viewport::~Viewport() {
   delete game_;
 
+  for (int i = 0; i <kSelectableViewCount; ++i) {
+    View *item = selectable_views_[i];
+    delete item;
+  }
+
   endwin();
 }
 
 void Viewport::CleanupAndDraw() {
-  game_->CurrentPlayer().deck().CleanupAndDraw();
+  game_->CurrentDeck().CleanupAndDraw();
 
-  hand_view_.Update(game_->CurrentPlayer().deck().hand_viewable());
-  info_view_.Update(hand_view_.CurrentItem().Info());
+  hand_view_->Update(game_->CurrentDeck().hand_viewable());
+  info_view_.Update(hand_view_->CurrentItem());
 }
 
 void Viewport::ItemDown() {
-  active_->ItemDown();
-  info_view_.Update(active_->CurrentItem().Info());
+  selectable_views_[active_index_]->ItemDown();
+  info_view_.Update(selectable_views_[active_index_]->CurrentItem());
 }
 
 void Viewport::ItemUp() {
-  active_->ItemUp();
-  info_view_.Update(active_->CurrentItem().Info());
+  selectable_views_[active_index_]->ItemUp();
+  info_view_.Update(selectable_views_[active_index_]->CurrentItem());
 }
 
 void Viewport::PlayCard() {
-  std::string s = hand_view_.CurrentItem().ToString();
+  std::string *s = hand_view_->CurrentItem().ToString();
 
-  game_->CurrentPlayer().deck().Play(s);
-  tableau_view_.Update(game_->CurrentPlayer().deck().tableau_viewable());
-  hand_view_.Update(game_->CurrentPlayer().deck().hand_viewable());
-  info_view_.Update(hand_view_.CurrentItem().Info());
+  game_->CurrentDeck().Play(*s);
+  tableau_view_->Update(game_->CurrentDeck().tableau_viewable());
+  hand_view_->Update(game_->CurrentDeck().hand_viewable());
+  info_view_.Update(hand_view_->CurrentItem());
+
+  delete s;
 }
 
 void Viewport::WindowLeft() {
-
+  if (active_index_ > 0 && !selectable_views_[active_index_ - 1]->IsEmpty()) {
+    selectable_views_[active_index_]->SetInactive();
+    active_index_--;
+    selectable_views_[active_index_]->SetActive();
+  }
 }
 
 void Viewport::WindowRight() {
-
+  if (active_index_ < kSelectableViewCount - 1  &&
+      !selectable_views_[active_index_ + 1]->IsEmpty()) {
+    selectable_views_[active_index_]->SetInactive();
+    active_index_++;
+    selectable_views_[active_index_]->SetActive();
+  }
 }

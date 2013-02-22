@@ -6,15 +6,28 @@
  */
 #include <ui/console/infoview.h>
 
-InfoView::InfoView() {
-  window_ = newwin(10, 80, 12, 0);
-
-  keypad(window_, true);
-  box(window_, '|', '-');
+InfoView::InfoView() : current_info_(new std::string("")),
+    window_(newwin(10, 80, 12, 0)) {
+  ReinitializeWindow();
   wrefresh(window_);
 }
 
-void InfoView::Update(std::string text) {
-  mvwprintw(window_, 1, 1, text.c_str());
+InfoView::~InfoView() {
+  delete current_info_;
+}
+
+void InfoView::ReinitializeWindow() {
+  keypad(window_, true);
+  box(window_, '|', '-');
+}
+
+void InfoView::Update(const IViewable& viewable) {
+  wclear(window_);
+  ReinitializeWindow();
+
+  delete current_info_;
+  current_info_ = viewable.Info();
+
+  mvwprintw(window_, 1, 1, current_info_->c_str());
   wrefresh(window_);
 }

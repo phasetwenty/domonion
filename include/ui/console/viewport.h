@@ -43,13 +43,13 @@ private:
   static const int kWindowTableauStartX = 39;
   static const int kWindowTableauStartY = 0;
 
-  View *active_;
+  int active_index_;
   GameState *game_;
-  View hand_view_;
+  View *hand_view_;
   InfoView info_view_;
-  View selectable_views_[kSelectableViewCount];
-  View supply_view_;
-  View tableau_view_;
+  View *selectable_views_[kSelectableViewCount];
+  View *supply_view_;
+  View *tableau_view_;
 };
 
 #endif /* DOMONION_VIEWPORT_H_ */

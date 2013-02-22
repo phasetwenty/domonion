@@ -19,14 +19,14 @@ public:
    * resolving.
    */
   void Play();
-  std::string Info() const;
+  std::string* Info() const;
   bool IsPlayable() const;
-  std::string ToString() const;
+  std::string* ToString() const;
 
   int cost() const;
   int initial_supply() const;
-  std::string name() const;
-  std::string text() const;
+  std::string const& name() const;
+  std::string const& text() const;
 private:
   /*
    * Cost

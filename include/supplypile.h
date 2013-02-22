@@ -8,7 +8,6 @@ class SupplyPile : public IViewable {
 
 public:
     SupplyPile(Card *card, int initial_count);
-    SupplyPile(const SupplyPile& other);
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
 
@@ -16,16 +15,18 @@ public:
      *
      */
     bool BuyOrGain();
-    std::string Info() const;
-    std::string ToString() const;
+    std::string* Info() const;
+    std::string* ToString() const;
 
     Card const& card() const;
     int count() const;
-    std::string name() const;
+    std::string const& name() const;
 private:
     const Card *card_;
-
     int count_;
+
+    SupplyPile() { }
+    SupplyPile(const SupplyPile& other);
 
     /*
      * Properties added in other sets:

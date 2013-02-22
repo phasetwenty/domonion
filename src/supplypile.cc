@@ -5,9 +5,6 @@
 SupplyPile::SupplyPile(Card *card, int initial_count) :
   card_(card), count_(initial_count) { }
 
-SupplyPile::SupplyPile(const SupplyPile& other) :
-  card_(&other.card()), count_(other.count()) { }
-
 SupplyPile::~SupplyPile() {
   delete card_;
 }
@@ -24,14 +21,14 @@ bool SupplyPile::BuyOrGain() {
   return result;
 }
 
-std::string SupplyPile::Info() const {
+std::string* SupplyPile::Info() const {
   return card().Info();
 }
 
-std::string SupplyPile::ToString() const {
+std::string* SupplyPile::ToString() const {
   std::stringstream ss;
   ss << card().name() << " (" << count() << ")";
-  return ss.str();
+  return new std::string(ss.str());
 }
 
 Card const& SupplyPile::card() const {
@@ -42,6 +39,6 @@ int SupplyPile::count() const {
   return count_;
 }
 
-std::string SupplyPile::name() const {
+std::string const& SupplyPile::name() const {
   return card_->name();
 }

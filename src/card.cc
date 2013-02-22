@@ -12,26 +12,26 @@ Card::~Card() {
 
 }
 
-std::string Card::Info() const {
-  return text();
+std::string* Card::Info() const {
+  return new std::string(text());
 }
 
 bool Card::IsPlayable() const {
   return true;
 }
 
-std::string Card::ToString() const {
-  return name();
+std::string* Card::ToString() const {
+  return new std::string(name());
 }
 
 int Card::initial_supply() const {
   return initial_supply_;
 }
 
-std::string Card::name() const {
+std::string const& Card::name() const {
   return name_;
 }
 
-std::string Card::text() const {
+std::string const& Card::text() const {
   return text_;
 }

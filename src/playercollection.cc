@@ -3,14 +3,20 @@
 #include <player.h>
 #include <playercollection.h>
 
-PlayerCollection::PlayerCollection(std::vector<Player*> *players) : players_(players) {
-  players_it_ = players_->begin();
-}
+PlayerCollection::PlayerCollection(std::vector<Player*> *players) :
+  players_(players), players_it_(players_->begin()) { }
 
-Player const& PlayerCollection::current() const {
+const Player& PlayerCollection::current() const {
   return **players_it_;
 }
 
 PlayerCollection::~PlayerCollection() {
+  for (std::vector<Player*>::const_iterator it = players_->begin();
+      it != players_->end();
+      ++it) {
+    delete *it;
+  }
+  players_->clear();
+  delete players_;
 }
 

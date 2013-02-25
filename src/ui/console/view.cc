@@ -12,7 +12,8 @@
 
 View::View(std::vector<IViewable*> *initial_items,
     int window_starty,
-    int window_startx) : current_items_(initial_items) {
+    int window_startx) : current_items_(initial_items),
+    current_item_strings_(new std::vector<std::string*>) {
   window_ = InitializeWindow(kWindowLines,
     kWindowCols,
     window_starty,
@@ -35,6 +36,7 @@ View::View(std::vector<IViewable*> *initial_items,
 
 View::~View() {
   EmptyCurrentItemStrings();
+  delete current_item_strings_;
 
   current_items_->clear();
   delete current_items_;
@@ -57,12 +59,12 @@ const IViewable& View::CurrentItem() const {
 }
 
 void View::EmptyCurrentItemStrings() {
-  for (std::vector<std::string*>::iterator it = current_item_strings_.begin();
-      it != current_item_strings_.end();
+  for (std::vector<std::string*>::iterator it = current_item_strings_->begin();
+      it != current_item_strings_->end();
       ++it) {
     delete *it;
   }
-  current_item_strings_.clear();
+  current_item_strings_->clear();
 }
 
 WINDOW* View::InitializeWindow(int lines,
@@ -100,7 +102,7 @@ ITEM** View::MakeMenuItems() {
   ITEM **result = (ITEM**) calloc(number_of_choices + 1, sizeof(ITEM*));
   for (int i = 0; i < number_of_choices; ++i) {
     std::string *item = (*current_items_)[i]->ToString();
-    current_item_strings_.push_back(item);
+    current_item_strings_->push_back(item);
     result[i] = new_item(item->c_str(), "");
   }
   return result;
@@ -117,18 +119,17 @@ void View::SetInactive() {
 }
 
 void View::Update(std::vector<IViewable*> *items) {
-  current_items_->clear();
-  delete current_items_;
-  current_items_ = items;
-
-  ITEM **new_items = MakeMenuItems();
-
   unpost_menu(menu_);
   ITEM **old_items = menu_items(menu_);
   int count = item_count(menu_);
   for (int i = 0; i < count; ++i) {
     free_item(old_items[i]);
   }
+  current_items_->clear();
+  delete current_items_;
+  current_items_ = items;
+
+  ITEM **new_items = MakeMenuItems();
 
   set_menu_items(menu_, new_items);
   post_menu(menu_);

@@ -10,7 +10,7 @@
 
 #include <ui/console/viewport.h>
 
-Viewport::Viewport(GameState *game) : game_(game) {
+Viewport::Viewport(GameState *game) : game_(game), info_view_() {
 
   initscr();
   keypad(stdscr, TRUE);
@@ -33,7 +33,6 @@ Viewport::Viewport(GameState *game) : game_(game) {
   hand_view_ = new View(game_->CurrentDeck().hand_viewable(),
     kWindowHandStartY,
     kWindowHandStartX);
-  info_view_ = InfoView();
   supply_view_ = new View(game_->supply_piles_viewable(),
     kWindowSupplyStartY,
     kWindowSupplyStartX);

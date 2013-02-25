@@ -19,6 +19,9 @@ private:
   std::string *current_info_;
   WINDOW *window_;
 
+  InfoView(const InfoView& other);
+  InfoView& operator=(const InfoView& other);
+
   void ReinitializeWindow();
 };
 

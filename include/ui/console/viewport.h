@@ -50,6 +50,10 @@ private:
   View *selectable_views_[kSelectableViewCount];
   View *supply_view_;
   View *tableau_view_;
+
+  Viewport();
+  Viewport(const Viewport& other);
+  Viewport& operator=(const Viewport& other);
 };
 
 #endif /* DOMONION_VIEWPORT_H_ */

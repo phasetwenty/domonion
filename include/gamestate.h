@@ -19,10 +19,10 @@ public:
   ~GameState();
 
   SimpleDeck& CurrentDeck() const;
-  Player const& CurrentPlayer() const;
+  const Player& CurrentPlayer() const;
 
-  PlayerCollection const& players() const;
-  std::vector<SupplyPile*> const& supply_piles() const;
+  const PlayerCollection& players() const;
+  const std::vector<SupplyPile*>& supply_piles() const;
   std::vector<IViewable*>* supply_piles_viewable() const;
 private:
   /*
@@ -30,8 +30,12 @@ private:
    * all cards that need to be out. It would be inappropriate for the game
    * state to have to track all that information on its own.
    */
-  PlayerCollection *players_;
+  PlayerCollection players_;
   std::vector<SupplyPile*> *supply_piles_;
+
+  GameState();
+  GameState(const GameState& other);
+  GameState& operator=(const GameState& other);
 };
 
 #endif // GAMESTATE_H

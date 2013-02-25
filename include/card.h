@@ -91,6 +91,10 @@ private:
    * * Card categories like Trash and Defenses
    */
   std::string set_;
+
+  Card();
+  Card(const Card& other);
+  Card& operator=(const Card& other);
 };
 
 #endif // DOMONION_CARD_H

@@ -23,6 +23,11 @@ public:
   int coin_provided() const;
 private:
   int coin_provided_;
+
+  BasicTreasure();
+  BasicTreasure(const BasicTreasure& other);
+
+  BasicTreasure& operator=(const BasicTreasure& other);
 };
 
 #endif /* DOMONION_BASICTREASURE_H_ */

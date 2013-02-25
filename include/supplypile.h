@@ -18,15 +18,16 @@ public:
     std::string* Info() const;
     std::string* ToString() const;
 
-    Card const& card() const;
+    const Card& card() const;
     int count() const;
-    std::string const& name() const;
+    const std::string& name() const;
 private:
-    const Card *card_;
+    Card *card_;
     int count_;
 
     SupplyPile() { }
     SupplyPile(const SupplyPile& other);
+    SupplyPile& operator=(const SupplyPile& other);
 
     /*
      * Properties added in other sets:

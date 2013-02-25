@@ -84,6 +84,9 @@ private:
      */
     std::vector<Card*> tableau_;
 
+    SimpleDeck(const SimpleDeck& other);
+    SimpleDeck& operator=(const SimpleDeck& other);
+
     std::vector<IViewable*>* CopyCards(std::vector<Card*> items) const;
 
 	/*

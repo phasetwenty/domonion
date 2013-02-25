@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef DOMONION_PLAYER_H
+#define DOMONION_PLAYER_H
 
 #include <string>
 
@@ -28,9 +28,12 @@ private:
     int buys_;
     int coin_;
 
+    Player();
+    Player(const Player& other);
+    Player& operator=(const Player& other);
 };
 
-#endif // PLAYER_H
+#endif // DOMONION_PLAYER_H
 
 /*
  * Things to track

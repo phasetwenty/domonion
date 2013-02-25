@@ -1,9 +1,9 @@
-#ifndef PLAYERCOLLECTION_H
-#define PLAYERCOLLECTION_H
+#ifndef DOMONION_PLAYERCOLLECTION_H
+#define DOMONION_PLAYERCOLLECTION_H
 
 #include <player.h>
 
-template class std::vector<Player>;
+template class std::vector<Player*>;
 
 // TODO: I may want to make this more like a standard container.
 class PlayerCollection {
@@ -21,9 +21,13 @@ public:
 private:
   std::vector<Player*> *players_;
   std::vector<Player*>::iterator players_it_;
+
+  PlayerCollection();
+  PlayerCollection(const PlayerCollection& other);
+  PlayerCollection& operator=(const PlayerCollection& other);
 };
 
-#endif // PLAYERCOLLECTION_H
+#endif // DOMONION_PLAYERCOLLECTION_H
 /*
  * "I don't need this class as much as I need to provide iteration over a basic
  * data structure such as a linked list."

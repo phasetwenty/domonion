@@ -18,6 +18,11 @@ public:
     std::string text,
     std::string type);
   virtual ~BasicVictory();
+
+private:
+  BasicVictory();
+  BasicVictory(const BasicVictory& other);
+  BasicVictory& operator=(const BasicVictory& other);
 };
 
 #endif /* DOMONION_BASICVICTORY_H_ */

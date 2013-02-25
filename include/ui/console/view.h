@@ -42,13 +42,14 @@ private:
   static const int kWindowLines = 12;
 
   std::vector<IViewable*> *current_items_;
-  std::vector<std::string*> current_item_strings_;
+  std::vector<std::string*> *current_item_strings_;
 
   MENU *menu_;
   WINDOW *window_;
 
-  View() { };
-  View(const View& other) { };
+  View();
+  View(const View& other);
+  View& operator=(const View& other);
 
   void EmptyCurrentItemStrings();
 

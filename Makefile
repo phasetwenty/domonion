@@ -1,7 +1,7 @@
 PROJECT_DIR = /home/chris/git/domonion
 
 CC = g++
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -fno-inline
 INCLUDE = -I$(PROJECT_DIR)/include
 LDFLAGS = -lmenu -lncurses 
 OBJ := obj

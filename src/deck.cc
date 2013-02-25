@@ -19,12 +19,7 @@
  * sense for the game state to manipulate the decks using the standard
  * interface.
  */
-SimpleDeck::SimpleDeck() {
-  discard_pile_ = std::vector<Card*>();
-  draw_pile_ = std::vector<Card*>();
-  hand_ = std::vector<Card*>();
-  tableau_ = std::vector<Card*>();
-
+SimpleDeck::SimpleDeck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
   srand(time(NULL));
 }
 

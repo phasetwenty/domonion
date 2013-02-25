@@ -31,7 +31,7 @@ std::string* SupplyPile::ToString() const {
   return new std::string(ss.str());
 }
 
-Card const& SupplyPile::card() const {
+const Card& SupplyPile::card() const {
   return *card_;
 }
 
@@ -39,6 +39,6 @@ int SupplyPile::count() const {
   return count_;
 }
 
-std::string const& SupplyPile::name() const {
+const std::string& SupplyPile::name() const {
   return card_->name();
 }

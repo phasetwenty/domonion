@@ -5,8 +5,8 @@
  *      Author: chris
  */
 
-#ifndef DOMONION_SIMPLEDECK_H_
-#define DOMONION_SIMPLEDECK_H_
+#ifndef DOMONION_DECK_H_
+#define DOMONION_DECK_H_
 
 #include <string>
 #include <vector>
@@ -14,10 +14,10 @@
 class Card;
 class IViewable;
 
-class SimpleDeck {
+class Deck {
 public:
-	SimpleDeck();
-	~SimpleDeck();
+	Deck();
+	~Deck();
 
 	/*
 	 * Run the standard C and D parts of the turn: (c)leanup the cards on the
@@ -84,8 +84,8 @@ private:
      */
     std::vector<Card*> tableau_;
 
-    SimpleDeck(const SimpleDeck& other);
-    SimpleDeck& operator=(const SimpleDeck& other);
+    Deck(const Deck& other);
+    Deck& operator=(const Deck& other);
 
     std::vector<IViewable*>* CopyCards(std::vector<Card*> items) const;
 

@@ -1,5 +1,5 @@
 /*
- * simpledeck.cpp
+ * deck.cc
  *
  *  Created on: Jun 29, 2012
  *      Author: chris
@@ -19,11 +19,11 @@
  * sense for the game state to manipulate the decks using the standard
  * interface.
  */
-SimpleDeck::SimpleDeck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
+Deck::Deck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
   srand(time(NULL));
 }
 
-SimpleDeck::~SimpleDeck() {
+Deck::~Deck() {
   std::vector<Card*> items[4] = { discard_pile_, draw_pile_, hand_, tableau_ };
 
   for (int i = 0; i < 4; ++i) {
@@ -42,7 +42,7 @@ SimpleDeck::~SimpleDeck() {
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
  */
-void SimpleDeck::CleanupAndDraw() {
+void Deck::CleanupAndDraw() {
   while (!hand_.empty()) {
     discard_pile_.push_back(hand_[0]);
     hand_.erase(hand_.begin());
@@ -56,7 +56,7 @@ void SimpleDeck::CleanupAndDraw() {
   Draw(5);
 }
 
-std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card*> items) const {
+std::vector<IViewable*>* Deck::CopyCards(std::vector<Card*> items) const {
   std::vector<IViewable*> *result = new std::vector<IViewable*>;
 
   for (std::vector<Card*>::const_iterator it = items.begin();
@@ -68,12 +68,12 @@ std::vector<IViewable*>* SimpleDeck::CopyCards(std::vector<Card*> items) const {
   return result;
 }
 
-int SimpleDeck::CountDrawableCards() const {
+int Deck::CountDrawableCards() const {
   return draw_pile_.size() + discard_pile_.size();
 }
 
 
-int SimpleDeck::Draw(int count) {
+int Deck::Draw(int count) {
   int drawn_count = 0;
   while (!draw_pile_.empty() && drawn_count < count) {
     hand_.insert(hand_.end(), draw_pile_.front());
@@ -99,7 +99,7 @@ int SimpleDeck::Draw(int count) {
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void SimpleDeck::Gain(Card *card) {
+void Deck::Gain(Card *card) {
   discard_pile_.push_back(card);
 }
 
@@ -109,7 +109,7 @@ void SimpleDeck::Gain(Card *card) {
  *
  * The return value is the card played.
  */
-Card* SimpleDeck::Play(std::string card) {
+Card* Deck::Play(std::string card) {
   /*
    * At first I wanted to return a null value when the card isn't found. Then I
    * thought, this should be an uncommon case: the user should already know that
@@ -168,7 +168,7 @@ Card* SimpleDeck::Play(std::string card) {
  * * Adding a member `revealedCards` which is populated by this method? Might
  *   need more thought.
  */
-void SimpleDeck::Reveal(int count) {
+void Deck::Reveal(int count) {
 
 }
 
@@ -176,7 +176,7 @@ void SimpleDeck::Reveal(int count) {
  * In base Dominion, you can assume that the draw pile is empty when shuffling.
  * This won't be the case in future sets (Inn, for example, will break it).
  */
-void SimpleDeck::Shuffle() {
+void Deck::Shuffle() {
   /*
    * Publicized this method to provide an interface for the game start
    * initialization.
@@ -190,18 +190,18 @@ void SimpleDeck::Shuffle() {
   discard_pile_ = std::vector<Card*>();
 }
 
-const std::vector<Card*>& SimpleDeck::hand() const {
+const std::vector<Card*>& Deck::hand() const {
   return hand_;
 }
 
-std::vector<IViewable*>* SimpleDeck::hand_viewable() const {
+std::vector<IViewable*>* Deck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
-const std::vector<Card*>& SimpleDeck::tableau() const {
+const std::vector<Card*>& Deck::tableau() const {
   return tableau_;
 }
 
-std::vector<IViewable*>* SimpleDeck::tableau_viewable() const {
+std::vector<IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
 }

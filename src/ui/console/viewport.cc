@@ -97,6 +97,7 @@ void Viewport::WindowLeft() {
     selectable_views_[active_index_]->SetInactive();
     active_index_--;
     selectable_views_[active_index_]->SetActive();
+    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
   }
 }
 
@@ -106,5 +107,6 @@ void Viewport::WindowRight() {
     selectable_views_[active_index_]->SetInactive();
     active_index_++;
     selectable_views_[active_index_]->SetActive();
+    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
   }
 }

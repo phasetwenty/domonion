@@ -20,3 +20,7 @@ PlayerCollection::~PlayerCollection() {
   delete players_;
 }
 
+const std::vector<Player*>& PlayerCollection::players() const {
+  return *players_;
+}
+

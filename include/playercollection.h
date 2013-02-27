@@ -15,7 +15,7 @@ public:
 
   const Player& current() const;
   const Player& next() const;
-  const Player& players() const;
+  const std::vector<Player*>& players() const;
   const Player& prev() const;
 
 private:

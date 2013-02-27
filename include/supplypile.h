@@ -7,7 +7,7 @@
 class SupplyPile : public IViewable {
 
 public:
-    SupplyPile(Card *card, int initial_count);
+    SupplyPile(Card *card);
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
 
@@ -18,7 +18,7 @@ public:
     std::string* Info() const;
     std::string* ToString() const;
 
-    const Card& card() const;
+    const Card* card() const;
     int count() const;
     const std::string& name() const;
 private:

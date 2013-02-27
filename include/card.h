@@ -27,6 +27,8 @@ public:
   int initial_supply() const;
   std::string const& name() const;
   std::string const& text() const;
+
+  bool operator==(const Card& other);
 private:
   /*
    * Cost

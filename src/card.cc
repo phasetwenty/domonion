@@ -28,10 +28,14 @@ int Card::initial_supply() const {
   return initial_supply_;
 }
 
-std::string const& Card::name() const {
+const std::string& Card::name() const {
   return name_;
 }
 
-std::string const& Card::text() const {
+const std::string& Card::text() const {
   return text_;
+}
+
+bool Card::operator==(const Card& other) {
+  return name() == other.name();
 }

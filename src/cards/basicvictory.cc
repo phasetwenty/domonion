@@ -13,9 +13,8 @@
 BasicVictory::BasicVictory(std::string name,
     int cost,
     int initial_supply,
-    std::string text,
-    std::string type) :
-    Card(name, cost, initial_supply, text, type) { }
+    std::string text) :
+    Card(name, cost, initial_supply, text, "Victory") { }
 
 BasicVictory::~BasicVictory() {
   // TODO Auto-generated destructor stub

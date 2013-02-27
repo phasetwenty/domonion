@@ -15,8 +15,7 @@ public:
   BasicVictory(std::string name,
     int cost,
     int initial_supply,
-    std::string text,
-    std::string type);
+    std::string text);
   virtual ~BasicVictory();
 
 private:

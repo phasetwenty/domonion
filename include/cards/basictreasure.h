@@ -16,8 +16,7 @@ public:
     int coins_provided,
     int cost,
     int initial_supply,
-    std::string text,
-    std::string type);
+    std::string text);
   virtual ~BasicTreasure();
 
   int coin_provided() const;

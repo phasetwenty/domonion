@@ -11,9 +11,8 @@ BasicTreasure::BasicTreasure(std::string name,
     int coin_provided,
     int cost,
     int initial_supply,
-    std::string text,
-    std::string type) :
-    Card(name, cost, initial_supply, text, type),
+    std::string text) :
+    Card(name, cost, initial_supply, text, "Treasure"),
     coin_provided_(coin_provided) {}
 
 BasicTreasure::~BasicTreasure() {

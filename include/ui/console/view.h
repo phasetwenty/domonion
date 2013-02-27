@@ -21,8 +21,6 @@ public:
     int window_startx);
   virtual ~View();
 
-  const IViewable& CurrentItem() const;
-  int CurrentIndex() const;
   bool IsEmpty() const;
   void ItemDown();
   void ItemUp();
@@ -30,6 +28,8 @@ public:
   void SetInactive();
   void Update(std::vector<const IViewable*> *items);
 
+  const IViewable& current_item() const;
+  int current_index() const;
 private:
   static const int kColorPairActive = 1;
   static const int kColorPairInactive = 2;

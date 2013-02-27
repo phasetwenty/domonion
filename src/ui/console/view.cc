@@ -48,12 +48,12 @@ View::~View() {
   free_menu(menu_);
 }
 
-int View::CurrentIndex() const {
-  return item_index(current_item(menu_));
+int View::current_index() const {
+  return item_index(::current_item(menu_));
 }
 
-const IViewable& View::CurrentItem() const {
-  return *((*current_items_)[CurrentIndex()]);
+const IViewable& View::current_item() const {
+  return *((*current_items_)[current_index()]);
 }
 
 void View::EmptyCurrentItemStrings() {

@@ -24,17 +24,10 @@ Deck::Deck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
 }
 
 Deck::~Deck() {
-  std::vector<Card*> items[4] = { discard_pile_, draw_pile_, hand_, tableau_ };
+  std::vector<const Card*> items[4] = { discard_pile_, draw_pile_, hand_, tableau_ };
 
   for (int i = 0; i < 4; ++i) {
-    std::vector<Card*> item = items[i];
-    for (std::vector<Card*>::iterator it = item.begin();
-        it != item.end();
-        ++it) {
-      delete *it;
-    }
-
-    item.clear();
+    items[i].clear();
   }
 }
 
@@ -50,16 +43,16 @@ void Deck::CleanupAndDraw() {
 
   while (!tableau_.empty()) {
     discard_pile_.push_back(tableau_.back());
-    tableau_.erase(tableau_.end());
+    tableau_.erase(tableau_.begin());
   }
 
   Draw(5);
 }
 
-std::vector<IViewable*>* Deck::CopyCards(std::vector<Card*> items) const {
-  std::vector<IViewable*> *result = new std::vector<IViewable*>;
+std::vector<const IViewable*>* Deck::CopyCards(std::vector<const Card*> items) const {
+  std::vector<const IViewable*> *result = new std::vector<const IViewable*>;
 
-  for (std::vector<Card*>::const_iterator it = items.begin();
+  for (std::vector<const Card*>::const_iterator it = items.begin();
       it != items.end();
       ++it) {
     result->push_back(*it);
@@ -99,7 +92,7 @@ int Deck::Draw(int count) {
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void Deck::Gain(Card *card) {
+void Deck::Gain(const Card *card) {
   discard_pile_.push_back(card);
 }
 
@@ -109,7 +102,7 @@ void Deck::Gain(Card *card) {
  *
  * The return value is the card played.
  */
-Card* Deck::Play(std::string card) {
+const Card* Deck::Play(const IViewable& card) {
   /*
    * At first I wanted to return a null value when the card isn't found. Then I
    * thought, this should be an uncommon case: the user should already know that
@@ -125,27 +118,22 @@ Card* Deck::Play(std::string card) {
    * aware of the game state anyway, so it would be appropriate to know the
    * answer.
    */
-  bool done = false;
-  std::vector<Card*>::iterator it = hand_.begin();
-  while (!done && it != hand_.end()) {
-    if (card == (*it)->name()) {
-      done = true;
-    }
+  std::string *needle = card.ToString();
+  const Card *result = NULL;
 
-    if (!done) {
-      it++;
+  std::vector<const Card*>::iterator it = hand_.begin();
+  for (; it != hand_.end(); ++it) {
+    if (*needle == (*it)->name()) {
+      result = *it;
+      break;
     }
   }
 
-  if (!done && it == hand_.end()) {
-    // throw an exception
-  }
-
-  Card *found_card = *it;
   hand_.erase(it);
-  tableau_.push_back(found_card);
+  tableau_.push_back(result);
 
-  return found_card;
+  delete needle;
+  return result;
 }
 
 /*
@@ -187,21 +175,21 @@ void Deck::Shuffle() {
   random_shuffle(discard_pile_.begin(), discard_pile_.end());
 
   draw_pile_ = discard_pile_;
-  discard_pile_ = std::vector<Card*>();
+  discard_pile_ = std::vector<const Card*>();
 }
 
-const std::vector<Card*>& Deck::hand() const {
+const std::vector<const Card*>& Deck::hand() const {
   return hand_;
 }
 
-std::vector<IViewable*>* Deck::hand_viewable() const {
+std::vector<const IViewable*>* Deck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
-const std::vector<Card*>& Deck::tableau() const {
+const std::vector<const Card*>& Deck::tableau() const {
   return tableau_;
 }
 
-std::vector<IViewable*>* Deck::tableau_viewable() const {
+std::vector<const IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
 }

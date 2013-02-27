@@ -10,14 +10,12 @@
 
 #include <ui/console/view.h>
 
-View::View(std::vector<IViewable*> *initial_items,
+View::View(std::vector<const IViewable*> *initial_items,
     int window_starty,
     int window_startx) : current_items_(initial_items),
-    current_item_strings_(new std::vector<std::string*>) {
-  window_ = InitializeWindow(kWindowLines,
-    kWindowCols,
-    window_starty,
-    window_startx);
+    current_item_strings_(new std::vector<std::string*>),
+    window_(newwin(kWindowLines, kWindowCols, window_starty, window_startx)) {
+  ReinitializeWindow();
 
   init_pair(kColorPairActive, COLOR_WHITE, COLOR_RED);
   init_pair(kColorPairInactive, COLOR_WHITE, COLOR_BLACK);
@@ -67,15 +65,9 @@ void View::EmptyCurrentItemStrings() {
   current_item_strings_->clear();
 }
 
-WINDOW* View::InitializeWindow(int lines,
-    int cols,
-    int starty,
-    int startx) {
-  WINDOW *result = newwin(lines, cols, starty, startx);
-  keypad(result, true);
-  box(result, '|', '-');
-  wrefresh(result);
-  return result;
+void View::ReinitializeWindow() {
+  keypad(window_, true);
+  box(window_, '|', '-');
 }
 
 bool View::IsEmpty() const {
@@ -118,8 +110,11 @@ void View::SetInactive() {
   wrefresh(window_);
 }
 
-void View::Update(std::vector<IViewable*> *items) {
+void View::Update(std::vector<const IViewable*> *items) {
   unpost_menu(menu_);
+  wclear(window_);
+  ReinitializeWindow();
+
   ITEM **old_items = menu_items(menu_);
   int count = item_count(menu_);
   for (int i = 0; i < count; ++i) {
@@ -129,9 +124,11 @@ void View::Update(std::vector<IViewable*> *items) {
   delete current_items_;
   current_items_ = items;
 
-  ITEM **new_items = MakeMenuItems();
+  if (items->size() > 0) {
+    ITEM **new_items = MakeMenuItems();
 
-  set_menu_items(menu_, new_items);
-  post_menu(menu_);
+    set_menu_items(menu_, new_items);
+    post_menu(menu_);
+  }
   wrefresh(window_);
 }

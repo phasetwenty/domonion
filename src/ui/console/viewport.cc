@@ -68,7 +68,25 @@ void Viewport::CleanupAndDraw() {
   game_->CurrentDeck().CleanupAndDraw();
 
   hand_view_->Update(game_->CurrentDeck().hand_viewable());
+  tableau_view_->Update(game_->CurrentDeck().tableau_viewable());
   info_view_.Update(hand_view_->CurrentItem());
+}
+
+void Viewport::Execute() {
+  if (selectable_views_[active_index_] == hand_view_) {
+    PlayCard();
+  } else if (selectable_views_[active_index_] == supply_view_) {
+    const SupplyPile& pile = static_cast<const SupplyPile&>(supply_view_->CurrentItem());
+    game_->Buy(pile.name());
+
+    supply_view_->Update(game_->supply_piles_viewable());
+    supply_view_->SetInactive();
+
+    active_index_ = kSelectableViewCount - 1;
+    hand_view_->SetActive();
+
+    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+  }
 }
 
 void Viewport::ItemDown() {
@@ -84,7 +102,7 @@ void Viewport::ItemUp() {
 void Viewport::PlayCard() {
   std::string *s = hand_view_->CurrentItem().ToString();
 
-  game_->CurrentDeck().Play(*s);
+  game_->CurrentDeck().Play(hand_view_->CurrentItem());
   tableau_view_->Update(game_->CurrentDeck().tableau_viewable());
   hand_view_->Update(game_->CurrentDeck().hand_viewable());
   info_view_.Update(hand_view_->CurrentItem());

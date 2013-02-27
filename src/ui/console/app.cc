@@ -1,6 +1,5 @@
 #include <iostream>
 
-
 #include <menu.h>
 #include <ncurses.h>
 
@@ -11,7 +10,8 @@
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-SimpleDeck* InitializeDeck();
+void InitializeDecks(GameState *game);
+std::vector<SupplyPile*>* InitializeSupply();
 
 int main() {
   /*
@@ -23,18 +23,14 @@ int main() {
 
   std::vector<Player*> *players = new std::vector<Player*>;
   for (int i = 0; i < 4; ++i) {
-    Player *p = new Player(InitializeDeck());
+    Player *p = new Player(new Deck());
     players->push_back(p);
   }
 
-  Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
-  Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
-
-  std::vector<SupplyPile*> *piles = new std::vector<SupplyPile*>;
-  piles->push_back(new SupplyPile(chapel, chapel->initial_supply()));
-  piles->push_back(new SupplyPile(chancellor, chancellor->initial_supply()));
-
+  std::vector<SupplyPile*> *piles = InitializeSupply();
   GameState *game = new GameState(players, piles);
+  InitializeDecks(game);
+
   Viewport *viewport = new Viewport(game);
 
   int ch = 0;
@@ -62,7 +58,7 @@ int main() {
        * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/menus.html
        * The example does not use the KEY_ENTER constant to compare the enter key. Why?
        */
-      viewport->PlayCard();
+      viewport->Execute();
       break;
     }
     default: {
@@ -76,21 +72,38 @@ int main() {
   return 0;
 }
 
-SimpleDeck* InitializeDeck() {
-  /*
-   * Since I just put this deck on the heap, it's my responsibility to
-   * deallocate it, right?
-   */
-  SimpleDeck *d = new SimpleDeck();
+void InitializeDecks(GameState *game) {
+  SupplyPile *estate_pile = game->FindSupplyPile("Estate");
+  SupplyPile *copper_pile = game->FindSupplyPile("Copper");
 
-  for (int i = 0; i < 7; ++i) {
-    BasicTreasure *b =  new BasicTreasure("Copper", 1, 0, 10, "(1)", "Treasure");
-    d->Gain(b);
+  for (std::vector<Player*>::const_iterator it = game->players().begin();
+      it != game->players().end();
+      ++it) {
+    Player *player = *it;
+    for (int i = 0; i < 3; ++i) {
+      estate_pile->BuyOrGain();
+      player->deck().Gain(estate_pile->card());
+    }
+    for (int i = 0; i < 7; ++i) {
+      copper_pile->BuyOrGain();
+      player->deck().Gain(copper_pile->card());
+    }
   }
-  for (int i = 0; i < 3; ++i) {
-    BasicVictory *v =  new BasicVictory("Estate", 2, 10, ")1(", "Victory");
-    d->Gain(v);
-  }
+}
 
-  return d;
+std::vector<SupplyPile*>* InitializeSupply() {
+  // Let's initialize Estates, Coppers, Chapels and Chancellors.
+  std::vector<SupplyPile*> *result = new std::vector<SupplyPile*>;
+
+  Card *estate = new BasicVictory("Estate", 2, 24, ")1(");
+  Card *copper = new BasicTreasure("Copper", 1, 0, 60, "(1)");
+  Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
+  Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
+
+  result->push_back(new SupplyPile(estate));
+  result->push_back(new SupplyPile(copper));
+  result->push_back(new SupplyPile(chapel));
+  result->push_back(new SupplyPile(chancellor));
+
+  return result;
 }

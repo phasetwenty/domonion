@@ -16,7 +16,7 @@
 
 class View {
 public:
-  View(std::vector<IViewable*> *initial_items,
+  View(std::vector<const IViewable*> *initial_items,
     int window_starty,
     int window_startx);
   virtual ~View();
@@ -28,7 +28,7 @@ public:
   void ItemUp();
   void SetActive();
   void SetInactive();
-  void Update(std::vector<IViewable*> *items);
+  void Update(std::vector<const IViewable*> *items);
 
 private:
   static const int kColorPairActive = 1;
@@ -41,7 +41,7 @@ private:
   static const int kWindowCols = 20;
   static const int kWindowLines = 12;
 
-  std::vector<IViewable*> *current_items_;
+  std::vector<const IViewable*> *current_items_;
   std::vector<std::string*> *current_item_strings_;
 
   MENU *menu_;
@@ -52,11 +52,7 @@ private:
   View& operator=(const View& other);
 
   void EmptyCurrentItemStrings();
-
-  WINDOW* InitializeWindow(int lines,
-    int cols,
-    int starty,
-    int startx);
+  void ReinitializeWindow();
 
   ITEM **MakeMenuItems();
 

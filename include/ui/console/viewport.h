@@ -26,6 +26,7 @@ public:
   ~Viewport();
 
   void CleanupAndDraw();
+  void Execute();
   void ItemDown();
   void ItemUp();
   void PlayCard();

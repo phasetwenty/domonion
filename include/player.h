@@ -7,10 +7,10 @@
 
 class Player {
 public:
-	Player(SimpleDeck *deck);
+	Player(Deck *deck);
 	~Player();
 
-	SimpleDeck& deck() const;
+	Deck& deck() const;
 
 	/*
 	 * Current state
@@ -22,7 +22,7 @@ public:
 private:
     std::string name_;
 
-    SimpleDeck *deck_;
+    Deck *deck_;
 
     int actions_;
     int buys_;

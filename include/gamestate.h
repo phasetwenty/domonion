@@ -7,7 +7,7 @@
 #include <supplypile.h>
 
 class Player;
-class SimpleDeck;
+class Deck;
 
 /*
  * GameState
@@ -18,12 +18,18 @@ public:
   GameState(std::vector<Player*> *players, std::vector<SupplyPile*> *supply_piles);
   ~GameState();
 
-  SimpleDeck& CurrentDeck() const;
+  bool Buy(std::string name);
+  Deck& CurrentDeck() const;
   const Player& CurrentPlayer() const;
+  /*
+   * This is handy during development, but may not be appropriate in the final
+   * product.
+   */
+  SupplyPile* FindSupplyPile(std::string name);
 
-  const PlayerCollection& players() const;
+  const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;
-  std::vector<IViewable*>* supply_piles_viewable() const;
+  std::vector<const IViewable*>* supply_piles_viewable() const;
 private:
   /*
    * Card bank? Some object that handles the collection of Supply piles for

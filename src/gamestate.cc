@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 
 #include <gamestate.h>
@@ -18,7 +19,18 @@ GameState::~GameState() {
   delete supply_piles_;
 }
 
-SimpleDeck& GameState::CurrentDeck() const {
+bool GameState::Buy(std::string name) {
+  SupplyPile *pile = FindSupplyPile(name);
+
+  bool result = pile->BuyOrGain();
+  if (result) {
+    CurrentPlayer().deck().Gain(pile->card());
+  }
+
+  return result;
+}
+
+Deck& GameState::CurrentDeck() const {
   return CurrentPlayer().deck();
 }
 
@@ -26,16 +38,30 @@ const Player& GameState::CurrentPlayer() const {
   return players_.current();
 }
 
-const PlayerCollection& GameState::players() const {
-  return players_;
+SupplyPile* GameState::FindSupplyPile(std::string name) {
+  SupplyPile *result;
+  for (std::vector<SupplyPile*>::iterator it = supply_piles_->begin();
+      it != supply_piles_->end();
+      ++it) {
+    if (name == (*it)->name()) {
+      result = *it;
+      break;
+    }
+  }
+
+  return result;
+}
+
+const std::vector<Player*>& GameState::players() const {
+  return players_.players();
 }
 
 const std::vector<SupplyPile*>& GameState::supply_piles() const {
   return *supply_piles_;
 }
 
-std::vector<IViewable*>* GameState::supply_piles_viewable() const {
-  std::vector<IViewable*> *result = new std::vector<IViewable*>;
+std::vector<const IViewable*>* GameState::supply_piles_viewable() const {
+  std::vector<const IViewable*> *result = new std::vector<const IViewable*>;
 
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_->begin();
       it != supply_piles_->end();

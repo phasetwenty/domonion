@@ -1,14 +1,14 @@
 #include <player.h>
 
-class SimpleDeck;
+class Deck;
 
-Player::Player(SimpleDeck *deck) : deck_(deck) { }
+Player::Player(Deck *deck) : deck_(deck) { }
 
 Player::~Player() {
   delete deck_;
 }
 
-SimpleDeck& Player::deck() const {
+Deck& Player::deck() const {
   return *deck_;
 }
 

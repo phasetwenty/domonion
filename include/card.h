@@ -20,11 +20,11 @@ public:
    */
   void Play();
   std::string* Info() const;
-  bool IsPlayable() const;
   std::string* ToString() const;
 
   int cost() const;
   int initial_supply() const;
+  bool is_playable() const;
   std::string const& name() const;
   std::string const& text() const;
 

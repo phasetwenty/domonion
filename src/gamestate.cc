@@ -24,18 +24,10 @@ bool GameState::Buy(std::string name) {
 
   bool result = pile->BuyOrGain();
   if (result) {
-    CurrentPlayer().deck().Gain(pile->card());
+    current_player().deck().Gain(pile->card());
   }
 
   return result;
-}
-
-Deck& GameState::CurrentDeck() const {
-  return CurrentPlayer().deck();
-}
-
-const Player& GameState::CurrentPlayer() const {
-  return players_.current();
 }
 
 SupplyPile* GameState::FindSupplyPile(std::string name) {
@@ -50,6 +42,14 @@ SupplyPile* GameState::FindSupplyPile(std::string name) {
   }
 
   return result;
+}
+
+Deck& GameState::current_deck() const {
+  return current_player().deck();
+}
+
+const Player& GameState::current_player() const {
+  return players_.current();
 }
 
 const std::vector<Player*>& GameState::players() const {

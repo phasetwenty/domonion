@@ -16,16 +16,16 @@ std::string* Card::Info() const {
   return new std::string(text());
 }
 
-bool Card::IsPlayable() const {
-  return true;
-}
-
 std::string* Card::ToString() const {
   return new std::string(name());
 }
 
 int Card::initial_supply() const {
   return initial_supply_;
+}
+
+bool Card::is_playable() const {
+  return true;
 }
 
 const std::string& Card::name() const {

@@ -11,7 +11,7 @@ public:
   PlayerCollection(std::vector<Player*> *players);
   ~PlayerCollection();
 
-  void advance();
+  void Advance();
 
   const Player& current() const;
   const Player& next() const;

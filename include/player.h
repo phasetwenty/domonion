@@ -10,14 +10,10 @@ public:
 	Player(Deck *deck);
 	~Player();
 
-	Deck& deck() const;
-
-	/*
-	 * Current state
-	 */
 	int actions() const;
 	int buys() const;
 	int coin() const;
+    Deck& deck() const;
 
 private:
     std::string name_;

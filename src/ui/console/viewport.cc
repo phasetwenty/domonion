@@ -28,15 +28,15 @@ Viewport::Viewport(GameState *game) : game_(game), info_view_() {
     exit(1);
   }
 
-  game_->CurrentDeck().CleanupAndDraw();
+  game_->current_deck().CleanupAndDraw();
 
-  hand_view_ = new View(game_->CurrentDeck().hand_viewable(),
+  hand_view_ = new View(game_->current_deck().hand_viewable(),
     kWindowHandStartY,
     kWindowHandStartX);
   supply_view_ = new View(game_->supply_piles_viewable(),
     kWindowSupplyStartY,
     kWindowSupplyStartX);
-  tableau_view_ = new View(game_->CurrentDeck().tableau_viewable(),
+  tableau_view_ = new View(game_->current_deck().tableau_viewable(),
     kWindowTableauStartY,
     kWindowTableauStartX);
 
@@ -65,10 +65,10 @@ Viewport::~Viewport() {
 }
 
 void Viewport::CleanupAndDraw() {
-  game_->CurrentDeck().CleanupAndDraw();
+  game_->current_deck().CleanupAndDraw();
 
-  hand_view_->Update(game_->CurrentDeck().hand_viewable());
-  tableau_view_->Update(game_->CurrentDeck().tableau_viewable());
+  hand_view_->Update(game_->current_deck().hand_viewable());
+  tableau_view_->Update(game_->current_deck().tableau_viewable());
   info_view_.Update(hand_view_->CurrentItem());
 }
 
@@ -102,9 +102,9 @@ void Viewport::ItemUp() {
 void Viewport::PlayCard() {
   std::string *s = hand_view_->CurrentItem().ToString();
 
-  game_->CurrentDeck().Play(hand_view_->CurrentItem());
-  tableau_view_->Update(game_->CurrentDeck().tableau_viewable());
-  hand_view_->Update(game_->CurrentDeck().hand_viewable());
+  game_->current_deck().Play(hand_view_->CurrentItem());
+  tableau_view_->Update(game_->current_deck().tableau_viewable());
+  hand_view_->Update(game_->current_deck().hand_viewable());
   info_view_.Update(hand_view_->CurrentItem());
 
   delete s;

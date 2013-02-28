@@ -10,8 +10,7 @@
 
 #include <ui/console/viewport.h>
 
-Viewport::Viewport(GameState *game) : game_(game), info_view_() {
-
+Viewport::Viewport(GameState *game) : game_(game), info_view_(), player_view_() {
   initscr();
   keypad(stdscr, TRUE);
   cbreak(); // In case you forget, this disables line buffering.
@@ -50,6 +49,7 @@ Viewport::Viewport(GameState *game) : game_(game), info_view_() {
   hand_view_->SetActive();
   active_index_ = 2;
 
+  player_view_.Update(game_->current_player());
   // TODO: initialize color pairs game-wide here.
 }
 
@@ -69,14 +69,15 @@ void Viewport::CleanupAndDraw() {
 
   hand_view_->Update(game_->current_deck().hand_viewable());
   tableau_view_->Update(game_->current_deck().tableau_viewable());
-  info_view_.Update(hand_view_->CurrentItem());
+  info_view_.Update(hand_view_->current_item());
+  player_view_.Update(game_->current_player());
 }
 
 void Viewport::Execute() {
   if (selectable_views_[active_index_] == hand_view_) {
     PlayCard();
   } else if (selectable_views_[active_index_] == supply_view_) {
-    const SupplyPile& pile = static_cast<const SupplyPile&>(supply_view_->CurrentItem());
+    const SupplyPile& pile = supply_view_->current_item_as<SupplyPile>();
     game_->Buy(pile.name());
 
     supply_view_->Update(game_->supply_piles_viewable());
@@ -85,29 +86,29 @@ void Viewport::Execute() {
     active_index_ = kSelectableViewCount - 1;
     hand_view_->SetActive();
 
-    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+    info_view_.Update(selectable_views_[active_index_]->current_item());
   }
 }
 
 void Viewport::ItemDown() {
   selectable_views_[active_index_]->ItemDown();
-  info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+  info_view_.Update(selectable_views_[active_index_]->current_item());
 }
 
 void Viewport::ItemUp() {
   selectable_views_[active_index_]->ItemUp();
-  info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+  info_view_.Update(selectable_views_[active_index_]->current_item());
 }
 
 void Viewport::PlayCard() {
-  std::string *s = hand_view_->CurrentItem().ToString();
+  const Card& card = hand_view_->current_item_as<Card>();
+  game_->current_deck().Play(card);
+  card.Play(*game_);
 
-  game_->current_deck().Play(hand_view_->CurrentItem());
   tableau_view_->Update(game_->current_deck().tableau_viewable());
   hand_view_->Update(game_->current_deck().hand_viewable());
-  info_view_.Update(hand_view_->CurrentItem());
-
-  delete s;
+  info_view_.Update(hand_view_->current_item());
+  player_view_.Update(game_->current_player());
 }
 
 void Viewport::WindowLeft() {
@@ -115,7 +116,7 @@ void Viewport::WindowLeft() {
     selectable_views_[active_index_]->SetInactive();
     active_index_--;
     selectable_views_[active_index_]->SetActive();
-    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+    info_view_.Update(selectable_views_[active_index_]->current_item());
   }
 }
 
@@ -125,6 +126,6 @@ void Viewport::WindowRight() {
     selectable_views_[active_index_]->SetInactive();
     active_index_++;
     selectable_views_[active_index_]->SetActive();
-    info_view_.Update(selectable_views_[active_index_]->CurrentItem());
+    info_view_.Update(selectable_views_[active_index_]->current_item());
   }
 }

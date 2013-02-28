@@ -18,6 +18,7 @@
 
 #include <gamestate.h>
 #include <ui/console/infoview.h>
+#include <ui/console/playerview.h>
 #include <ui/console/view.h>
 
 class Viewport {
@@ -48,6 +49,7 @@ private:
   GameState *game_;
   View *hand_view_;
   InfoView info_view_;
+  PlayerView player_view_;
   View *selectable_views_[kSelectableViewCount];
   View *supply_view_;
   View *tableau_view_;

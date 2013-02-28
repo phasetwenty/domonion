@@ -6,10 +6,6 @@
 PlayerCollection::PlayerCollection(std::vector<Player*> *players) :
   players_(players), players_it_(players_->begin()) { }
 
-const Player& PlayerCollection::current() const {
-  return **players_it_;
-}
-
 PlayerCollection::~PlayerCollection() {
   for (std::vector<Player*>::const_iterator it = players_->begin();
       it != players_->end();
@@ -18,6 +14,10 @@ PlayerCollection::~PlayerCollection() {
   }
   players_->clear();
   delete players_;
+}
+
+Player& PlayerCollection::current() const {
+  return **players_it_;
 }
 
 const std::vector<Player*>& PlayerCollection::players() const {

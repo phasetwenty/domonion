@@ -13,7 +13,7 @@ public:
 
   void Advance();
 
-  const Player& current() const;
+  Player& current() const;
   const Player& next() const;
   const std::vector<Player*>& players() const;
   const Player& prev() const;

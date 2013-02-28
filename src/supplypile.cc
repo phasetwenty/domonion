@@ -27,7 +27,7 @@ std::string* SupplyPile::Info() const {
 
 std::string* SupplyPile::ToString() const {
   std::stringstream ss;
-  ss << card()->name() << " (" << count() << ")";
+  ss << "(" << count() << ") " << card()->name() ;
   return new std::string(ss.str());
 }
 

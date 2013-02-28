@@ -26,7 +26,7 @@ public:
   SupplyPile* FindSupplyPile(std::string name);
 
   Deck& current_deck() const;
-  const Player& current_player() const;
+  Player& current_player() const;
   const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;
   std::vector<const IViewable*>* supply_piles_viewable() const;

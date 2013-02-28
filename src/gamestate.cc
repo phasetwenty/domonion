@@ -48,7 +48,7 @@ Deck& GameState::current_deck() const {
   return current_player().deck();
 }
 
-const Player& GameState::current_player() const {
+Player& GameState::current_player() const {
   return players_.current();
 }
 

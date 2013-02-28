@@ -48,14 +48,6 @@ View::~View() {
   free_menu(menu_);
 }
 
-int View::current_index() const {
-  return item_index(::current_item(menu_));
-}
-
-const IViewable& View::current_item() const {
-  return *((*current_items_)[current_index()]);
-}
-
 void View::EmptyCurrentItemStrings() {
   for (std::vector<std::string*>::iterator it = current_item_strings_->begin();
       it != current_item_strings_->end();
@@ -131,4 +123,12 @@ void View::Update(std::vector<const IViewable*> *items) {
     post_menu(menu_);
   }
   wrefresh(window_);
+}
+
+int View::current_index() const {
+  return item_index(::current_item(menu_));
+}
+
+const IViewable& View::current_item() const {
+  return *((*current_items_)[current_index()]);
 }

@@ -29,6 +29,12 @@ public:
   void Update(std::vector<const IViewable*> *items);
 
   const IViewable& current_item() const;
+
+  template<class T>
+  const T& current_item_as() const {
+    return dynamic_cast<const T&>(current_item());
+  }
+
   int current_index() const;
 private:
   static const int kColorPairActive = 1;

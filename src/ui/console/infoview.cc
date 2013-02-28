@@ -7,7 +7,7 @@
 #include <ui/console/infoview.h>
 
 InfoView::InfoView() : current_info_(new std::string("")),
-    window_(newwin(10, 80, 12, 0)) {
+    window_(newwin(kWindowLines, kWindowCols, kWindowStarty, kWindowStartx)) {
   ReinitializeWindow();
   wrefresh(window_);
 }

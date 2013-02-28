@@ -16,6 +16,11 @@ public:
   ~InfoView();
   void Update(const IViewable& viewable);
 private:
+  static const int kWindowLines = 10;
+  static const int kWindowCols = 60;
+  static const int kWindowStarty = 12;
+  static const int kWindowStartx = 0;
+
   std::string *current_info_;
   WINDOW *window_;
 

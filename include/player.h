@@ -7,30 +7,34 @@
 
 class Player {
 public:
-	Player(Deck *deck);
-	~Player();
+  Player(Deck *deck);
+  ~Player();
 
-	int actions() const;
-	int buys() const;
-	int coin() const;
-    Deck& deck() const;
+  /*
+   * Adds `c` to the amount of coin this player has. Returns the new amount.
+   */
+  int AddCoin(int c);
+
+  int actions() const;
+  int buys() const;
+  int coin() const;
+  Deck& deck() const;
 
 private:
-    std::string name_;
+  std::string name_;
 
-    Deck *deck_;
+  Deck *deck_;
 
-    int actions_;
-    int buys_;
-    int coin_;
+  int actions_;
+  int buys_;
+  int coin_;
 
-    Player();
-    Player(const Player& other);
-    Player& operator=(const Player& other);
+  Player();
+  Player(const Player& other);
+  Player& operator=(const Player& other);
 };
 
 #endif // DOMONION_PLAYER_H
-
 /*
  * Things to track
  * * Deck

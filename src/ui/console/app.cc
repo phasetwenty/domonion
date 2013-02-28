@@ -5,6 +5,7 @@
 
 #include <cards/basictreasure.h>
 #include <cards/basicvictory.h>
+#include <cards/genericcard.h>
 #include <player.h>
 #include <ui/console/viewport.h>
 
@@ -97,8 +98,8 @@ std::vector<SupplyPile*>* InitializeSupply() {
 
   Card *estate = new BasicVictory("Estate", 2, 24, ")1(");
   Card *copper = new BasicTreasure("Copper", 1, 0, 60, "(1)");
-  Card *chapel = new Card("Chapel", 2, 10, "Chapel 4 cards", "type");
-  Card *chancellor = new Card("Chancellor", 2, 10, "(2) Chancellor effect", "type");
+  Card *chapel = new GenericCard("Chapel", 2, 10, "Chapel 4 cards", "type");
+  Card *chancellor = new GenericCard("Chancellor", 2, 10, "(2) Chancellor effect", "type");
 
   result->push_back(new SupplyPile(estate));
   result->push_back(new SupplyPile(copper));

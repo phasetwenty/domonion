@@ -5,6 +5,7 @@
  *      Author: chris
  */
 
+#include <gamestate.h>
 #include <cards/basictreasure.h>
 
 BasicTreasure::BasicTreasure(std::string name,
@@ -19,6 +20,14 @@ BasicTreasure::~BasicTreasure() {
 
 }
 
+void BasicTreasure::Play(GameState& game) const {
+  game.current_player().AddCoin(coin_provided());
+}
+
 int BasicTreasure::coin_provided() const {
   return coin_provided_;
+}
+
+bool BasicTreasure::is_playable() const {
+  return true;
 }

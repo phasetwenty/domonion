@@ -20,3 +20,10 @@ BasicVictory::~BasicVictory() {
   // TODO Auto-generated destructor stub
 }
 
+void BasicVictory::Play(GameState& game) const {
+
+}
+
+bool BasicVictory::is_playable() const {
+  return false;
+}

@@ -19,7 +19,10 @@ public:
     std::string text);
   virtual ~BasicTreasure();
 
+  virtual void Play(GameState& game) const;
+
   int coin_provided() const;
+  bool is_playable() const;
 private:
   int coin_provided_;
 

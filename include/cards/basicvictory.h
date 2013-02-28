@@ -18,6 +18,9 @@ public:
     std::string text);
   virtual ~BasicVictory();
 
+  virtual void Play(GameState& game) const;
+
+  virtual bool is_playable() const;
 private:
   BasicVictory();
   BasicVictory(const BasicVictory& other);

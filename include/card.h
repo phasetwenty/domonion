@@ -5,6 +5,8 @@
 
 #include <interfaces.h>
 
+class GameState;
+
 class Card : public IViewable {
 public:
   Card(std::string name,
@@ -18,13 +20,13 @@ public:
    * Call to play the card. It will modify the game state in the course of
    * resolving.
    */
-  void Play();
+  virtual void Play(GameState& game) const = 0;
   std::string* Info() const;
   std::string* ToString() const;
 
   int cost() const;
   int initial_supply() const;
-  bool is_playable() const;
+  virtual bool is_playable() const = 0;
   std::string const& name() const;
   std::string const& text() const;
 

@@ -87,6 +87,7 @@ void Viewport::Execute() {
     hand_view_->SetActive();
 
     info_view_.Update(selectable_views_[active_index_]->current_item());
+    player_view_.Update(game_->current_player());
   }
 }
 

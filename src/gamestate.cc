@@ -22,11 +22,14 @@ GameState::~GameState() {
 bool GameState::Buy(std::string name) {
   SupplyPile *pile = FindSupplyPile(name);
 
-  bool result = pile->BuyOrGain();
-  if (result) {
-    current_player().deck().Gain(pile->card());
+  bool result = false;
+  if (current_player().coin() >= pile->card()->cost()) {
+    result = pile->BuyOrGain();
+    if (result) {
+      current_player().SpendCoin(pile->card()->cost());
+      current_player().deck().Gain(pile->card());
+    }
   }
-
   return result;
 }
 

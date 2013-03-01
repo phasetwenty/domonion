@@ -4,10 +4,14 @@
 #include <gamestate.h>
 #include <playercollection.h>
 
-GameState::GameState(std::vector<Player*> *players,
-    std::vector<SupplyPile*> *supply_piles) :
-    players_(players),
-    supply_piles_(supply_piles) { }
+GameState::GameState(int player_count, std::vector<SupplyPile*> *supply_piles) :
+    players_(player_count), supply_piles_(supply_piles) {
+  for (std::vector<Player*>::const_iterator it = players_.players().begin();
+      it != players_.players().end();
+      ++it) {
+    StartDeck((*it)->deck());
+  }
+}
 
 GameState::~GameState() {
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_->begin();
@@ -45,6 +49,20 @@ SupplyPile* GameState::FindSupplyPile(std::string name) {
   }
 
   return result;
+}
+
+void GameState::StartDeck(Deck& deck) {
+  SupplyPile *estate_pile = FindSupplyPile("Estate");
+  SupplyPile *copper_pile = FindSupplyPile("Copper");
+
+  for (int i = 0; i < 3; ++i) {
+    estate_pile->BuyOrGain();
+    deck.Gain(estate_pile->card());
+  }
+  for (int i = 0; i < 7; ++i) {
+    copper_pile->BuyOrGain();
+    deck.Gain(copper_pile->card());
+  }
 }
 
 Deck& GameState::current_deck() const {

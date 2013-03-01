@@ -3,17 +3,21 @@
 #include <player.h>
 #include <playercollection.h>
 
-PlayerCollection::PlayerCollection(std::vector<Player*> *players) :
-  players_(players), players_it_(players_->begin()) { }
+PlayerCollection::PlayerCollection(int player_count) : players_(),
+    players_it_() {
+  for (int i = 0; i < player_count; ++i) {
+    players_.push_back(new Player(new Deck()));
+  }
+
+  players_it_ = players_.begin();
+}
 
 PlayerCollection::~PlayerCollection() {
-  for (std::vector<Player*>::const_iterator it = players_->begin();
-      it != players_->end();
+  for (std::vector<Player*>::const_iterator it = players_.begin();
+      it != players_.end();
       ++it) {
     delete *it;
   }
-  players_->clear();
-  delete players_;
 }
 
 Player& PlayerCollection::current() const {
@@ -21,6 +25,6 @@ Player& PlayerCollection::current() const {
 }
 
 const std::vector<Player*>& PlayerCollection::players() const {
-  return *players_;
+  return players_;
 }
 

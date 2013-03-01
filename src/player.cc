@@ -13,6 +13,11 @@ int Player::AddCoin(int c) {
   return coin_;
 }
 
+int Player::SpendCoin(int c) {
+  coin_ -= c;
+  return coin_;
+}
+
 int Player::actions() const {
   return actions_;
 }

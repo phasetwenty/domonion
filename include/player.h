@@ -14,6 +14,7 @@ public:
    * Adds `c` to the amount of coin this player has. Returns the new amount.
    */
   int AddCoin(int c);
+  int SpendCoin(int c);
 
   int actions() const;
   int buys() const;

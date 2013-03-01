@@ -1,26 +1,29 @@
 #include <algorithm>
 #include <vector>
 
+#include <cards/basictreasure.h>
+#include <cards/basicvictory.h>
 #include <gamestate.h>
 #include <playercollection.h>
 
-GameState::GameState(int player_count, std::vector<SupplyPile*> *supply_piles) :
-    players_(player_count), supply_piles_(supply_piles) {
+GameState::GameState(int player_count) : players_(player_count), supply_piles_() {
+  InitializeBaseSupply();
+
   for (std::vector<Player*>::const_iterator it = players_.players().begin();
       it != players_.players().end();
       ++it) {
     StartDeck((*it)->deck());
   }
+
+
 }
 
 GameState::~GameState() {
-  for (std::vector<SupplyPile*>::const_iterator it = supply_piles_->begin();
-      it != supply_piles_->end();
+  for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
+      it != supply_piles_.end();
       ++it) {
     delete *it;
   }
-  supply_piles_->clear();
-  delete supply_piles_;
 }
 
 bool GameState::Buy(std::string name) {
@@ -39,8 +42,8 @@ bool GameState::Buy(std::string name) {
 
 SupplyPile* GameState::FindSupplyPile(std::string name) {
   SupplyPile *result;
-  for (std::vector<SupplyPile*>::iterator it = supply_piles_->begin();
-      it != supply_piles_->end();
+  for (std::vector<SupplyPile*>::iterator it = supply_piles_.begin();
+      it != supply_piles_.end();
       ++it) {
     if (name == (*it)->name()) {
       result = *it;
@@ -49,6 +52,23 @@ SupplyPile* GameState::FindSupplyPile(std::string name) {
   }
 
   return result;
+}
+
+void GameState::InitializeBaseSupply() {
+  supply_piles_.push_back(new SupplyPile(
+    new BasicVictory("Estate", 2, 24, ")1(")));
+  supply_piles_.push_back(new SupplyPile(
+    new BasicVictory("Duchy", 5, 12, ")3(")));
+  supply_piles_.push_back(new SupplyPile(
+    new BasicVictory("Province", 8, 12, ")6(")));
+
+  supply_piles_.push_back(new SupplyPile(
+    new BasicTreasure("Copper", 1, 0, 60, "(1)")));
+  supply_piles_.push_back(new SupplyPile(
+    new BasicTreasure("Silver", 2, 3, 60, "(2)")));
+  supply_piles_.push_back(new SupplyPile(
+    new BasicTreasure("Gold", 3, 6, 60, "(3)")));
+
 }
 
 void GameState::StartDeck(Deck& deck) {
@@ -78,14 +98,14 @@ const std::vector<Player*>& GameState::players() const {
 }
 
 const std::vector<SupplyPile*>& GameState::supply_piles() const {
-  return *supply_piles_;
+  return supply_piles_;
 }
 
 std::vector<const IViewable*>* GameState::supply_piles_viewable() const {
   std::vector<const IViewable*> *result = new std::vector<const IViewable*>;
 
-  for (std::vector<SupplyPile*>::const_iterator it = supply_piles_->begin();
-      it != supply_piles_->end();
+  for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
+      it != supply_piles_.end();
       ++it) {
     result->push_back(*it);
   }

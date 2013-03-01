@@ -11,8 +11,6 @@
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-std::vector<SupplyPile*>* InitializeSupply();
-
 int main() {
   /*
    * This pair of statements is to pause the game so that the debugger can be
@@ -21,10 +19,7 @@ int main() {
   initscr();
   getch();
 
-  std::vector<SupplyPile*> *piles = InitializeSupply();
-  GameState *game = new GameState(4, piles);
-
-  Viewport *viewport = new Viewport(game);
+  Viewport *viewport = new Viewport(new GameState(4));
 
   int ch = 0;
   while ((ch = getch()) != 'q') {
@@ -63,21 +58,4 @@ int main() {
 
   delete viewport;
   return 0;
-}
-
-std::vector<SupplyPile*>* InitializeSupply() {
-  // Let's initialize Estates, Coppers, Chapels and Chancellors.
-  std::vector<SupplyPile*> *result = new std::vector<SupplyPile*>;
-
-  Card *estate = new BasicVictory("Estate", 2, 24, ")1(");
-  Card *copper = new BasicTreasure("Copper", 1, 0, 60, "(1)");
-  Card *chapel = new GenericCard("Chapel", 2, 10, "Chapel 4 cards", "type");
-  Card *chancellor = new GenericCard("Chancellor", 2, 10, "(2) Chancellor effect", "type");
-
-  result->push_back(new SupplyPile(estate));
-  result->push_back(new SupplyPile(copper));
-  result->push_back(new SupplyPile(chapel));
-  result->push_back(new SupplyPile(chancellor));
-
-  return result;
 }

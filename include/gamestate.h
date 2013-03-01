@@ -15,7 +15,7 @@ class Deck;
  */
 class GameState {
 public:
-  GameState(int player_count, std::vector<SupplyPile*> *supply_piles);
+  GameState(int player_count);
   ~GameState();
 
   bool Buy(std::string name);
@@ -24,7 +24,6 @@ public:
    * product.
    */
   SupplyPile* FindSupplyPile(std::string name);
-  void StartDeck(Deck& deck);
 
   Deck& current_deck() const;
   Player& current_player() const;
@@ -38,10 +37,14 @@ private:
    * state to have to track all that information on its own.
    */
   PlayerCollection players_;
-  std::vector<SupplyPile*> *supply_piles_;
+  std::vector<SupplyPile*> supply_piles_;
 
   GameState();
   GameState(const GameState& other);
+
+  void StartDeck(Deck& deck);
+  void InitializeBaseSupply();
+
   GameState& operator=(const GameState& other);
 };
 

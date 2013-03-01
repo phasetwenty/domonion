@@ -14,7 +14,7 @@ public:
     int initial_supply,
     std::string text,
     std::string type);
-  ~Card();
+  ~Card() { }
 
   /*
    * Call to play the card. It will modify the game state in the course of
@@ -26,7 +26,7 @@ public:
 
   int cost() const;
   int initial_supply() const;
-  virtual bool is_playable() const = 0;
+  virtual bool is_playable() const;
   std::string const& name() const;
   std::string const& text() const;
 

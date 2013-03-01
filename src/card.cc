@@ -8,10 +8,6 @@ Card::Card(std::string name,
   cost_(cost), initial_supply_(initial_supply), name_(name), text_(text), type_(type) {
 }
 
-Card::~Card() {
-
-}
-
 std::string* Card::Info() const {
   return new std::string(text());
 }
@@ -22,6 +18,10 @@ std::string* Card::ToString() const {
 
 int Card::initial_supply() const {
   return initial_supply_;
+}
+
+int Card::cost() const {
+  return cost_;
 }
 
 bool Card::is_playable() const {

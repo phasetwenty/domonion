@@ -12,7 +12,7 @@ GenericCard::GenericCard(std::string name,
   int cost,
   int initial_supply,
   std::string text,
-  std::string type) : Card(name, cost, initial_supply, text, type) { }
+  Types type) : Card(name, cost, initial_supply, text, type) { }
 
 GenericCard::~GenericCard() {
   // TODO Auto-generated destructor stub

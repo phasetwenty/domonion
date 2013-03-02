@@ -47,7 +47,7 @@ Deck& Player::deck() const {
   return *deck_;
 }
 
-Phases Player::phase() const {
+Player::Phases Player::phase() const {
   return phase_;
 }
 

@@ -5,10 +5,10 @@
 
 #include <deck.h>
 
-enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
-
 class Player {
 public:
+  enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
+
   Player(Deck *deck);
   ~Player();
 

@@ -24,7 +24,7 @@ public:
   void Start();
 
   Deck& current_deck() const;
-  Phases current_phase() const;
+  Player::Phases current_phase() const;
   Player& current_player() const;
   const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;

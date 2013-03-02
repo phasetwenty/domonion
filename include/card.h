@@ -9,12 +9,15 @@ class GameState;
 
 class Card : public IViewable {
 public:
+  enum Types { kUndefined = 0, kAction, kCurse, kReaction, kTreasure, kVictory };
+
   Card(std::string name,
     int cost,
     int initial_supply,
     std::string text,
-    std::string type);
-  ~Card() { }
+    int types_count,
+    ...);
+  ~Card();
 
   /*
    * Call to play the card. It will modify the game state in the course of
@@ -26,6 +29,7 @@ public:
 
   int cost() const;
   int initial_supply() const;
+  bool is_action() const;
   virtual bool is_playable() const;
   std::string const& name() const;
   std::string const& text() const;
@@ -75,7 +79,8 @@ private:
    * of a specific type, it should look more like "if <type> is in the
    * types <card> has".
    */
-  std::string type_;
+  Types *types_;
+  int types_count_;
 
   /*
    * Subtype

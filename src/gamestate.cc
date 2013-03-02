@@ -97,7 +97,7 @@ Deck& GameState::current_deck() const {
   return current_player().deck();
 }
 
-Phases GameState::current_phase() const {
+Player::Phases GameState::current_phase() const {
   return current_player().phase();
 }
 

@@ -14,7 +14,7 @@ BasicVictory::BasicVictory(std::string name,
     int cost,
     int initial_supply,
     std::string text) :
-    Card(name, cost, initial_supply, text, "Victory") { }
+    Card(name, cost, initial_supply, text, kVictory) { }
 
 BasicVictory::~BasicVictory() {
   // TODO Auto-generated destructor stub

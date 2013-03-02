@@ -21,7 +21,7 @@ public:
     int cost,
     int initial_supply,
     std::string text,
-    std::string type);
+    Types type);
   virtual ~GenericCard();
 
   virtual void Play(GameState& game) const;

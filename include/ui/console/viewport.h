@@ -56,6 +56,11 @@ private:
 
   Viewport();
   Viewport(const Viewport& other);
+
+  void Update(int count, ...);
+
+  View* active_view() const;
+
   Viewport& operator=(const Viewport& other);
 };
 

@@ -20,6 +20,14 @@ PlayerCollection::~PlayerCollection() {
   }
 }
 
+Player& PlayerCollection::Advance() {
+  players_it_ = players_it_ == players_.end() ?
+    players_.begin() :
+    players_it_ + 1;
+
+  return current();
+}
+
 Player& PlayerCollection::current() const {
   return **players_it_;
 }

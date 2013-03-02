@@ -14,8 +14,6 @@ GameState::GameState(int player_count) : players_(player_count), supply_piles_()
       ++it) {
     StartDeck((*it)->deck());
   }
-
-
 }
 
 GameState::~GameState() {
@@ -71,6 +69,16 @@ void GameState::InitializeBaseSupply() {
 
 }
 
+void GameState::NextTurn() {
+  current_player().EndTurn();
+  players_.Advance();
+  current_player().StartTurn();
+}
+
+void GameState::Start() {
+  current_player().StartTurn();
+}
+
 void GameState::StartDeck(Deck& deck) {
   SupplyPile *estate_pile = FindSupplyPile("Estate");
   SupplyPile *copper_pile = FindSupplyPile("Copper");
@@ -87,6 +95,10 @@ void GameState::StartDeck(Deck& deck) {
 
 Deck& GameState::current_deck() const {
   return current_player().deck();
+}
+
+Phases GameState::current_phase() const {
+  return current_player().phase();
 }
 
 Player& GameState::current_player() const {

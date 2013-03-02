@@ -3,47 +3,46 @@
 
 #include <vector>
 
+#include <player.h>
 #include <playercollection.h>
 #include <supplypile.h>
 
-class Player;
 class Deck;
 
 /*
  * GameState
  * All of the state of the game in progress.
  */
+
 class GameState {
 public:
   GameState(int player_count);
   ~GameState();
 
   bool Buy(std::string name);
-  /*
-   * This is handy during development, but may not be appropriate in the final
-   * product.
-   */
-  SupplyPile* FindSupplyPile(std::string name);
+  void NextTurn();
+  void Start();
 
   Deck& current_deck() const;
+  Phases current_phase() const;
   Player& current_player() const;
   const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;
   std::vector<const IViewable*>* supply_piles_viewable() const;
 private:
-  /*
-   * Card bank? Some object that handles the collection of Supply piles for
-   * all cards that need to be out. It would be inappropriate for the game
-   * state to have to track all that information on its own.
-   */
   PlayerCollection players_;
   std::vector<SupplyPile*> supply_piles_;
 
   GameState();
   GameState(const GameState& other);
 
-  void StartDeck(Deck& deck);
+  /*
+   * This is handy during development, but may not be appropriate in the final
+   * product.
+   */
+  SupplyPile* FindSupplyPile(std::string name);
   void InitializeBaseSupply();
+  void StartDeck(Deck& deck);
 
   GameState& operator=(const GameState& other);
 };

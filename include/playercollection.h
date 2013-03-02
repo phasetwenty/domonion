@@ -11,7 +11,7 @@ public:
   PlayerCollection(int player_count);
   ~PlayerCollection();
 
-  void Advance();
+  Player& Advance();
 
   Player& current() const;
   const Player& next() const;

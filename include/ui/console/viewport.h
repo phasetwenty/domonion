@@ -30,7 +30,6 @@ public:
   void Execute();
   void ItemDown();
   void ItemUp();
-  void PlayCard();
   void WindowLeft();
   void WindowRight();
 
@@ -57,7 +56,8 @@ private:
   Viewport();
   Viewport(const Viewport& other);
 
-  void Update(int count, ...);
+  void Update();
+  void UpdateHelper(int count, ...);
 
   View* active_view() const;
 

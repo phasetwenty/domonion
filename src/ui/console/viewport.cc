@@ -10,6 +10,15 @@
 #include <stdarg.h>
 
 #include <ui/console/viewport.h>
+/*
+ * Things tracked in the game state (directly or indirectly):
+ * * How to optionally include supplies: Colony, Platinum
+ * Turns
+ * The state of the current turn
+ * * Whose turn it is
+ * * Actions/Treasures in play / tableau
+ * * Actions/Buy/Coin count
+ */
 
 Viewport::Viewport(GameState *game) :
     game_(game), info_view_(), player_view_() {
@@ -69,13 +78,16 @@ Viewport::~Viewport() {
 void Viewport::CleanupAndDraw() {
   game_->current_deck().CleanupAndDraw();
 
-  Update(2, hand_view_, tableau_view_);
+  UpdateHelper(2, hand_view_, tableau_view_);
 }
 
 void Viewport::Execute() {
-  if (selectable_views_[active_index_] == hand_view_) {
-    PlayCard();
-  } else if (selectable_views_[active_index_] == supply_view_) {
+  if (active_view() == hand_view_) {
+    const Card& card = hand_view_->current_item_as<Card>();
+    game_->PlayCard(card);
+
+    UpdateHelper(2, hand_view_, tableau_view_);
+  } else if (active_view() == supply_view_) {
     const SupplyPile& pile = supply_view_->current_item_as<SupplyPile>();
     game_->Buy(pile.name());
 
@@ -85,29 +97,34 @@ void Viewport::Execute() {
     active_index_ = kSelectableViewCount - 1;
     hand_view_->SetActive();
 
-    Update(0);
+    UpdateHelper(0);
   }
 }
 
 void Viewport::ItemDown() {
   selectable_views_[active_index_]->ItemDown();
-  Update(0);
+  UpdateHelper(0);
 }
 
 void Viewport::ItemUp() {
   selectable_views_[active_index_]->ItemUp();
-  Update(0);
+  UpdateHelper(0);
 }
 
-void Viewport::PlayCard() {
-  const Card& card = hand_view_->current_item_as<Card>();
-  game_->current_deck().Play(card);
-  card.Play(*game_);
-
-  Update(2, hand_view_, tableau_view_);
+void Viewport::Update() {
+  switch (game_->current_phase()) {
+  case Player::kAction: {
+    active_index_ = 2;
+    UpdateHelper(3, hand_view_, supply_view_, tableau_view_);
+    break;
+  } case Player::kBuy: {
+    active_index_ = 0;
+    UpdateHelper(1, supply_view_);
+  }
+  }
 }
 
-void Viewport::Update(int count, ...) {
+void Viewport::UpdateHelper(int count, ...) {
   info_view_.Update(active_view()->current_item());
   player_view_.Update(game_->current_player());
 
@@ -132,7 +149,7 @@ void Viewport::WindowLeft() {
     active_view()->SetInactive();
     active_index_--;
     active_view()->SetActive();
-    Update(0);
+    UpdateHelper(0);
   }
 }
 
@@ -142,7 +159,7 @@ void Viewport::WindowRight() {
     active_view()->SetInactive();
     active_index_++;
     active_view()->SetActive();
-    Update(0);
+    UpdateHelper(0);
   }
 }
 

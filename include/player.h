@@ -7,8 +7,6 @@
 
 class Player {
 public:
-  enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
-
   Player(std::string name, Deck *deck);
   ~Player();
 
@@ -26,8 +24,6 @@ public:
   int coin() const;
   Deck& deck() const;
   const std::string& name() const;
-  Phases phase() const;
-  void set_phase(Phases value);
 
 private:
   int actions_;
@@ -35,7 +31,6 @@ private:
   int coin_;
   Deck *deck_;
   std::string name_;
-  Phases phase_;
 
   Player();
   Player(const Player& other);

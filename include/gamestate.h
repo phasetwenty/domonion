@@ -16,6 +16,8 @@ class Deck;
 
 class GameState {
 public:
+  enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
+
   GameState(int player_count);
   ~GameState();
 
@@ -25,12 +27,13 @@ public:
   void Start();
 
   Deck& current_deck() const;
-  Player::Phases current_phase() const;
+  Phases current_phase() const;
   Player& current_player() const;
   const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;
   std::vector<const IViewable*>* supply_piles_viewable() const;
 private:
+  Phases current_phase_;
   PlayerCollection players_;
   std::vector<SupplyPile*> supply_piles_;
 

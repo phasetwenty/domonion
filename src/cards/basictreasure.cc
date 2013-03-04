@@ -29,5 +29,5 @@ int BasicTreasure::coin_provided() const {
 }
 
 bool BasicTreasure::is_playable(const GameState& game) const {
-  return game.current_phase() == Player::kBuy;
+  return game.current_phase() == GameState::kBuy;
 }

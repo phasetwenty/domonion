@@ -3,7 +3,7 @@
 class Deck;
 
 Player::Player(std::string name, Deck *deck) :
-  actions_(0), buys_(0), coin_(0), deck_(deck), name_(name), phase_(kUndefined) {
+  actions_(0), buys_(0), coin_(0), deck_(deck), name_(name) {
 
 }
 
@@ -56,12 +56,4 @@ Deck& Player::deck() const {
 
 const std::string& Player::name() const {
   return name_;
-}
-
-Player::Phases Player::phase() const {
-  return phase_;
-}
-
-void Player::set_phase(Phases value) {
-  phase_ = value;
 }

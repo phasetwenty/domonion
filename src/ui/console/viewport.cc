@@ -22,7 +22,6 @@
 
 Viewport::Viewport(GameState *game) :
     game_(game), info_view_(), player_view_() {
-  initscr();
   keypad(stdscr, TRUE);
   cbreak(); // In case you forget, this disables line buffering.
   noecho(); // Disables terminal echo.

@@ -48,10 +48,10 @@ bool Card::is_action() const {
 bool Card::is_playable(const GameState& game) const {
   bool result = false;
   switch (game.current_phase()) {
-  case Player::kAction: {
+  case GameState::kAction: {
     result = is_action();
     break;
-  } case Player::kBuy: {
+  } case GameState::kBuy: {
     result = is_treasure();
     break;
   }

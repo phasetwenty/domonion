@@ -6,7 +6,8 @@
 #include <gamestate.h>
 #include <playercollection.h>
 
-GameState::GameState(int player_count) : players_(player_count), supply_piles_() {
+GameState::GameState(int player_count) :
+    current_phase_(kUndefined), players_(player_count), supply_piles_() {
   InitializeBaseSupply();
 
   for (std::vector<Player*>::const_iterator it = players_.players().begin();
@@ -43,33 +44,36 @@ bool GameState::Buy(std::string name) {
 }
 
 void GameState::ChangePhase() {
-  switch (current_phase()) {
-  case Player::kUndefined: {
-    current_player().set_phase(Player::kAction);
+  if (current_phase_ == kUndefined) {
+    current_phase_ = kAction;
+  }
+
+  switch (current_phase_) {
+  case kUndefined: {
+    // Won't happen, but I don't like warnings.
+    break;
+  } case kAction: {
     if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
-      current_player().set_phase(Player::kBuy);
+      current_phase_ = kBuy;
     }
     break;
-  } case Player::kAction: {
-    if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
-      current_player().set_phase(Player::kBuy);
-    }
-    break;
-  } case Player::kBuy: {
+  } case kBuy: {
     if (current_player().buys() == 0) {
       /*
        * I don't approve of this setup in the long run as it skips any
        * opportunity for UI updates.
        */
-      current_player().set_phase(Player::kCleanupDiscard);
+      current_phase_ = kCleanupDiscard;
       current_deck().CleanupAndDraw();
-      current_player().set_phase(Player::kUndefined);
+      current_phase_ = kCleanupDiscard;
       NextTurn();
     }
     break;
+  } case kCleanupDiscard: {
+    // Won't happen, but I don't like warnings.
+    break;
   }
   }
-  // TODO: do they enter the cleanup/discard phase? take action based on it?
 }
 
 SupplyPile* GameState::FindSupplyPile(std::string name) {
@@ -107,6 +111,7 @@ void GameState::NextTurn() {
   current_player().EndTurn();
   players_.Advance();
   current_player().StartTurn();
+  ChangePhase();
 
 }
 
@@ -142,8 +147,8 @@ Deck& GameState::current_deck() const {
   return current_player().deck();
 }
 
-Player::Phases GameState::current_phase() const {
-  return current_player().phase();
+GameState::Phases GameState::current_phase() const {
+  return current_phase_;
 }
 
 Player& GameState::current_player() const {

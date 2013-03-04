@@ -19,7 +19,9 @@ int main() {
   initscr();
   getch();
 
-  Viewport *viewport = new Viewport(new GameState(4));
+  GameState *g = new GameState(4);
+  g->Start();
+  Viewport *viewport = new Viewport(g);
 
   int ch = 0;
   while ((ch = getch()) != 'q') {
@@ -47,10 +49,6 @@ int main() {
        * The example does not use the KEY_ENTER constant to compare the enter key. Why?
        */
       viewport->Execute();
-      break;
-    }
-    default: {
-      viewport->CleanupAndDraw();
       break;
     }
     }

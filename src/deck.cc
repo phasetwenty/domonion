@@ -182,6 +182,18 @@ const std::vector<const Card*>& Deck::hand() const {
   return hand_;
 }
 
+bool Deck::hand_has_actions() const {
+  for (std::vector<const Card*>::const_iterator it = hand_.begin();
+      it != hand_.end();
+      ++it) {
+    if ((*it)->is_action()) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 std::vector<const IViewable*>* Deck::hand_viewable() const {
   return CopyCards(hand_);
 }

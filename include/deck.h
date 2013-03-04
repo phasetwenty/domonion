@@ -58,6 +58,7 @@ public:
 	void Trash(const Card* card);
 
 	const std::vector<const Card*>& hand() const;
+	bool hand_has_actions() const;
 	std::vector<const IViewable*>* hand_viewable() const;
 	const std::vector<const Card*>& tableau() const;
 	std::vector<const IViewable*>* tableau_viewable() const;

@@ -2,8 +2,10 @@
 
 class Deck;
 
-Player::Player(Deck *deck) :
-  actions_(0), buys_(0), coin_(0), deck_(deck), phase_(kUndefined) { }
+Player::Player(std::string name, Deck *deck) :
+  actions_(0), buys_(0), coin_(0), deck_(deck), name_(name), phase_(kUndefined) {
+
+}
 
 Player::~Player() {
   delete deck_;
@@ -50,6 +52,10 @@ int Player::coin() const {
 
 Deck& Player::deck() const {
   return *deck_;
+}
+
+const std::string& Player::name() const {
+  return name_;
 }
 
 Player::Phases Player::phase() const {

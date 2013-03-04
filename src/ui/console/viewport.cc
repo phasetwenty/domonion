@@ -38,8 +38,6 @@ Viewport::Viewport(GameState *game) :
     exit(1);
   }
 
-  game_->current_deck().CleanupAndDraw();
-
   hand_view_ = new View(game_->current_deck().hand_viewable(),
     kWindowHandStartY,
     kWindowHandStartX);
@@ -60,6 +58,7 @@ Viewport::Viewport(GameState *game) :
   hand_view_->SetActive();
   active_index_ = 2;
 
+  info_view_.Update(active_view()->current_item());
   player_view_.Update(game_->current_player());
   // TODO: initialize color pairs game-wide here.
 }
@@ -75,91 +74,72 @@ Viewport::~Viewport() {
   endwin();
 }
 
-void Viewport::CleanupAndDraw() {
-  game_->current_deck().CleanupAndDraw();
+void Viewport::ChangeActive(int view_index) {
+  active_view()->SetInactive();
+  active_index_ = view_index;
+  active_view()->SetActive();
 
-  UpdateHelper(2, hand_view_, tableau_view_);
+  UpdateMinor();
 }
 
 void Viewport::Execute() {
-  if (active_view() == hand_view_) {
-    const Card& card = hand_view_->current_item_as<Card>();
-    game_->PlayCard(card);
+  if (!active_view()->IsEmpty()) {
+    if (active_view() == hand_view_) {
+      const Card& card = hand_view_->current_item_as<Card>();
+      game_->PlayCard(card);
 
-    UpdateHelper(2, hand_view_, tableau_view_);
-  } else if (active_view() == supply_view_) {
-    const SupplyPile& pile = supply_view_->current_item_as<SupplyPile>();
-    game_->Buy(pile.name());
+    } else if (active_view() == supply_view_) {
+      const SupplyPile& pile = supply_view_->current_item_as<SupplyPile>();
+      game_->Buy(pile.name());
 
-    supply_view_->Update(game_->supply_piles_viewable());
-    supply_view_->SetInactive();
+      supply_view_->Update(game_->supply_piles_viewable());
+      supply_view_->SetInactive();
 
-    active_index_ = kSelectableViewCount - 1;
-    hand_view_->SetActive();
+      active_index_ = kSelectableViewCount - 1;
+      hand_view_->SetActive();
+    }
 
-    UpdateHelper(0);
+    UpdateAll();
   }
 }
 
 void Viewport::ItemDown() {
-  selectable_views_[active_index_]->ItemDown();
-  UpdateHelper(0);
+  if (!active_view()->IsEmpty()) {
+    active_view()->ItemDown();
+    UpdateMinor();
+  }
 }
 
 void Viewport::ItemUp() {
-  selectable_views_[active_index_]->ItemUp();
-  UpdateHelper(0);
-}
-
-void Viewport::Update() {
-  switch (game_->current_phase()) {
-  case Player::kAction: {
-    active_index_ = 2;
-    UpdateHelper(3, hand_view_, supply_view_, tableau_view_);
-    break;
-  } case Player::kBuy: {
-    active_index_ = 0;
-    UpdateHelper(1, supply_view_);
-  }
+  if (!active_view()->IsEmpty()) {
+    active_view()->ItemUp();
+    UpdateMinor();
   }
 }
 
-void Viewport::UpdateHelper(int count, ...) {
+void Viewport::UpdateAll() {
   info_view_.Update(active_view()->current_item());
   player_view_.Update(game_->current_player());
 
-  va_list views;
-  va_start(views, count);
+  hand_view_->Update(game_->current_deck().hand_viewable());
+  supply_view_->Update(game_->supply_piles_viewable());
+  tableau_view_->Update(game_->current_deck().tableau_viewable());
+}
 
-  for (int i = 0; i < count; ++i) {
-    View *view = va_arg(views, View*);
-    if (view == hand_view_) {
-      hand_view_->Update(game_->current_deck().hand_viewable());
-    } else if (view == supply_view_) {
-      supply_view_->Update(game_->supply_piles_viewable());
-    } else if (view == tableau_view_) {
-      tableau_view_->Update(game_->current_deck().tableau_viewable());
-    }
-  }
-  va_end(views);
+void Viewport::UpdateMinor() {
+  info_view_.Update(active_view()->current_item());
 }
 
 void Viewport::WindowLeft() {
   if (active_index_ > 0 && !selectable_views_[active_index_ - 1]->IsEmpty()) {
-    active_view()->SetInactive();
-    active_index_--;
-    active_view()->SetActive();
-    UpdateHelper(0);
+    ChangeActive(active_index_ - 1);
   }
 }
 
 void Viewport::WindowRight() {
   if (active_index_ < kSelectableViewCount - 1
     && !selectable_views_[active_index_ + 1]->IsEmpty()) {
-    active_view()->SetInactive();
-    active_index_++;
-    active_view()->SetActive();
-    UpdateHelper(0);
+    ChangeActive(active_index_ + 1);
   }
 }
 

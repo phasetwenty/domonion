@@ -13,6 +13,7 @@ GameState::GameState(int player_count) : players_(player_count), supply_piles_()
       it != players_.players().end();
       ++it) {
     StartDeck((*it)->deck());
+    (*it)->deck().CleanupAndDraw();
   }
 }
 
@@ -56,7 +57,14 @@ void GameState::ChangePhase() {
     break;
   } case Player::kBuy: {
     if (current_player().buys() == 0) {
+      /*
+       * I don't approve of this setup in the long run as it skips any
+       * opportunity for UI updates.
+       */
       current_player().set_phase(Player::kCleanupDiscard);
+      current_deck().CleanupAndDraw();
+      current_player().set_phase(Player::kUndefined);
+      NextTurn();
     }
     break;
   }
@@ -99,6 +107,7 @@ void GameState::NextTurn() {
   current_player().EndTurn();
   players_.Advance();
   current_player().StartTurn();
+
 }
 
 void GameState::PlayCard(const Card& card) {

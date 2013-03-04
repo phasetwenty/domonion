@@ -1,3 +1,4 @@
+#include <sstream>
 #include <vector>
 
 #include <player.h>
@@ -5,8 +6,11 @@
 
 PlayerCollection::PlayerCollection(int player_count) : players_(),
     players_it_() {
+  std::stringstream ss;
   for (int i = 0; i < player_count; ++i) {
-    players_.push_back(new Player(new Deck()));
+    ss.str("");
+    ss << "Player " << i + 1;
+    players_.push_back(new Player(ss.str(), new Deck()));
   }
 
   players_it_ = players_.begin();

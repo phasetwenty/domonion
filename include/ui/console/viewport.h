@@ -26,7 +26,6 @@ public:
   Viewport(GameState *game);
   ~Viewport();
 
-  void CleanupAndDraw();
   void Execute();
   void ItemDown();
   void ItemUp();
@@ -56,12 +55,12 @@ private:
   Viewport();
   Viewport(const Viewport& other);
 
-  void Update();
+  void ChangeActive(int view_index);
+  void UpdateAll();
+  void UpdateMinor();
   void UpdateHelper(int count, ...);
 
   View* active_view() const;
-
-  Viewport& operator=(const Viewport& other);
 };
 
 #endif /* DOMONION_VIEWPORT_H_ */

@@ -9,7 +9,7 @@ class Player {
 public:
   enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
 
-  Player(Deck *deck);
+  Player(std::string name, Deck *deck);
   ~Player();
 
   /*
@@ -25,16 +25,16 @@ public:
   int buys() const;
   int coin() const;
   Deck& deck() const;
+  const std::string& name() const;
   Phases phase() const;
   void set_phase(Phases value);
 
 private:
-  std::string name_;
-
   int actions_;
   int buys_;
   int coin_;
   Deck *deck_;
+  std::string name_;
   Phases phase_;
 
   Player();
@@ -43,11 +43,3 @@ private:
 };
 
 #endif // DOMONION_PLAYER_H
-/*
- * Things to track
- * * Deck
- * * Victory token count (Prosperity and beyond)
- * * Hand
- * * Tableau: belongs to GameState or Player? I think GameState because there
- *   can only be one at a time.
- */

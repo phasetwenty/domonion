@@ -1,3 +1,4 @@
+#include <iterator>
 #include <sstream>
 #include <vector>
 
@@ -25,9 +26,11 @@ PlayerCollection::~PlayerCollection() {
 }
 
 Player& PlayerCollection::Advance() {
-  players_it_ = players_it_ == players_.end() ?
-    players_.begin() :
-    players_it_ + 1;
+  if (*players_it_ == players_.back()) {
+    players_it_ = players_.begin();
+  } else {
+    std::advance(players_it_, 1);
+  }
 
   return current();
 }

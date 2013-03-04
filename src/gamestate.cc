@@ -65,7 +65,7 @@ void GameState::ChangePhase() {
        */
       current_phase_ = kCleanupDiscard;
       current_deck().CleanupAndDraw();
-      current_phase_ = kCleanupDiscard;
+      current_phase_ = kUndefined;
       NextTurn();
     }
     break;
@@ -111,8 +111,8 @@ void GameState::NextTurn() {
   current_player().EndTurn();
   players_.Advance();
   current_player().StartTurn();
-  ChangePhase();
 
+  ChangePhase();
 }
 
 void GameState::PlayCard(const Card& card) {

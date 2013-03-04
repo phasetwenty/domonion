@@ -19,6 +19,7 @@ public:
   void EndTurn();
   int SpendCoin(int c);
   void StartTurn();
+  int SpendBuy();
 
   int actions() const;
   int buys() const;

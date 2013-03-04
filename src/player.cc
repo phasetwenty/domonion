@@ -20,6 +20,11 @@ void Player::EndTurn() {
   coin_ = 0;
 }
 
+int Player::SpendBuy() {
+  buys_ = buys_ > 0 ? buys_ - 1 : 0;
+  return buys_;
+}
+
 int Player::SpendCoin(int c) {
   coin_ -= c;
   return coin_;

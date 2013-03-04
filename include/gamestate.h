@@ -1,5 +1,5 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef DOMONION_GAMESTATE_H
+#define DOMONION_GAMESTATE_H
 
 #include <vector>
 
@@ -21,6 +21,7 @@ public:
 
   bool Buy(std::string name);
   void NextTurn();
+  void PlayCard(const Card& card);
   void Start();
 
   Deck& current_deck() const;
@@ -40,6 +41,7 @@ private:
    * This is handy during development, but may not be appropriate in the final
    * product.
    */
+  void ChangePhase();
   SupplyPile* FindSupplyPile(std::string name);
   void InitializeBaseSupply();
   void StartDeck(Deck& deck);
@@ -47,16 +49,4 @@ private:
   GameState& operator=(const GameState& other);
 };
 
-#endif // GAMESTATE_H
-
-/*
- * Things tracked in the game state (directly or indirectly):
- * Players
- * Supply piles
- * * How to optionally include supplies: Colony, Platinum
- * Turns
- * The state of the current turn
- * * Whose turn it is
- * * Actions/Treasures in play / tableau
- * * Actions/Buy/Coin count
- */
+#endif // DOMONION_GAMESTATE_H

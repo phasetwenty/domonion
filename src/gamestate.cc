@@ -25,17 +25,43 @@ GameState::~GameState() {
 }
 
 bool GameState::Buy(std::string name) {
-  SupplyPile *pile = FindSupplyPile(name);
-
   bool result = false;
-  if (current_player().coin() >= pile->card()->cost()) {
-    result = pile->BuyOrGain();
-    if (result) {
-      current_player().SpendCoin(pile->card()->cost());
-      current_player().deck().Gain(pile->card());
+  if (current_player().buys() > 0) {
+    SupplyPile *pile = FindSupplyPile(name);
+    if (current_player().coin() >= pile->card()->cost()) {
+      result = pile->BuyOrGain();
+      if (result) {
+        current_player().SpendBuy();
+        current_player().SpendCoin(pile->card()->cost());
+        current_player().deck().Gain(pile->card());
+        ChangePhase();
+      }
     }
   }
   return result;
+}
+
+void GameState::ChangePhase() {
+  switch (current_phase()) {
+  case Player::kUndefined: {
+    current_player().set_phase(Player::kAction);
+    if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
+      current_player().set_phase(Player::kBuy);
+    }
+    break;
+  } case Player::kAction: {
+    if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
+      current_player().set_phase(Player::kBuy);
+    }
+    break;
+  } case Player::kBuy: {
+    if (current_player().buys() == 0) {
+      current_player().set_phase(Player::kCleanupDiscard);
+    }
+    break;
+  }
+  }
+  // TODO: do they enter the cleanup/discard phase? take action based on it?
 }
 
 SupplyPile* GameState::FindSupplyPile(std::string name) {
@@ -75,8 +101,18 @@ void GameState::NextTurn() {
   current_player().StartTurn();
 }
 
+void GameState::PlayCard(const Card& card) {
+  if (card.is_playable(*this)) {
+    current_deck().Play(card);
+    card.Play(*this);
+
+    ChangePhase();
+  }
+}
+
 void GameState::Start() {
   current_player().StartTurn();
+  ChangePhase();
 }
 
 void GameState::StartDeck(Deck& deck) {

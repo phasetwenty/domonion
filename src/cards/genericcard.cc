@@ -12,7 +12,7 @@ GenericCard::GenericCard(std::string name,
   int cost,
   int initial_supply,
   std::string text,
-  Types type) : Card(name, cost, initial_supply, text, type) { }
+  Types type) : Card(name, cost, initial_supply, text, 1, type) { }
 
 GenericCard::~GenericCard() {
   // TODO Auto-generated destructor stub
@@ -20,6 +20,6 @@ GenericCard::~GenericCard() {
 
 void GenericCard::Play(GameState& game) const { }
 
-bool GenericCard::is_playable() const {
+bool GenericCard::is_playable(const GameState& game) const {
   return true;
 }

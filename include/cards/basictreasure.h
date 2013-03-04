@@ -22,7 +22,7 @@ public:
   virtual void Play(GameState& game) const;
 
   int coin_provided() const;
-  bool is_playable() const;
+  bool is_playable(const GameState& game) const;
 private:
   int coin_provided_;
 

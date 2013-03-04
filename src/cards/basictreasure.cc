@@ -13,7 +13,7 @@ BasicTreasure::BasicTreasure(std::string name,
     int cost,
     int initial_supply,
     std::string text) :
-    Card(name, cost, initial_supply, text, kTreasure),
+    Card(name, cost, initial_supply, text, 1, kTreasure),
     coin_provided_(coin_provided) {}
 
 BasicTreasure::~BasicTreasure() {
@@ -28,6 +28,6 @@ int BasicTreasure::coin_provided() const {
   return coin_provided_;
 }
 
-bool BasicTreasure::is_playable() const {
-  return true;
+bool BasicTreasure::is_playable(const GameState& game) const {
+  return game.current_phase() == Player::kBuy;
 }

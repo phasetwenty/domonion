@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <card.h>
+#include <gamestate.h>
 
 Card::Card(std::string name, int cost, int initial_supply, std::string text,
     int types_count, ...) :
@@ -41,17 +42,35 @@ int Card::cost() const {
 }
 
 bool Card::is_action() const {
+  return is_type(kAction);
+}
+
+bool Card::is_playable(const GameState& game) const {
+  bool result = false;
+  switch (game.current_phase()) {
+  case Player::kAction: {
+    result = is_action();
+    break;
+  } case Player::kBuy: {
+    result = is_treasure();
+    break;
+  }
+  }
+  return result;
+}
+
+bool Card::is_treasure() const {
+  return is_type(kTreasure);
+}
+
+bool Card::is_type(Types t) const {
   for (int i = 0; i < types_count_; ++i) {
-    if (types_[i] == kAction) {
+    if (types_[i] == t) {
       return true;
     }
   }
 
   return false;
-}
-
-bool Card::is_playable() const {
-  return true;
 }
 
 const std::string& Card::name() const {

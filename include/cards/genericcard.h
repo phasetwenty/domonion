@@ -13,7 +13,7 @@
 class GameState;
 
 /*
- * Generic card useful for testing.
+ * Generic card useful for testing. Only supports a single type attached to it.
  */
 class GenericCard: public Card {
 public:
@@ -26,7 +26,7 @@ public:
 
   virtual void Play(GameState& game) const;
 
-  virtual bool is_playable() const;
+  virtual bool is_playable(const GameState& game) const;
 };
 
 #endif /* DOMONION_GENERICCARD_H_ */

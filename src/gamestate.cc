@@ -7,12 +7,11 @@
 #include <playercollection.h>
 
 GameState::GameState(int player_count) :
-    current_phase_(kUndefined), players_(player_count), supply_piles_() {
+  current_phase_(kUndefined), empty_piles_(0), players_(player_count), supply_piles_() {
   InitializeBaseSupply();
 
   for (std::vector<Player*>::const_iterator it = players_.players().begin();
-      it != players_.players().end();
-      ++it) {
+    it != players_.players().end(); ++it) {
     StartDeck((*it)->deck());
     (*it)->deck().CleanupAndDraw();
   }
@@ -20,14 +19,17 @@ GameState::GameState(int player_count) :
 
 GameState::~GameState() {
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
-      it != supply_piles_.end();
-      ++it) {
+    it != supply_piles_.end(); ++it) {
     delete *it;
   }
 }
 
 bool GameState::Buy(std::string name) {
   bool result = false;
+  if (is_ended()) {
+    return result;
+  }
+
   if (current_player().buys() > 0) {
     SupplyPile *pile = FindSupplyPile(name);
     if (current_player().coin() >= pile->card()->cost()) {
@@ -36,6 +38,11 @@ bool GameState::Buy(std::string name) {
         current_player().SpendBuy();
         current_player().SpendCoin(pile->card()->cost());
         current_player().deck().Gain(pile->card());
+
+        if (pile->count() == 0) {
+          empty_piles_++;
+        }
+
         ChangePhase();
       }
     }
@@ -44,6 +51,10 @@ bool GameState::Buy(std::string name) {
 }
 
 void GameState::ChangePhase() {
+  if (is_ended()) {
+    return;
+  }
+
   if (current_phase_ == kUndefined) {
     current_phase_ = kAction;
   }
@@ -52,12 +63,14 @@ void GameState::ChangePhase() {
   case kUndefined: {
     // Won't happen, but I don't like warnings.
     break;
-  } case kAction: {
+  }
+  case kAction: {
     if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
       current_phase_ = kBuy;
     }
     break;
-  } case kBuy: {
+  }
+  case kBuy: {
     if (current_player().buys() == 0) {
       /*
        * I don't approve of this setup in the long run as it skips any
@@ -69,18 +82,18 @@ void GameState::ChangePhase() {
       NextTurn();
     }
     break;
-  } case kCleanupDiscard: {
+  }
+  case kCleanupDiscard: {
     // Won't happen, but I don't like warnings.
     break;
   }
   }
 }
 
-SupplyPile* GameState::FindSupplyPile(std::string name) {
+SupplyPile* GameState::FindSupplyPile(std::string name) const {
   SupplyPile *result;
-  for (std::vector<SupplyPile*>::iterator it = supply_piles_.begin();
-      it != supply_piles_.end();
-      ++it) {
+  for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
+    it != supply_piles_.end(); ++it) {
     if (name == (*it)->name()) {
       result = *it;
       break;
@@ -104,19 +117,20 @@ void GameState::InitializeBaseSupply() {
     new BasicTreasure("Silver", 2, 3, 60, "(2)")));
   supply_piles_.push_back(new SupplyPile(
     new BasicTreasure("Gold", 3, 6, 60, "(3)")));
-
 }
 
 void GameState::NextTurn() {
-  current_player().EndTurn();
-  players_.Advance();
-  current_player().StartTurn();
+  if (!is_ended()) {
+    current_player().EndTurn();
+    players_.Advance();
+    current_player().StartTurn();
 
-  ChangePhase();
+    ChangePhase();
+  }
 }
 
 void GameState::PlayCard(const Card& card) {
-  if (card.is_playable(*this)) {
+  if (card.is_playable(*this) && !is_ended()) {
     current_deck().Play(card);
     card.Play(*this);
 
@@ -155,6 +169,11 @@ Player& GameState::current_player() const {
   return players_.current();
 }
 
+bool GameState::is_ended() const {
+  SupplyPile *provinces = FindSupplyPile("Province");
+  return provinces->count() == 0 || empty_piles_ >= 3;
+}
+
 const std::vector<Player*>& GameState::players() const {
   return players_.players();
 }
@@ -167,8 +186,7 @@ std::vector<const IViewable*>* GameState::supply_piles_viewable() const {
   std::vector<const IViewable*> *result = new std::vector<const IViewable*>;
 
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
-      it != supply_piles_.end();
-      ++it) {
+    it != supply_piles_.end(); ++it) {
     result->push_back(*it);
   }
 

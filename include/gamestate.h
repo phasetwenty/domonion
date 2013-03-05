@@ -29,11 +29,13 @@ public:
   Deck& current_deck() const;
   Phases current_phase() const;
   Player& current_player() const;
+  bool is_ended() const;
   const std::vector<Player*>& players() const;
   const std::vector<SupplyPile*>& supply_piles() const;
   std::vector<const IViewable*>* supply_piles_viewable() const;
 private:
   Phases current_phase_;
+  int empty_piles_;
   PlayerCollection players_;
   std::vector<SupplyPile*> supply_piles_;
 
@@ -45,7 +47,7 @@ private:
    * product.
    */
   void ChangePhase();
-  SupplyPile* FindSupplyPile(std::string name);
+  SupplyPile* FindSupplyPile(std::string name) const;
   void InitializeBaseSupply();
   void StartDeck(Deck& deck);
 

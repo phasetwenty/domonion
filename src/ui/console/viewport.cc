@@ -63,14 +63,10 @@ Viewport::Viewport(GameState *game) :
 }
 
 Viewport::~Viewport() {
-  delete game_;
-
   for (int i = 0; i < kSelectableViewCount; ++i) {
     View *item = selectable_views_[i];
     delete item;
   }
-
-  endwin();
 }
 
 void Viewport::ChangeActive(int view_index) {

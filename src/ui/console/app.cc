@@ -52,8 +52,15 @@ int main() {
       break;
     }
     }
+
+    if (g->is_ended()) {
+      delete viewport;
+
+      mvprintw(1, 1, "Post game text!");
+      getch();
+    }
   }
 
-  delete viewport;
+  endwin();
   return 0;
 }

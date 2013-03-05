@@ -105,11 +105,11 @@ SupplyPile* GameState::FindSupplyPile(std::string name) const {
 
 void GameState::InitializeBaseSupply() {
   supply_piles_.push_back(new SupplyPile(
-    new BasicVictory("Estate", 2, 24, ")1(")));
+    new BasicVictory("Estate", 1, 2, 24, ")1(")));
   supply_piles_.push_back(new SupplyPile(
-    new BasicVictory("Duchy", 5, 12, ")3(")));
+    new BasicVictory("Duchy", 3, 5, 12, ")3(")));
   supply_piles_.push_back(new SupplyPile(
-    new BasicVictory("Province", 8, 12, ")6(")));
+    new BasicVictory("Province", 6, 8, 12, ")6(")));
 
   supply_piles_.push_back(new SupplyPile(
     new BasicTreasure("Copper", 1, 0, 60, "(1)")));
@@ -171,7 +171,7 @@ Player& GameState::current_player() const {
 
 bool GameState::is_ended() const {
   SupplyPile *provinces = FindSupplyPile("Province");
-  return provinces->count() == 0 || empty_piles_ >= 3;
+  return provinces->count() == 0 || empty_piles_ >= 1;
 }
 
 const std::vector<Player*>& GameState::players() const {

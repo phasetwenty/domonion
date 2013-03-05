@@ -13,6 +13,7 @@
 class BasicVictory: public Card {
 public:
   BasicVictory(std::string name,
+    int points_provided,
     int cost,
     int initial_supply,
     std::string text);
@@ -21,7 +22,10 @@ public:
   virtual void Play(GameState& game) const;
 
   virtual bool is_playable() const;
+  int points_provided() const;
 private:
+  int victory_points_;
+
   BasicVictory();
   BasicVictory(const BasicVictory& other);
   BasicVictory& operator=(const BasicVictory& other);

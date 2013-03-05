@@ -10,6 +10,7 @@
 #include <time.h>
 
 #include <card.h>
+#include <cards/basicvictory.h>
 #include <deck.h>
 
 /*
@@ -207,6 +208,22 @@ const std::vector<const Card*>& Deck::tableau() const {
 
 std::vector<const IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
+}
+
+int Deck::victory_points() const {
+  int result = 0;
+  std::vector<const Card*> piles[] = { discard_pile_, draw_pile_, hand_, tableau_ };
+  for (int i = 0; i < 4; ++i) {
+    for (std::vector<const Card*>::const_iterator it = piles[i].begin();
+        it != piles[i].end();
+        ++it) {
+      const BasicVictory *v = dynamic_cast<const BasicVictory*>(*it);
+      if (v != 0) {
+        result += v->points_provided();
+      }
+    }
+  }
+  return result;
 }
 
 bool CardComparer(const Card *lhs, const Card *rhs) {

@@ -57,3 +57,7 @@ Deck& Player::deck() const {
 const std::string& Player::name() const {
   return name_;
 }
+
+int Player::victory_points() const {
+  return deck_->victory_points();
+}

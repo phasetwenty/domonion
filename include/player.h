@@ -24,6 +24,7 @@ public:
   int coin() const;
   Deck& deck() const;
   const std::string& name() const;
+  int victory_points() const;
 
 private:
   int actions_;

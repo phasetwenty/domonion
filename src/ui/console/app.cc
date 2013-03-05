@@ -1,7 +1,7 @@
 #include <iostream>
-
 #include <menu.h>
 #include <ncurses.h>
+#include <sstream>
 
 #include <cards/basictreasure.h>
 #include <cards/basicvictory.h>
@@ -56,7 +56,17 @@ int main() {
     if (g->is_ended()) {
       delete viewport;
 
-      mvprintw(1, 1, "Post game text!");
+      mvprintw(1, 1, "Scores!");
+
+      std::stringstream ss;
+      int line_no = 2;
+      for (std::vector<Player*>::const_iterator it = g->players().begin();
+          it != g->players().end();
+          ++it) {
+        ss.str("");
+        ss << (*it)->name() << ": " << (*it)->victory_points();
+        mvprintw(line_no++, 1, ss.str().c_str());
+      }
       getch();
     }
   }

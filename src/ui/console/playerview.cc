@@ -17,7 +17,9 @@ PlayerView::PlayerView() :
 }
 
 PlayerView::~PlayerView() {
-  // TODO Auto-generated destructor stub
+  wborder(window_, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  wrefresh(window_);
+  delwin(window_);
 }
 
 void PlayerView::ReinitializeWindow() {

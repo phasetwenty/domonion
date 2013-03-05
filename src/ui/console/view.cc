@@ -45,7 +45,12 @@ View::~View() {
     free_item(items[i]);
   }
 
+  unpost_menu(menu_);
   free_menu(menu_);
+
+  wborder(window_, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  wrefresh(window_);
+  delwin(window_);
 }
 
 void View::EmptyCurrentItemStrings() {

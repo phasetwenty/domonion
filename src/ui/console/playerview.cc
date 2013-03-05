@@ -17,6 +17,7 @@ PlayerView::PlayerView() :
 }
 
 PlayerView::~PlayerView() {
+  wclear(window_);
   wborder(window_, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wrefresh(window_);
   delwin(window_);

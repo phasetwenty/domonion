@@ -15,6 +15,7 @@ InfoView::InfoView() : current_info_(new std::string("")),
 InfoView::~InfoView() {
   delete current_info_;
 
+  wclear(window_);
   wborder(window_, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wrefresh(window_);
   delwin(window_);

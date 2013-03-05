@@ -35,7 +35,8 @@ public:
   bool is_treasure() const;
   std::string const& text() const;
 
-  bool operator==(const Card& other);
+  bool operator<(const Card& other) const;
+  bool operator==(const Card& other) const;
 private:
   /*
    * Cost

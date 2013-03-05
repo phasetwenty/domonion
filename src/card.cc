@@ -81,6 +81,15 @@ const std::string& Card::text() const {
   return text_;
 }
 
-bool Card::operator==(const Card& other) {
+bool Card::operator==(const Card& other) const {
   return name() == other.name();
+}
+
+bool Card::operator<(const Card& other) const {
+  // TODO: Complete this overload to work in the general case.
+  if (is_treasure() && !other.is_treasure()) {
+    return true;
+  }
+
+  return false;
 }

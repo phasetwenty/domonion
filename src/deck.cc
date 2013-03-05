@@ -31,6 +31,8 @@ Deck::~Deck() {
   }
 }
 
+bool CardComparer(const Card *lhs, const Card *rhs);
+
 /*
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
@@ -85,6 +87,7 @@ int Deck::Draw(int count) {
     }
   }
 
+  std::sort(hand_.begin(), hand_.end(), CardComparer);
   return drawn_count;
 }
 
@@ -204,4 +207,8 @@ const std::vector<const Card*>& Deck::tableau() const {
 
 std::vector<const IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
+}
+
+bool CardComparer(const Card *lhs, const Card *rhs) {
+  return *lhs < *rhs;
 }

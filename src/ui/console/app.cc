@@ -42,6 +42,11 @@ int main() {
       viewport->WindowRight();
       break;
     }
+    case 9: {
+      viewport->SkipPhase();
+      break;
+    }
+
     case 10: {
       /*
        * In example 22 of the menus tutorial:

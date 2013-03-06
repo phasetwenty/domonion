@@ -95,6 +95,9 @@ void Viewport::Execute() {
     }
 
     UpdateAll();
+    while (active_view()->IsEmpty()) {
+      ChangeActive(active_index_ - 1);
+    }
   }
 }
 
@@ -112,8 +115,13 @@ void Viewport::ItemUp() {
   }
 }
 
+void Viewport::SkipPhase() {
+  game_->ChangePhase(true);
+  UpdateAll();
+}
+
 void Viewport::UpdateAll() {
-  info_view_.Update(active_view()->current_item());
+  UpdateInfoView();
   player_view_.Update(game_->current_player());
 
   hand_view_->Update(game_->current_deck().hand_viewable());
@@ -121,8 +129,18 @@ void Viewport::UpdateAll() {
   tableau_view_->Update(game_->current_deck().tableau_viewable());
 }
 
+void Viewport::UpdateInfoView() {
+  if (!active_view()->IsEmpty()) {
+    info_view_.Update(active_view()->current_item());
+  }
+}
+
 void Viewport::UpdateMinor() {
-  info_view_.Update(active_view()->current_item());
+  /*
+   * This method currently only updates the InfoView, but I believe that will
+   * change as development moves forward.
+   */
+  UpdateInfoView();
 }
 
 void Viewport::WindowLeft() {

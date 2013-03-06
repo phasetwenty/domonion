@@ -22,6 +22,11 @@ public:
   ~GameState();
 
   bool Buy(std::string name);
+  /*
+   * This is handy during development, but may not be appropriate in the final
+   * product.
+   */
+  void ChangePhase(bool force);
   void NextTurn();
   void PlayCard(const Card& card);
   void Start();
@@ -42,11 +47,6 @@ private:
   GameState();
   GameState(const GameState& other);
 
-  /*
-   * This is handy during development, but may not be appropriate in the final
-   * product.
-   */
-  void ChangePhase();
   SupplyPile* FindSupplyPile(std::string name) const;
   void InitializeBaseSupply();
   void StartDeck(Deck& deck);

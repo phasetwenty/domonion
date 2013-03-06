@@ -29,6 +29,7 @@ public:
   void Execute();
   void ItemDown();
   void ItemUp();
+  void SkipPhase();
   void WindowLeft();
   void WindowRight();
 
@@ -57,6 +58,7 @@ private:
 
   void ChangeActive(int view_index);
   void UpdateAll();
+  void UpdateInfoView();
   void UpdateMinor();
   void UpdateHelper(int count, ...);
 

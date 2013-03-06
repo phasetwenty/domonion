@@ -43,14 +43,14 @@ bool GameState::Buy(std::string name) {
           empty_piles_++;
         }
 
-        ChangePhase();
+        ChangePhase(false);
       }
     }
   }
   return result;
 }
 
-void GameState::ChangePhase() {
+void GameState::ChangePhase(bool force) {
   if (is_ended()) {
     return;
   }
@@ -65,13 +65,15 @@ void GameState::ChangePhase() {
     break;
   }
   case kAction: {
-    if (current_player().actions() == 0 || !current_deck().hand_has_actions()) {
+    if (force ||
+        current_player().actions() == 0 ||
+        !current_deck().hand_has_actions()) {
       current_phase_ = kBuy;
     }
     break;
   }
   case kBuy: {
-    if (current_player().buys() == 0) {
+    if (force || current_player().buys() == 0) {
       /*
        * I don't approve of this setup in the long run as it skips any
        * opportunity for UI updates.
@@ -125,7 +127,7 @@ void GameState::NextTurn() {
     players_.Advance();
     current_player().StartTurn();
 
-    ChangePhase();
+    ChangePhase(false);
   }
 }
 
@@ -134,13 +136,13 @@ void GameState::PlayCard(const Card& card) {
     current_deck().Play(card);
     card.Play(*this);
 
-    ChangePhase();
+    ChangePhase(false);
   }
 }
 
 void GameState::Start() {
   current_player().StartTurn();
-  ChangePhase();
+  ChangePhase(false);
 }
 
 void GameState::StartDeck(Deck& deck) {
@@ -171,6 +173,9 @@ Player& GameState::current_player() const {
 
 bool GameState::is_ended() const {
   SupplyPile *provinces = FindSupplyPile("Province");
+  /*
+   * TODO: `empty_piles_` should be 3 in the general case.
+   */
   return provinces->count() == 0 || empty_piles_ >= 1;
 }
 

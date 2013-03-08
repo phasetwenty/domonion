@@ -1,63 +1,61 @@
 #include <player.h>
 
-class Deck;
-
-Player::Player(std::string name, Deck *deck) :
+domonion::Player::Player(std::string name, Deck *deck) :
   actions_(0), buys_(0), coin_(0), deck_(deck), name_(name) {
 
 }
 
-Player::~Player() {
+domonion::Player::~Player() {
   delete deck_;
 }
 
-int Player::AddCoin(int c) {
+int domonion::Player::AddCoin(int c) {
   coin_ += c;
   return coin_;
 }
 
-void Player::EndTurn() {
+void domonion::Player::EndTurn() {
   actions_ = 0;
   buys_ = 0;
   coin_ = 0;
 }
 
-int Player::SpendBuy() {
+int domonion::Player::SpendBuy() {
   buys_ = buys_ > 0 ? buys_ - 1 : 0;
   return buys_;
 }
 
-int Player::SpendCoin(int c) {
+int domonion::Player::SpendCoin(int c) {
   coin_ -= c;
   return coin_;
 }
 
-void Player::StartTurn() {
+void domonion::Player::StartTurn() {
   actions_ = 1;
   buys_ = 1;
   coin_ = 0;
 }
 
-int Player::actions() const {
+int domonion::Player::actions() const {
   return actions_;
 }
 
-int Player::buys() const {
+int domonion::Player::buys() const {
   return buys_;
 }
 
-int Player::coin() const {
+int domonion::Player::coin() const {
   return coin_;
 }
 
-Deck& Player::deck() const {
+domonion::Deck& domonion::Player::deck() const {
   return *deck_;
 }
 
-const std::string& Player::name() const {
+const std::string& domonion::Player::name() const {
   return name_;
 }
 
-int Player::victory_points() const {
+int domonion::Player::victory_points() const {
   return deck_->victory_points();
 }

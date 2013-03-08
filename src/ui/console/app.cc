@@ -19,9 +19,9 @@ int main() {
   initscr();
   getch();
 
-  GameState *g = new GameState(4);
+  domonion::GameState *g = new domonion::GameState(4);
   g->Start();
-  Viewport *viewport = new Viewport(g);
+  domonion::console::Viewport *viewport = new domonion::console::Viewport(g);
 
   int ch = 0;
   while ((ch = getch()) != 'q') {
@@ -65,7 +65,7 @@ int main() {
 
       std::stringstream ss;
       int line_no = 2;
-      for (std::vector<Player*>::const_iterator it = g->players().begin();
+      for (std::vector<domonion::Player*>::const_iterator it = g->players().begin();
           it != g->players().end();
           ++it) {
         ss.str("");

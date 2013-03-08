@@ -3,7 +3,9 @@
 
 #include <player.h>
 
-template class std::vector<Player*>;
+template class std::vector<domonion::Player*>;
+
+namespace domonion {
 
 // TODO: I may want to make this more like a standard container.
 class PlayerCollection {
@@ -26,6 +28,8 @@ private:
   PlayerCollection(const PlayerCollection& other);
   PlayerCollection& operator=(const PlayerCollection& other);
 };
+
+}
 
 #endif // DOMONION_PLAYERCOLLECTION_H
 /*

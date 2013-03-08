@@ -7,6 +7,8 @@
 #include <playercollection.h>
 #include <supplypile.h>
 
+namespace domonion {
+
 class Deck;
 
 /*
@@ -53,5 +55,7 @@ private:
 
   GameState& operator=(const GameState& other);
 };
+
+}
 
 #endif // DOMONION_GAMESTATE_H

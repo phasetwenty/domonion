@@ -5,10 +5,13 @@
  *      Author: chris
  */
 
-#ifndef DOMONION_BASICVICTORY_H_
-#define DOMONION_BASICVICTORY_H_
+#ifndef DOMONION_CARDS_BASICVICTORY_H_
+#define DOMONION_CARDS_BASICVICTORY_H_
 
 #include <card.h>
+
+namespace domonion {
+namespace cards {
 
 class BasicVictory: public Card {
 public:
@@ -19,7 +22,7 @@ public:
     std::string text);
   virtual ~BasicVictory();
 
-  virtual void Play(GameState& game) const;
+  virtual void Play(domonion::GameState& game) const;
 
   virtual bool is_playable() const;
   int points_provided() const;
@@ -30,5 +33,8 @@ private:
   BasicVictory(const BasicVictory& other);
   BasicVictory& operator=(const BasicVictory& other);
 };
+
+}
+}
 
 #endif /* DOMONION_BASICVICTORY_H_ */

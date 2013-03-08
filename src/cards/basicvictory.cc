@@ -10,7 +10,7 @@
 #include <card.h>
 #include <cards/basicvictory.h>
 
-BasicVictory::BasicVictory(std::string name,
+domonion::cards::BasicVictory::BasicVictory(std::string name,
     int points_provided,
     int cost,
     int initial_supply,
@@ -18,18 +18,18 @@ BasicVictory::BasicVictory(std::string name,
     Card(name, cost, initial_supply, text, 1, kVictory),
     victory_points_(points_provided) { }
 
-BasicVictory::~BasicVictory() {
+domonion::cards::BasicVictory::~BasicVictory() {
   // TODO Auto-generated destructor stub
 }
 
-void BasicVictory::Play(GameState& game) const {
+void domonion::cards::BasicVictory::Play(domonion::GameState& game) const {
 
 }
 
-bool BasicVictory::is_playable() const {
+bool domonion::cards::BasicVictory::is_playable() const {
   return false;
 }
 
-int BasicVictory::points_provided() const {
+int domonion::cards::BasicVictory::points_provided() const {
   return victory_points_;
 }

@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+namespace domonion {
+
 class Card;
 class IViewable;
 
@@ -67,22 +69,22 @@ private:
     /*
      * Cards in the discard pile.
      */
-    std::vector<const Card*> discard_pile_;
+    std::vector<const domonion::Card*> discard_pile_;
 
     /*
      * Cards (immediately) available for drawing.
      */
-    std::vector<const Card*> draw_pile_;
+    std::vector<const domonion::Card*> draw_pile_;
 
     /*
      * Cards in hand.
      */
-    std::vector<const Card*> hand_;
+    std::vector<const domonion::Card*> hand_;
 
     /*
      * Cards in play.
      */
-    std::vector<const Card*> tableau_;
+    std::vector<const domonion::Card*> tableau_;
 
     Deck(const Deck& other);
     Deck& operator=(const Deck& other);
@@ -95,12 +97,6 @@ private:
 	int CountDrawableCards() const;
 };
 
-/*
- * Should owner's hand be a part Deck? I mean, the cards are not considered
- * part of the deck when they're in the hand. Perhaps it's a special member
- * of the deck, in the same way that the piles are special members that make up
- * the deck.
- */
+}
 
-
-#endif /* SIMPLEDECK_H_ */
+#endif /* DOMONION_DECK_H_ */

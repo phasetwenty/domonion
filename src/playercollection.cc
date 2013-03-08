@@ -5,7 +5,7 @@
 #include <player.h>
 #include <playercollection.h>
 
-PlayerCollection::PlayerCollection(int player_count) : players_(),
+domonion::PlayerCollection::PlayerCollection(int player_count) : players_(),
     players_it_() {
   std::stringstream ss;
   for (int i = 0; i < player_count; ++i) {
@@ -17,7 +17,7 @@ PlayerCollection::PlayerCollection(int player_count) : players_(),
   players_it_ = players_.begin();
 }
 
-PlayerCollection::~PlayerCollection() {
+domonion::PlayerCollection::~PlayerCollection() {
   for (std::vector<Player*>::const_iterator it = players_.begin();
       it != players_.end();
       ++it) {
@@ -25,7 +25,7 @@ PlayerCollection::~PlayerCollection() {
   }
 }
 
-Player& PlayerCollection::Advance() {
+domonion::Player& domonion::PlayerCollection::Advance() {
   if (*players_it_ == players_.back()) {
     players_it_ = players_.begin();
   } else {
@@ -35,11 +35,11 @@ Player& PlayerCollection::Advance() {
   return current();
 }
 
-Player& PlayerCollection::current() const {
+domonion::Player& domonion::PlayerCollection::current() const {
   return **players_it_;
 }
 
-const std::vector<Player*>& PlayerCollection::players() const {
+const std::vector<domonion::Player*>& domonion::PlayerCollection::players() const {
   return players_;
 }
 

@@ -2,18 +2,18 @@
 
 #include <supplypile.h>
 
-SupplyPile::SupplyPile(Card *card) :
+domonion::SupplyPile::SupplyPile(domonion::Card *card) :
   card_(card), count_(card->initial_supply()) { }
 
-SupplyPile::~SupplyPile() {
+domonion::SupplyPile::~SupplyPile() {
   delete card_;
 }
 
-bool SupplyPile::operator==(const SupplyPile& other) const {
+bool domonion::SupplyPile::operator==(const domonion::SupplyPile& other) const {
   return false;
 }
 
-bool SupplyPile::BuyOrGain() {
+bool domonion::SupplyPile::BuyOrGain() {
   bool result = (count_ > 0);
   if (result) {
     count_--;
@@ -21,24 +21,24 @@ bool SupplyPile::BuyOrGain() {
   return result;
 }
 
-std::string* SupplyPile::Info() const {
+std::string* domonion::SupplyPile::Info() const {
   return card()->Info();
 }
 
-std::string* SupplyPile::ToString() const {
+std::string* domonion::SupplyPile::ToString() const {
   std::stringstream ss;
   ss << "(" << count() << ") " << card()->name() ;
   return new std::string(ss.str());
 }
 
-const Card* SupplyPile::card() const {
+const domonion::Card* domonion::SupplyPile::card() const {
   return card_;
 }
 
-int SupplyPile::count() const {
+int domonion::SupplyPile::count() const {
   return count_;
 }
 
-const std::string& SupplyPile::name() const {
+const std::string& domonion::SupplyPile::name() const {
   return card_->name();
 }

@@ -5,14 +5,9 @@
  *      Author: chris
  */
 
-#ifndef DOMONION_VIEWPORT_H_
-#define DOMONION_VIEWPORT_H_
-/*
- * viewport.cc
- *
- *  Created on: Jan 18, 2013
- *      Author: chris
- */
+#ifndef DOMONION_CONSOLE_VIEWPORT_H_
+#define DOMONION_CONSOLE_VIEWPORT_H_
+
 #include <menu.h>
 #include <ncurses.h>
 
@@ -20,6 +15,9 @@
 #include <ui/console/infoview.h>
 #include <ui/console/playerview.h>
 #include <ui/console/view.h>
+
+namespace domonion {
+namespace console {
 
 class Viewport {
 public:
@@ -65,4 +63,7 @@ private:
   View* active_view() const;
 };
 
-#endif /* DOMONION_VIEWPORT_H_ */
+}
+}
+
+#endif /* DOMONION_CONSOLE_VIEWPORT_H_ */

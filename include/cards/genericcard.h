@@ -10,7 +10,11 @@
 
 #include <card.h>
 
+namespace domonion {
+
 class GameState;
+
+namespace cards {
 
 /*
  * Generic card useful for testing. Only supports a single type attached to it.
@@ -28,5 +32,8 @@ public:
 
   virtual bool is_playable(const GameState& game) const;
 };
+
+}
+}
 
 #endif /* DOMONION_GENERICCARD_H_ */

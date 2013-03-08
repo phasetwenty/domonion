@@ -5,10 +5,13 @@
  *      Author: chris
  */
 
-#ifndef DOMONION_PLAYERVIEW_H_
-#define DOMONION_PLAYERVIEW_H_
+#ifndef DOMONION_CONSOLE_PLAYERVIEW_H_
+#define DOMONION_CONSOLE_PLAYERVIEW_H_
 
 #include <player.h>
+
+namespace domonion {
+namespace console {
 
 class PlayerView {
 public:
@@ -30,4 +33,7 @@ private:
   PlayerView& operator=(const PlayerView& other);
 };
 
-#endif /* DOMONION_PLAYERVIEW_H_ */
+}
+}
+
+#endif /* DOMONION_CONSOLE_PLAYERVIEW_H_ */

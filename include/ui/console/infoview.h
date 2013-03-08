@@ -4,11 +4,15 @@
  *  Created on: Jan 18, 2013
  *      Author: chris
  */
-#ifndef DOMONION_INFOVIEW_H
-#define DOMONION_INFOVIEW_H
+#ifndef DOMONION_CONSOLE_INFOVIEW_H
+#define DOMONION_CONSOLE_INFOVIEW_H
 
 #include <ncurses.h>
 #include <interfaces.h>
+
+namespace domonion {
+namespace console {
+
 
 class InfoView {
 public:
@@ -30,4 +34,7 @@ private:
   void ReinitializeWindow();
 };
 
-#endif // DOMONION_INFOVIEW_H
+}
+}
+
+#endif // DOMONION_CONSOLE_INFOVIEW_H

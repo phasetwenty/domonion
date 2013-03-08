@@ -5,6 +5,8 @@
 
 #include <interfaces.h>
 
+namespace domonion {
+
 class GameState;
 
 class Card : public IViewable {
@@ -110,5 +112,7 @@ private:
 
   Card& operator=(const Card& other);
 };
+
+}
 
 #endif // DOMONION_CARD_H

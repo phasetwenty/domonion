@@ -4,8 +4,8 @@
  *  Created on: Jan 18, 2013
  *      Author: chris
  */
-#ifndef DOMONION_VIEW_H
-#define DOMONION_VIEW_H
+#ifndef DOMONION_CONSOLE_VIEW_H
+#define DOMONION_CONSOLE_VIEW_H
 
 #include <menu.h>
 #include <ncurses.h>
@@ -13,6 +13,9 @@
 #include <vector>
 
 #include <interfaces.h>
+
+namespace domonion {
+namespace console {
 
 class View {
 public:
@@ -61,8 +64,9 @@ private:
   void ReinitializeWindow();
 
   ITEM **MakeMenuItems();
-
-
 };
 
-#endif // DOMONION_VIEW_H
+}
+}
+
+#endif // DOMONION_CONSOLE_VIEW_H

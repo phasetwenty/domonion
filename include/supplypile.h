@@ -4,6 +4,8 @@
 #include <card.h>
 #include <interfaces.h>
 
+namespace domonion {
+
 class SupplyPile : public IViewable {
 
 public:
@@ -35,6 +37,8 @@ private:
      * * Embargo tokens
      */
 };
+
+}
 
 #endif // DOMONION_SUPPLYPILE_H
 

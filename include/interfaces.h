@@ -10,6 +10,8 @@
 
 #include <string>
 
+namespace domonion {
+
 class IToString {
 public:
   virtual std::string* ToString() const = 0;
@@ -23,5 +25,7 @@ public:
 
   virtual ~IViewable() { }
 };
+
+}
 
 #endif /* DOMONION_INTERFACES_H_ */

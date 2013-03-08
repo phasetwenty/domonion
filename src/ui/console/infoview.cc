@@ -6,13 +6,13 @@
  */
 #include <ui/console/infoview.h>
 
-InfoView::InfoView() : current_info_(new std::string("")),
+domonion::console::InfoView::InfoView() : current_info_(new std::string("")),
     window_(newwin(kWindowLines, kWindowCols, kWindowStarty, kWindowStartx)) {
   ReinitializeWindow();
   wrefresh(window_);
 }
 
-InfoView::~InfoView() {
+domonion::console::InfoView::~InfoView() {
   delete current_info_;
 
   wclear(window_);
@@ -21,12 +21,12 @@ InfoView::~InfoView() {
   delwin(window_);
 }
 
-void InfoView::ReinitializeWindow() {
+void domonion::console::InfoView::ReinitializeWindow() {
   keypad(window_, true);
   box(window_, '|', '-');
 }
 
-void InfoView::Update(const IViewable& viewable) {
+void domonion::console::InfoView::Update(const IViewable& viewable) {
   wclear(window_);
   ReinitializeWindow();
 

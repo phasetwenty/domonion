@@ -5,10 +5,13 @@
  *      Author: chris
  */
 
-#ifndef DOMONION_BASICTREASURE_H_
-#define DOMONION_BASICTREASURE_H_
+#ifndef DOMONION_CARDS_BASICTREASURE_H_
+#define DOMONION_CARDS_BASICTREASURE_H_
 
 #include <card.h>
+
+namespace domonion {
+namespace cards {
 
 class BasicTreasure: public Card {
 public:
@@ -19,10 +22,10 @@ public:
     std::string text);
   virtual ~BasicTreasure();
 
-  virtual void Play(GameState& game) const;
+  virtual void Play(domonion::GameState& game) const;
 
   int coin_provided() const;
-  bool is_playable(const GameState& game) const;
+  bool is_playable(const domonion::GameState& game) const;
 private:
   int coin_provided_;
 
@@ -32,8 +35,7 @@ private:
   BasicTreasure& operator=(const BasicTreasure& other);
 };
 
-#endif /* DOMONION_BASICTREASURE_H_ */
+}
+}
 
-/*
- * Remember: treasures initial supply depends on the type.
- */
+#endif /* DOMONION_CARDS_BASICTREASURE_H_ */

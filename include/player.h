@@ -5,6 +5,8 @@
 
 #include <deck.h>
 
+namespace domonion {
+
 class Player {
 public:
   Player(std::string name, Deck *deck);
@@ -37,5 +39,7 @@ private:
   Player(const Player& other);
   Player& operator=(const Player& other);
 };
+
+}
 
 #endif // DOMONION_PLAYER_H

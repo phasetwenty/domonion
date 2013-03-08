@@ -6,7 +6,9 @@
 #include <gamestate.h>
 #include <playercollection.h>
 
-domonion::GameState::GameState(int player_count) :
+namespace domonion {
+
+GameState::GameState(int player_count) :
   current_phase_(kUndefined), empty_piles_(0), players_(player_count), supply_piles_() {
   InitializeBaseSupply();
 
@@ -17,14 +19,14 @@ domonion::GameState::GameState(int player_count) :
   }
 }
 
-domonion::GameState::~GameState() {
+GameState::~GameState() {
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
     it != supply_piles_.end(); ++it) {
     delete *it;
   }
 }
 
-bool domonion::GameState::Buy(std::string name) {
+bool GameState::Buy(std::string name) {
   bool result = false;
   if (is_ended()) {
     return result;
@@ -50,7 +52,7 @@ bool domonion::GameState::Buy(std::string name) {
   return result;
 }
 
-void domonion::GameState::ChangePhase(bool force) {
+void GameState::ChangePhase(bool force) {
   if (is_ended()) {
     return;
   }
@@ -92,7 +94,7 @@ void domonion::GameState::ChangePhase(bool force) {
   }
 }
 
-domonion::SupplyPile* domonion::GameState::FindSupplyPile(std::string name) const {
+SupplyPile* GameState::FindSupplyPile(std::string name) const {
   SupplyPile *result;
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
     it != supply_piles_.end(); ++it) {
@@ -105,23 +107,23 @@ domonion::SupplyPile* domonion::GameState::FindSupplyPile(std::string name) cons
   return result;
 }
 
-void domonion::GameState::InitializeBaseSupply() {
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicVictory("Estate", 1, 2, 24, ")1(")));
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicVictory("Duchy", 3, 5, 12, ")3(")));
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicVictory("Province", 6, 8, 12, ")6(")));
+void GameState::InitializeBaseSupply() {
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicVictory("Estate", 1, 2, 24, ")1(")));
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicVictory("Duchy", 3, 5, 12, ")3(")));
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicVictory("Province", 6, 8, 12, ")6(")));
 
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicTreasure("Copper", 1, 0, 60, "(1)")));
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicTreasure("Silver", 2, 3, 60, "(2)")));
-  supply_piles_.push_back(new domonion::SupplyPile(
-    new domonion::cards::BasicTreasure("Gold", 3, 6, 60, "(3)")));
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicTreasure("Copper", 1, 0, 60, "(1)")));
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicTreasure("Silver", 2, 3, 60, "(2)")));
+  supply_piles_.push_back(new SupplyPile(
+    new cards::BasicTreasure("Gold", 3, 6, 60, "(3)")));
 }
 
-void domonion::GameState::NextTurn() {
+void GameState::NextTurn() {
   if (!is_ended()) {
     current_player().EndTurn();
     players_.Advance();
@@ -131,7 +133,7 @@ void domonion::GameState::NextTurn() {
   }
 }
 
-void domonion::GameState::PlayCard(const domonion::Card& card) {
+void GameState::PlayCard(const Card& card) {
   if (card.is_playable(*this) && !is_ended()) {
     current_deck().Play(card);
     card.Play(*this);
@@ -140,12 +142,12 @@ void domonion::GameState::PlayCard(const domonion::Card& card) {
   }
 }
 
-void domonion::GameState::Start() {
+void GameState::Start() {
   current_player().StartTurn();
   ChangePhase(false);
 }
 
-void domonion::GameState::StartDeck(domonion::Deck& deck) {
+void GameState::StartDeck(Deck& deck) {
   SupplyPile *estate_pile = FindSupplyPile("Estate");
   SupplyPile *copper_pile = FindSupplyPile("Copper");
 
@@ -159,19 +161,19 @@ void domonion::GameState::StartDeck(domonion::Deck& deck) {
   }
 }
 
-domonion::Deck& domonion::GameState::current_deck() const {
+Deck& GameState::current_deck() const {
   return current_player().deck();
 }
 
-domonion::GameState::Phases domonion::GameState::current_phase() const {
+GameState::Phases GameState::current_phase() const {
   return current_phase_;
 }
 
-domonion::Player& domonion::GameState::current_player() const {
+Player& GameState::current_player() const {
   return players_.current();
 }
 
-bool domonion::GameState::is_ended() const {
+bool GameState::is_ended() const {
   SupplyPile *provinces = FindSupplyPile("Province");
   /*
    * TODO: `empty_piles_` should be 3 in the general case.
@@ -179,15 +181,15 @@ bool domonion::GameState::is_ended() const {
   return provinces->count() == 0 || empty_piles_ >= 1;
 }
 
-const std::vector<domonion::Player*>& domonion::GameState::players() const {
+const std::vector<Player*>& GameState::players() const {
   return players_.players();
 }
 
-const std::vector<domonion::SupplyPile*>& domonion::GameState::supply_piles() const {
+const std::vector<SupplyPile*>& GameState::supply_piles() const {
   return supply_piles_;
 }
 
-std::vector<const domonion::IViewable*>* domonion::GameState::supply_piles_viewable() const {
+std::vector<const IViewable*>* GameState::supply_piles_viewable() const {
   std::vector<const IViewable*> *result = new std::vector<const IViewable*>;
 
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
@@ -197,3 +199,6 @@ std::vector<const domonion::IViewable*>* domonion::GameState::supply_piles_viewa
 
   return result;
 }
+
+}
+

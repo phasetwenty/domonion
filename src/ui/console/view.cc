@@ -10,8 +10,11 @@
 
 #include <ui/console/view.h>
 
-domonion::console::View::View(
-    std::vector<const domonion::IViewable*> *initial_items,
+namespace domonion {
+namespace console {
+
+View::View(
+    std::vector<const IViewable*> *initial_items,
     int window_starty,
     int window_startx) : current_items_(initial_items),
     current_item_strings_(new std::vector<std::string*>),
@@ -33,7 +36,7 @@ domonion::console::View::View(
   wrefresh(window_);
 }
 
-domonion::console::View::~View() {
+View::~View() {
   EmptyCurrentItemStrings();
   delete current_item_strings_;
 
@@ -54,7 +57,7 @@ domonion::console::View::~View() {
   delwin(window_);
 }
 
-void domonion::console::View::EmptyCurrentItemStrings() {
+void View::EmptyCurrentItemStrings() {
   for (std::vector<std::string*>::iterator it = current_item_strings_->begin();
       it != current_item_strings_->end();
       ++it) {
@@ -63,26 +66,26 @@ void domonion::console::View::EmptyCurrentItemStrings() {
   current_item_strings_->clear();
 }
 
-void domonion::console::View::ReinitializeWindow() {
+void View::ReinitializeWindow() {
   keypad(window_, true);
   box(window_, '|', '-');
 }
 
-bool domonion::console::View::IsEmpty() const {
+bool View::IsEmpty() const {
   return current_items_->empty();
 }
 
-void domonion::console::View::ItemDown() {
+void View::ItemDown() {
   menu_driver(menu_, REQ_DOWN_ITEM);
   wrefresh(window_);
 }
 
-void domonion::console::View::ItemUp() {
+void View::ItemUp() {
   menu_driver(menu_, REQ_UP_ITEM);
   wrefresh(window_);
 }
 
-ITEM** domonion::console::View::MakeMenuItems() {
+ITEM** View::MakeMenuItems() {
   /*
    * Perhaps there's a way to do this without copies?
    */
@@ -98,17 +101,17 @@ ITEM** domonion::console::View::MakeMenuItems() {
   return result;
 }
 
-void domonion::console::View::SetActive() {
+void View::SetActive() {
   set_menu_fore(menu_, COLOR_PAIR(kColorPairActive));
   wrefresh(window_);
 }
 
-void domonion::console::View::SetInactive() {
+void View::SetInactive() {
   set_menu_fore(menu_, COLOR_PAIR(kColorPairInactive));
   wrefresh(window_);
 }
 
-void domonion::console::View::Update(std::vector<const IViewable*> *items) {
+void View::Update(std::vector<const IViewable*> *items) {
   unpost_menu(menu_);
   wclear(window_);
   ReinitializeWindow();
@@ -131,10 +134,14 @@ void domonion::console::View::Update(std::vector<const IViewable*> *items) {
   wrefresh(window_);
 }
 
-int domonion::console::View::current_index() const {
+int View::current_index() const {
   return item_index(::current_item(menu_));
 }
 
-const domonion::IViewable& domonion::console::View::current_item() const {
+const IViewable& View::current_item() const {
   return *((*current_items_)[current_index()]);
 }
+
+}
+}
+

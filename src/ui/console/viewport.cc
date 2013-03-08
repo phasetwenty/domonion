@@ -10,17 +10,11 @@
 #include <stdarg.h>
 
 #include <ui/console/viewport.h>
-/*
- * Things tracked in the game state (directly or indirectly):
- * * How to optionally include supplies: Colony, Platinum
- * Turns
- * The state of the current turn
- * * Whose turn it is
- * * Actions/Treasures in play / tableau
- * * Actions/Buy/Coin count
- */
 
-domonion::console::Viewport::Viewport(domonion::GameState *game) :
+namespace domonion {
+namespace console {
+
+Viewport::Viewport(GameState *game) :
     game_(game), info_view_(), player_view_() {
   keypad(stdscr, TRUE);
   cbreak(); // In case you forget, this disables line buffering.
@@ -62,14 +56,14 @@ domonion::console::Viewport::Viewport(domonion::GameState *game) :
   // TODO: initialize color pairs game-wide here.
 }
 
-domonion::console::Viewport::~Viewport() {
+Viewport::~Viewport() {
   for (int i = 0; i < kSelectableViewCount; ++i) {
     View *item = selectable_views_[i];
     delete item;
   }
 }
 
-void domonion::console::Viewport::ChangeActive(int view_index) {
+void Viewport::ChangeActive(int view_index) {
   active_view()->SetInactive();
   active_index_ = view_index;
   active_view()->SetActive();
@@ -77,7 +71,7 @@ void domonion::console::Viewport::ChangeActive(int view_index) {
   UpdateMinor();
 }
 
-void domonion::console::Viewport::Execute() {
+void Viewport::Execute() {
   if (!active_view()->IsEmpty()) {
     if (active_view() == hand_view_) {
       const Card& card = hand_view_->current_item_as<Card>();
@@ -101,26 +95,26 @@ void domonion::console::Viewport::Execute() {
   }
 }
 
-void domonion::console::Viewport::ItemDown() {
+void Viewport::ItemDown() {
   if (!active_view()->IsEmpty()) {
     active_view()->ItemDown();
     UpdateMinor();
   }
 }
 
-void domonion::console::Viewport::ItemUp() {
+void Viewport::ItemUp() {
   if (!active_view()->IsEmpty()) {
     active_view()->ItemUp();
     UpdateMinor();
   }
 }
 
-void domonion::console::Viewport::SkipPhase() {
+void Viewport::SkipPhase() {
   game_->ChangePhase(true);
   UpdateAll();
 }
 
-void domonion::console::Viewport::UpdateAll() {
+void Viewport::UpdateAll() {
   UpdateInfoView();
   player_view_.Update(game_->current_player());
 
@@ -129,13 +123,13 @@ void domonion::console::Viewport::UpdateAll() {
   tableau_view_->Update(game_->current_deck().tableau_viewable());
 }
 
-void domonion::console::Viewport::UpdateInfoView() {
+void Viewport::UpdateInfoView() {
   if (!active_view()->IsEmpty()) {
     info_view_.Update(active_view()->current_item());
   }
 }
 
-void domonion::console::Viewport::UpdateMinor() {
+void Viewport::UpdateMinor() {
   /*
    * This method currently only updates the InfoView, but I believe that will
    * change as development moves forward.
@@ -143,19 +137,22 @@ void domonion::console::Viewport::UpdateMinor() {
   UpdateInfoView();
 }
 
-void domonion::console::Viewport::WindowLeft() {
+void Viewport::WindowLeft() {
   if (active_index_ > 0 && !selectable_views_[active_index_ - 1]->IsEmpty()) {
     ChangeActive(active_index_ - 1);
   }
 }
 
-void domonion::console::Viewport::WindowRight() {
+void Viewport::WindowRight() {
   if (active_index_ < kSelectableViewCount - 1
     && !selectable_views_[active_index_ + 1]->IsEmpty()) {
     ChangeActive(active_index_ + 1);
   }
 }
 
-domonion::console::View* domonion::console::Viewport::active_view() const {
+View* Viewport::active_view() const {
   return selectable_views_[active_index_];
+}
+
+}
 }

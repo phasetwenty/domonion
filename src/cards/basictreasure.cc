@@ -8,7 +8,10 @@
 #include <gamestate.h>
 #include <cards/basictreasure.h>
 
-domonion::cards::BasicTreasure::BasicTreasure(std::string name,
+namespace domonion {
+namespace cards {
+
+BasicTreasure::BasicTreasure(std::string name,
     int coin_provided,
     int cost,
     int initial_supply,
@@ -16,18 +19,21 @@ domonion::cards::BasicTreasure::BasicTreasure(std::string name,
     Card(name, cost, initial_supply, text, 1, kTreasure),
     coin_provided_(coin_provided) {}
 
-domonion::cards::BasicTreasure::~BasicTreasure() {
+BasicTreasure::~BasicTreasure() {
 
 }
 
-void domonion::cards::BasicTreasure::Play(GameState& game) const {
+void BasicTreasure::Play(GameState& game) const {
   game.current_player().AddCoin(coin_provided());
 }
 
-int domonion::cards::BasicTreasure::coin_provided() const {
+int BasicTreasure::coin_provided() const {
   return coin_provided_;
 }
 
-bool domonion::cards::BasicTreasure::is_playable(const GameState& game) const {
+bool BasicTreasure::is_playable(const GameState& game) const {
   return game.current_phase() == GameState::kBuy;
+}
+
+}
 }

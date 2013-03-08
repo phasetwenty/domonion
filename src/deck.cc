@@ -13,18 +13,13 @@
 #include <cards/basicvictory.h>
 #include <deck.h>
 
-/*
- * It had occurred to me to provide functionality to initialize the deck with
- * the starting cards, but it would require knowledge of things like supply
- * piles and I don't think that's necessary. Off the top of my head, it makes
- * sense for the game state to manipulate the decks using the standard
- * interface.
- */
-domonion::Deck::Deck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
+namespace domonion {
+
+Deck::Deck() : discard_pile_(), draw_pile_(), hand_(), tableau_() {
   srand(time(NULL));
 }
 
-domonion::Deck::~Deck() {
+Deck::~Deck() {
   std::vector<const Card*> items[4] = { discard_pile_, draw_pile_, hand_, tableau_ };
 
   for (int i = 0; i < 4; ++i) {
@@ -32,13 +27,13 @@ domonion::Deck::~Deck() {
   }
 }
 
-bool CardComparer(const domonion::Card *lhs, const domonion::Card *rhs);
+bool CardComparer(const Card *lhs, const Card *rhs);
 
 /*
  * When Seaside is on the table, you have to remember not to clean up cards with
  * Duration.
  */
-void domonion::Deck::CleanupAndDraw() {
+void Deck::CleanupAndDraw() {
   while (!hand_.empty()) {
     discard_pile_.push_back(hand_[0]);
     hand_.erase(hand_.begin());
@@ -52,7 +47,7 @@ void domonion::Deck::CleanupAndDraw() {
   Draw(5);
 }
 
-std::vector<const domonion::IViewable*>* domonion::Deck::CopyCards(
+std::vector<const IViewable*>* Deck::CopyCards(
     std::vector<const Card*> items) const {
   std::vector<const IViewable*> *result =
     new std::vector<const IViewable*>;
@@ -66,12 +61,12 @@ std::vector<const domonion::IViewable*>* domonion::Deck::CopyCards(
   return result;
 }
 
-int domonion::Deck::CountDrawableCards() const {
+int Deck::CountDrawableCards() const {
   return draw_pile_.size() + discard_pile_.size();
 }
 
 
-int domonion::Deck::Draw(int count) {
+int Deck::Draw(int count) {
   int drawn_count = 0;
   while (!draw_pile_.empty() && drawn_count < count) {
     hand_.insert(hand_.end(), draw_pile_.front());
@@ -98,7 +93,7 @@ int domonion::Deck::Draw(int count) {
  * In the future, I'll need to gain cards into the hand and the top of the
  * draw pile.
  */
-void domonion::Deck::Gain(const Card *card) {
+void Deck::Gain(const Card *card) {
   discard_pile_.push_back(card);
 }
 
@@ -108,7 +103,7 @@ void domonion::Deck::Gain(const Card *card) {
  *
  * The return value is the card played.
  */
-const domonion::Card* domonion::Deck::Play(const domonion::IViewable& card) {
+const Card* Deck::Play(const IViewable& card) {
   /*
    * At first I wanted to return a null value when the card isn't found. Then I
    * thought, this should be an uncommon case: the user should already know that
@@ -162,7 +157,7 @@ const domonion::Card* domonion::Deck::Play(const domonion::IViewable& card) {
  * * Adding a member `revealedCards` which is populated by this method? Might
  *   need more thought.
  */
-void domonion::Deck::Reveal(int count) {
+void Deck::Reveal(int count) {
 
 }
 
@@ -170,7 +165,7 @@ void domonion::Deck::Reveal(int count) {
  * In base Dominion, you can assume that the draw pile is empty when shuffling.
  * This won't be the case in future sets (Inn, for example, will break it).
  */
-void domonion::Deck::Shuffle() {
+void Deck::Shuffle() {
   /*
    * Publicized this method to provide an interface for the game start
    * initialization.
@@ -184,11 +179,11 @@ void domonion::Deck::Shuffle() {
   discard_pile_ = std::vector<const Card*>();
 }
 
-const std::vector<const domonion::Card*>& domonion::Deck::hand() const {
+const std::vector<const Card*>& Deck::hand() const {
   return hand_;
 }
 
-bool domonion::Deck::hand_has_actions() const {
+bool Deck::hand_has_actions() const {
   for (std::vector<const Card*>::const_iterator it = hand_.begin();
       it != hand_.end();
       ++it) {
@@ -200,27 +195,27 @@ bool domonion::Deck::hand_has_actions() const {
   return false;
 }
 
-std::vector<const domonion::IViewable*>* domonion::Deck::hand_viewable() const {
+std::vector<const IViewable*>* Deck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
-const std::vector<const domonion::Card*>& domonion::Deck::tableau() const {
+const std::vector<const Card*>& Deck::tableau() const {
   return tableau_;
 }
 
-std::vector<const domonion::IViewable*>* domonion::Deck::tableau_viewable() const {
+std::vector<const IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
 }
 
-int domonion::Deck::victory_points() const {
+int Deck::victory_points() const {
   int result = 0;
   std::vector<const Card*> piles[] = { discard_pile_, draw_pile_, hand_, tableau_ };
   for (int i = 0; i < 4; ++i) {
     for (std::vector<const Card*>::const_iterator it = piles[i].begin();
         it != piles[i].end();
         ++it) {
-      const domonion::cards::BasicVictory *v =
-        dynamic_cast<const domonion::cards::BasicVictory*>(*it);
+      const cards::BasicVictory *v =
+        dynamic_cast<const cards::BasicVictory*>(*it);
       if (v != 0) {
         result += v->points_provided();
       }
@@ -229,6 +224,9 @@ int domonion::Deck::victory_points() const {
   return result;
 }
 
-bool CardComparer(const domonion::Card *lhs, const domonion::Card *rhs) {
+bool CardComparer(const Card *lhs, const Card *rhs) {
   return *lhs < *rhs;
 }
+
+}
+

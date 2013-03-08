@@ -9,26 +9,29 @@
 
 #include <ui/console/playerview.h>
 
-domonion::console::PlayerView::PlayerView() :
+namespace domonion {
+namespace console {
+
+PlayerView::PlayerView() :
     window_(newwin(kWindowLines, kWindowCols, kWindowStarty, kWindowStartx)) {
   ReinitializeWindow();
 
   wrefresh(window_);
 }
 
-domonion::console::PlayerView::~PlayerView() {
+PlayerView::~PlayerView() {
   wclear(window_);
   wborder(window_, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wrefresh(window_);
   delwin(window_);
 }
 
-void domonion::console::PlayerView::ReinitializeWindow() {
+void PlayerView::ReinitializeWindow() {
   keypad(window_, true);
   box(window_, '|', '-');
 }
 
-void domonion::console::PlayerView::Update(const Player& player) {
+void PlayerView::Update(const Player& player) {
   /*
    * Not well-documented, but
    * ss.str("");
@@ -48,4 +51,7 @@ void domonion::console::PlayerView::Update(const Player& player) {
   ss  << player.coin() << " Coin";
   mvwprintw(window_, 4, 1, ss.str().c_str());
   wrefresh(window_);
+}
+
+}
 }

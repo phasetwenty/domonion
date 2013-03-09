@@ -3,9 +3,7 @@
 #include <ncurses.h>
 #include <sstream>
 
-#include <cards/basictreasure.h>
-#include <cards/basicvictory.h>
-#include <cards/genericcard.h>
+#include <cards/laboratory.h>
 #include <player.h>
 #include <ui/console/viewport.h>
 
@@ -19,7 +17,9 @@ int main() {
   initscr();
   getch();
 
-  domonion::GameState *g = new domonion::GameState(4);
+  domonion::Card *L = new domonion::cards::Laboratory;
+  domonion::GameState *g = new domonion::GameState(2);
+  g->AddToSupply(L);
   g->Start();
   domonion::console::Viewport *viewport = new domonion::console::Viewport(g);
 

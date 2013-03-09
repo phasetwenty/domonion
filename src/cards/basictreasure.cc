@@ -31,9 +31,5 @@ int BasicTreasure::coin_provided() const {
   return coin_provided_;
 }
 
-bool BasicTreasure::is_playable(const GameState& game) const {
-  return game.current_phase() == GameState::kBuy;
-}
-
 }
 }

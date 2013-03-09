@@ -24,7 +24,6 @@ public:
 
   virtual void Play(domonion::GameState& game) const;
 
-  virtual bool is_playable() const;
   int points_provided() const;
 private:
   int victory_points_;

@@ -32,7 +32,6 @@ public:
   int cost() const;
   int initial_supply() const;
   bool is_action() const;
-  virtual bool is_playable(const GameState& game) const;
   std::string const& name() const;
   bool is_treasure() const;
   std::string const& text() const;

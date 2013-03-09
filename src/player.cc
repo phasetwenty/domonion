@@ -11,9 +11,21 @@ Player::~Player() {
   delete deck_;
 }
 
+int Player::AddActions(int a) {
+  return ChangeIntMember(actions_, a);
+}
+
+int Player::AddBuys(int b) {
+  return ChangeIntMember(buys_, b);
+}
+
 int Player::AddCoin(int c) {
-  coin_ += c;
-  return coin_;
+  return ChangeIntMember(coin_, c);
+}
+
+int Player::ChangeIntMember(int& member, int amount) {
+  member = member + amount >= 0 ? member + amount : 0;
+  return member;
 }
 
 void Player::EndTurn() {
@@ -22,14 +34,16 @@ void Player::EndTurn() {
   coin_ = 0;
 }
 
+int Player::SpendAction() {
+  return ChangeIntMember(actions_, -1);
+}
+
 int Player::SpendBuy() {
-  buys_ = buys_ > 0 ? buys_ - 1 : 0;
-  return buys_;
+  return ChangeIntMember(buys_, -1);
 }
 
 int Player::SpendCoin(int c) {
-  coin_ -= c;
-  return coin_;
+  return ChangeIntMember(coin_, -c);
 }
 
 void Player::StartTurn() {

@@ -25,7 +25,6 @@ public:
   virtual void Play(domonion::GameState& game) const;
 
   int coin_provided() const;
-  bool is_playable(const domonion::GameState& game) const;
 private:
   int coin_provided_;
 

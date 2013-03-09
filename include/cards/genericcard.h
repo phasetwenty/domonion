@@ -29,8 +29,6 @@ public:
   virtual ~GenericCard();
 
   virtual void Play(GameState& game) const;
-
-  virtual bool is_playable(const GameState& game) const;
 };
 
 }

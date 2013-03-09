@@ -20,6 +20,8 @@ class GameState {
 public:
   enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
 
+  static const int kDefaultInitialSupply = 10;
+
   GameState(int player_count);
   ~GameState();
 
@@ -28,6 +30,7 @@ public:
    * This is handy during development, but may not be appropriate in the final
    * product.
    */
+  void AddToSupply(Card *card);
   void ChangePhase(bool force);
   void NextTurn();
   void PlayCard(const Card& card);
@@ -51,6 +54,7 @@ private:
 
   SupplyPile* FindSupplyPile(std::string name) const;
   void InitializeBaseSupply();
+  bool IsCardPlayable(const Card& card) const;
   void StartDeck(Deck& deck);
 
   GameState& operator=(const GameState& other);

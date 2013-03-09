@@ -23,9 +23,5 @@ GenericCard::~GenericCard() {
 
 void GenericCard::Play(GameState& game) const { }
 
-bool GenericCard::is_playable(const GameState& game) const {
-  return true;
-}
-
 }
 }

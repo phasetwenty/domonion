@@ -29,10 +29,6 @@ void BasicVictory::Play(domonion::GameState& game) const {
 
 }
 
-bool BasicVictory::is_playable() const {
-  return false;
-}
-
 int BasicVictory::points_provided() const {
   return victory_points_;
 }

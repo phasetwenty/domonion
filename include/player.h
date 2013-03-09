@@ -12,6 +12,8 @@ public:
   Player(std::string name, Deck *deck);
   ~Player();
 
+  int AddActions(int a);
+  int AddBuys(int b);
   /*
    * Adds `c` to the amount of coin this player has. Returns the new amount.
    */
@@ -19,6 +21,7 @@ public:
   void EndTurn();
   int SpendCoin(int c);
   void StartTurn();
+  int SpendAction();
   int SpendBuy();
 
   int actions() const;
@@ -37,6 +40,9 @@ private:
 
   Player();
   Player(const Player& other);
+
+  int ChangeIntMember(int& member, int amount);
+
   Player& operator=(const Player& other);
 };
 

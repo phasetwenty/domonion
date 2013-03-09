@@ -47,20 +47,6 @@ bool Card::is_action() const {
   return is_type(kAction);
 }
 
-bool Card::is_playable(const GameState& game) const {
-  bool result = false;
-  switch (game.current_phase()) {
-  case GameState::kAction: {
-    result = is_action();
-    break;
-  } case GameState::kBuy: {
-    result = is_treasure();
-    break;
-  }
-  }
-  return result;
-}
-
 bool Card::is_treasure() const {
   return is_type(kTreasure);
 }
@@ -89,7 +75,9 @@ bool Card::operator==(const Card& other) const {
 
 bool Card::operator<(const Card& other) const {
   // TODO: Complete this overload to work in the general case.
-  if (is_treasure() && !other.is_treasure()) {
+  if (is_action() && !other.is_action()) {
+    return true;
+  } else if (is_treasure() && !other.is_treasure() && !other.is_action()) {
     return true;
   }
 

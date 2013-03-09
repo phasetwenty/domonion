@@ -26,6 +26,10 @@ GameState::~GameState() {
   }
 }
 
+void GameState::AddToSupply(Card *card) {
+  supply_piles_.push_back(new SupplyPile(card));
+}
+
 bool GameState::Buy(std::string name) {
   bool result = false;
   if (is_ended()) {
@@ -123,6 +127,26 @@ void GameState::InitializeBaseSupply() {
     new cards::BasicTreasure("Gold", 3, 6, 60, "(3)")));
 }
 
+bool GameState::IsCardPlayable(const Card& card) const {
+  bool result = false;
+  switch (current_phase()) {
+  case kUndefined: {
+    result = false;
+    break;
+  } case kAction: {
+    result = current_player().actions() > 0 && card.is_action();
+    break;
+  } case kBuy: {
+    result = card.is_treasure();
+    break;
+  } case kCleanupDiscard: {
+    result = false;
+    break;
+  }
+  }
+  return result;
+}
+
 void GameState::NextTurn() {
   if (!is_ended()) {
     current_player().EndTurn();
@@ -134,7 +158,10 @@ void GameState::NextTurn() {
 }
 
 void GameState::PlayCard(const Card& card) {
-  if (card.is_playable(*this) && !is_ended()) {
+  if (IsCardPlayable(card) && !is_ended()) {
+    if (current_phase() == kAction) {
+      current_player().SpendAction();
+    }
     current_deck().Play(card);
     card.Play(*this);
 

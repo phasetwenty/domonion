@@ -13,10 +13,10 @@
 namespace domonion {
 namespace console {
 
-
 class InfoView {
 public:
-  InfoView();
+  InfoView(int lines = kWindowLines, int cols = kWindowCols,
+    int starty = kWindowStarty, int startx = kWindowStartx);
   ~InfoView();
   void Update(const IViewable& viewable);
 private:

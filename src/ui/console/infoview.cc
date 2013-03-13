@@ -9,8 +9,8 @@
 namespace domonion {
 namespace console {
 
-InfoView::InfoView() : current_info_(new std::string("")),
-    window_(newwin(kWindowLines, kWindowCols, kWindowStarty, kWindowStartx)) {
+InfoView::InfoView(int lines, int cols, int starty, int startx) :
+  current_info_(new std::string("")), window_(newwin(lines, cols, starty, startx)) {
   ReinitializeWindow();
   wrefresh(window_);
 }

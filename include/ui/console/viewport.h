@@ -12,6 +12,7 @@
 #include <ncurses.h>
 
 #include <gamestate.h>
+#include <ui/console/debugview.h>
 #include <ui/console/infoview.h>
 #include <ui/console/playerview.h>
 #include <ui/console/view.h>
@@ -45,6 +46,7 @@ private:
   int active_index_;
   GameState *game_;
   View *hand_view_;
+  DebugView debug_view_;
   InfoView info_view_;
   PlayerView player_view_;
   View *selectable_views_[kSelectableViewCount];

@@ -15,7 +15,7 @@ namespace domonion {
 namespace console {
 
 Viewport::Viewport(GameState *game) :
-    game_(game), info_view_(), player_view_() {
+    game_(game), debug_view_(), info_view_(), player_view_() {
   keypad(stdscr, TRUE);
   cbreak(); // In case you forget, this disables line buffering.
   noecho(); // Disables terminal echo.
@@ -51,6 +51,7 @@ Viewport::Viewport(GameState *game) :
   hand_view_->SetActive();
   active_index_ = 2;
 
+  debug_view_.Update(game_->current_deck().draw_pile());
   info_view_.Update(active_view()->current_item());
   player_view_.Update(game_->current_player());
   // TODO: initialize color pairs game-wide here.
@@ -125,6 +126,8 @@ void Viewport::UpdateAll() {
   hand_view_->Update(game_->current_deck().hand_viewable());
   supply_view_->Update(game_->supply_piles_viewable());
   tableau_view_->Update(game_->current_deck().tableau_viewable());
+
+  debug_view_.Update(game_->current_deck().draw_pile());
 }
 
 void Viewport::UpdateInfoView() {

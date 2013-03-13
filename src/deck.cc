@@ -179,6 +179,10 @@ void Deck::Shuffle() {
   discard_pile_ = std::vector<const Card*>();
 }
 
+const std::vector<const Card*>& Deck::draw_pile() const {
+  return draw_pile_;
+}
+
 const std::vector<const Card*>& Deck::hand() const {
   return hand_;
 }

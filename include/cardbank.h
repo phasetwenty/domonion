@@ -5,30 +5,30 @@
  *      Author: chris
  */
 
-#ifndef domonion_domonion_CARDBANK_H_
-#define domonion_domonion_CARDBANK_H_
+#ifndef DOMONION_CARDBANK_H_
+#define DOMONION_CARDBANK_H_
 
-#include <cards/base.h>
+#include <vector>
+
 #include <card.h>
-
-class std::vector<Card*>;
 
 namespace domonion {
 
 class CardBank {
 public:
   CardBank();
-  CardBank(std::vector<Card*> initial);
   virtual ~CardBank();
 
-
+  std::vector<Card*>* Selection() const;
 private:
-  std::vector<Card> all_cards_;
+  std::vector<Card*> all_cards_;
+  std::vector<Card*> selected_cards_;
 
-  CardBank(const CardBank& other) {}
+  void InitializeAllCards();
 
-
+  CardBank(const CardBank& other);
+  CardBank& operator=(const CardBank& other);
 };
 
 } /* namespace domonion */
-#endif /* CARDBANK_H_ */
+#endif /* DOMONION_CARDBANK_H_ */

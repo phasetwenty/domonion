@@ -8,8 +8,8 @@ OBJ := obj
 SRC := $(PROJECT_DIR)/src
 RM := rm -f
 
-_objects := app.o deck.o card.o basicvictory.o basictreasure.o \
-gamestate.o genericcard.o infoview.o laboratory.o player.o playercollection.o \
+_objects := app.o base.o deck.o card.o basicvictory.o basictreasure.o \
+cardbank.o gamestate.o genericcard.o infoview.o player.o playercollection.o \
 playerview.o supplypile.o view.o viewport.o
 objects := $(addprefix $(OBJ)/,$(_objects))
 

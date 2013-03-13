@@ -3,7 +3,7 @@
 #include <ncurses.h>
 #include <sstream>
 
-#include <cards/laboratory.h>
+#include <cardbank.h>
 #include <player.h>
 #include <ui/console/viewport.h>
 
@@ -17,9 +17,15 @@ int main() {
   initscr();
   getch();
 
-  domonion::Card *L = new domonion::cards::Laboratory;
   domonion::GameState *g = new domonion::GameState(2);
-  g->AddToSupply(L);
+
+  domonion::CardBank b;
+  std::vector<domonion::Card*> *cards = b.Selection();
+  for (std::vector<domonion::Card*>::const_iterator it = cards->begin();
+      it != cards->end();
+      ++it) {
+    g->AddToSupply(*it);
+  }
   g->Start();
   domonion::console::Viewport *viewport = new domonion::console::Viewport(g);
 

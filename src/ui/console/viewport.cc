@@ -72,25 +72,29 @@ void Viewport::ChangeActive(int view_index) {
 }
 
 void Viewport::Execute() {
+  bool needs_update = false;
   if (!active_view()->IsEmpty()) {
     if (active_view() == hand_view_) {
       const Card& card = hand_view_->current_item_as<Card>();
       game_->PlayCard(card);
-
+      needs_update = true;
     } else if (active_view() == supply_view_) {
       const SupplyPile& pile = supply_view_->current_item_as<SupplyPile>();
-      game_->Buy(pile.name());
+      needs_update = game_->Buy(pile.name());
+      if (needs_update) {
+        supply_view_->Update(game_->supply_piles_viewable());
+        supply_view_->SetInactive();
 
-      supply_view_->Update(game_->supply_piles_viewable());
-      supply_view_->SetInactive();
-
-      active_index_ = kSelectableViewCount - 1;
-      hand_view_->SetActive();
+        active_index_ = kSelectableViewCount - 1;
+        hand_view_->SetActive();
+      }
     }
 
-    UpdateAll();
-    while (active_view()->IsEmpty()) {
-      ChangeActive(active_index_ - 1);
+    if (needs_update) {
+      UpdateAll();
+      while (active_view()->IsEmpty()) {
+        ChangeActive(active_index_ - 1);
+      }
     }
   }
 }

@@ -23,7 +23,6 @@ class GenericCard: public Card {
 public:
   GenericCard(std::string name,
     int cost,
-    int initial_supply,
     std::string text,
     Types type);
   virtual ~GenericCard();

@@ -30,6 +30,7 @@ public:
 
   virtual void Play(GameState& game) const { }
 
+  virtual int initial_supply(int player_count) const;
   virtual int points_provided(const GameState& game) const;
 private:
   Curse(const Curse& other);
@@ -57,8 +58,10 @@ public:
   virtual void Play(GameState& game) const;
 
   virtual int coin_provided(const GameState& game) const;
+  virtual int initial_supply(int player_count) const;
 private:
   int coin_provided_;
+  int initial_supply_;
 
   BasicTreasure();
   BasicTreasure(const BasicTreasure& other);
@@ -77,8 +80,10 @@ public:
 
   virtual void Play(domonion::GameState& game) const { }
 
+  virtual int initial_supply(int player_count) const;
   int points_provided(const GameState& game) const;
 private:
+  int initial_supply_;
   int victory_points_;
 
   BasicVictory();

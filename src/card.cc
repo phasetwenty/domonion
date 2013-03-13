@@ -7,16 +7,14 @@
 
 namespace domonion {
 
-Card::Card(std::string name, int cost, int initial_supply,
-    std::string text, int types_count, ...) :
-    cost_(cost), initial_supply_(initial_supply), name_(name), text_(text),
-        types_(), types_count_(types_count) {
+Card::Card(std::string name, int cost, std::string text, int types_count, ...) :
+  cost_(cost), name_(name), text_(text), types_(), types_count_(types_count) {
   std::vector<Types> types_temp;
 
   va_list types;
   va_start(types, types_count);
   for (int i = 0; i < types_count; ++i) {
-    types_temp.push_back((Types)va_arg(types, int));
+    types_temp.push_back((Types) va_arg(types, int));
   }
 
   types_ = new Types[types_count];
@@ -35,8 +33,8 @@ std::string* Card::ToString() const {
   return new std::string(name());
 }
 
-int Card::initial_supply() const {
-  return initial_supply_;
+int Card::initial_supply(int player_count) const {
+  return kDefaultInitialSupply;
 }
 
 int Card::cost() const {

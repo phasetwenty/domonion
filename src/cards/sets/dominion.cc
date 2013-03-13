@@ -23,7 +23,6 @@ namespace cards {
 CouncilRoom::CouncilRoom() :
   Card("Council Room",
     5,
-    CardBank::kDefaultInitialSupply,
     "+4 Cards +1 Buy All other players draw a card.",
     1,
     kAction) {
@@ -46,7 +45,6 @@ void CouncilRoom::Play(GameState& game) const {
 Festival::Festival() :
   Card("Festival",
     5,
-    CardBank::kDefaultInitialSupply,
     "+2 Actions +1 Buy +(2)",
     1,
     kAction) {
@@ -61,7 +59,6 @@ void Festival::Play(GameState& game) const {
 Laboratory::Laboratory() :
   Card("Laboratory",
     5,
-    CardBank::kDefaultInitialSupply,
     "+2 Cards +1 Action",
     1,
     Card::kAction) {
@@ -75,7 +72,6 @@ void Laboratory::Play(GameState& game) const {
 Market::Market() :
   Card("Market",
     5,
-    CardBank::kDefaultInitialSupply,
     "+1 Action +1 Card +1 Buy +(1)",
     1,
     Card::kAction) {
@@ -91,7 +87,6 @@ void Market::Play(GameState& game) const {
 Smithy::Smithy() :
   Card("Smithy",
     4,
-    CardBank::kDefaultInitialSupply,
     "+3 Cards",
     1,
     Card::kAction) {
@@ -104,7 +99,6 @@ void Smithy::Play(GameState& game) const {
 Witch::Witch() :
   Card("Witch",
     5,
-    CardBank::kDefaultInitialSupply,
     "+2 Cards Each other player gains a curse",
     2,
     Card::kAction,
@@ -131,7 +125,6 @@ void Witch::Play(GameState& game) const {
 Woodcutter::Woodcutter() :
   Card("Woodcutter",
     3,
-    CardBank::kDefaultInitialSupply,
     "+(2) +1 Buy",
     1,
     kAction) {

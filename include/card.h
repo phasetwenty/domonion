@@ -15,7 +15,6 @@ public:
 
   Card(std::string name,
     int cost,
-    int initial_supply,
     std::string text,
     int types_count,
     ...);
@@ -30,7 +29,7 @@ public:
   std::string* ToString() const;
 
   int cost() const;
-  int initial_supply() const;
+  virtual int initial_supply(int player_count) const;
   bool is_action() const;
   std::string const& name() const;
   bool is_treasure() const;
@@ -39,6 +38,7 @@ public:
   bool operator<(const Card& other) const;
   bool operator==(const Card& other) const;
 private:
+  static const int kDefaultInitialSupply = 10;
   /*
    * Cost
    * Essentially an int (probably even something smaller). Peddler, for example, has adjustable

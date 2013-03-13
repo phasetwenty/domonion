@@ -4,8 +4,8 @@
 
 namespace domonion {
 
-SupplyPile::SupplyPile(const Card *card) :
-  card_(card), count_(card->initial_supply()) { }
+SupplyPile::SupplyPile(const Card *card, int player_count) :
+  card_(card), count_(card->initial_supply(player_count)) { }
 
 SupplyPile::~SupplyPile() {
   delete card_;

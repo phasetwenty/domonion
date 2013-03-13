@@ -13,9 +13,8 @@ namespace cards {
 
 GenericCard::GenericCard(std::string name,
   int cost,
-  int initial_supply,
   std::string text,
-  Types type) : Card(name, cost, initial_supply, text, 1, type) { }
+  Types type) : Card(name, cost, text, 1, type) { }
 
 GenericCard::~GenericCard() {
   // TODO Auto-generated destructor stub

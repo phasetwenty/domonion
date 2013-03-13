@@ -19,7 +19,7 @@ int main() {
 
   domonion::GameState *g = new domonion::GameState(2);
 
-  domonion::CardBank b;
+  domonion::CardBank b(2);
   g->InitializeBaseSupply(b);
   std::vector<domonion::Card*> *cards = b.Selection();
   for (std::vector<domonion::Card*>::const_iterator it = cards->begin();

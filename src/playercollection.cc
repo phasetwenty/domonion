@@ -37,6 +37,10 @@ Player& PlayerCollection::Advance() {
   return current();
 }
 
+int PlayerCollection::count() const {
+  return players_.size();
+}
+
 Player& PlayerCollection::current() const {
   return **players_it_;
 }

@@ -15,6 +15,7 @@ public:
 
   Player& Advance();
 
+  int count() const;
   Player& current() const;
   const Player& next() const;
   const std::vector<Player*>& players() const;

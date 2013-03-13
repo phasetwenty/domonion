@@ -19,7 +19,7 @@ GameState::~GameState() {
 }
 
 void GameState::AddToSupply(Card *card) {
-  supply_piles_.push_back(new SupplyPile(card));
+  supply_piles_.push_back(new SupplyPile(card, players_.count()));
 }
 
 bool GameState::Buy(std::string name) {
@@ -104,14 +104,14 @@ SupplyPile* GameState::FindSupplyPile(std::string name) const {
 }
 
 void GameState::InitializeBaseSupply(const CardBank& bank) {
-  supply_piles_.push_back(new SupplyPile(bank.estate()));
-  supply_piles_.push_back(new SupplyPile(bank.duchy()));
-  supply_piles_.push_back(new SupplyPile(bank.province()));
+  supply_piles_.push_back(new SupplyPile(bank.estate(), players_.count()));
+  supply_piles_.push_back(new SupplyPile(bank.duchy(), players_.count()));
+  supply_piles_.push_back(new SupplyPile(bank.province(), players_.count()));
 
-  supply_piles_.push_back(new SupplyPile(bank.copper()));
-  supply_piles_.push_back(new SupplyPile(bank.silver()));
-  supply_piles_.push_back(new SupplyPile(bank.gold()));
-  supply_piles_.push_back(new SupplyPile(bank.curse()));
+  supply_piles_.push_back(new SupplyPile(bank.copper(), players_.count()));
+  supply_piles_.push_back(new SupplyPile(bank.silver(), players_.count()));
+  supply_piles_.push_back(new SupplyPile(bank.gold(), players_.count()));
+  supply_piles_.push_back(new SupplyPile(bank.curse(), players_.count()));
 }
 
 bool GameState::IsCardPlayable(const Card& card) const {
@@ -195,10 +195,8 @@ Player& GameState::current_player() const {
 
 bool GameState::is_ended() const {
   SupplyPile *provinces = FindSupplyPile("Province");
-  /*
-   * TODO: `empty_piles_` should be 3 in the general case.
-   */
-  return provinces->count() == 0 || empty_piles_ >= 1;
+
+  return provinces->count() == 0 || empty_piles_ >= 3;
 }
 
 const std::vector<Player*>& GameState::players() const {

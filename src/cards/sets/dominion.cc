@@ -7,6 +7,7 @@
 
 #include <cards/sets/dominion.h>
 #include <gamestate.h>
+#include <supplypile.h>
 
 /*
  * TODO
@@ -27,9 +28,6 @@ CouncilRoom::CouncilRoom() :
     kAction) {
 }
 
-CouncilRoom::~CouncilRoom() {
-}
-
 void CouncilRoom::Play(GameState& game) const {
   game.current_deck().Draw(4);
   game.current_player().AddBuys(1);
@@ -46,8 +44,6 @@ void CouncilRoom::Play(GameState& game) const {
 
 Festival::Festival() : Card("Festival", 5, GameState::kDefaultInitialSupply, "+2 Actions +1 Buy +(2)", 1, kAction) { }
 
-Festival::~Festival() { }
-
 void Festival::Play(GameState& game) const {
   game.current_player().AddActions(2);
   game.current_player().AddBuys(1);
@@ -63,9 +59,6 @@ Laboratory::Laboratory() :
     Card::kAction) {
 }
 
-Laboratory::~Laboratory() {
-}
-
 void Laboratory::Play(GameState& game) const {
   game.current_player().deck().Draw(2);
   game.current_player().AddActions(1);
@@ -78,9 +71,6 @@ Market::Market() :
     "+1 Action +1 Card +1 Buy +(1)",
     1,
     Card::kAction) {
-}
-
-Market::~Market() {
 }
 
 void Market::Play(GameState& game) const {
@@ -99,11 +89,35 @@ Smithy::Smithy() :
     Card::kAction) {
 }
 
-Smithy::~Smithy() {
-}
-
 void Smithy::Play(GameState& game) const {
   game.current_deck().Draw(3);
+}
+
+Witch::Witch() :
+  Card("Witch",
+    5,
+    GameState::kDefaultInitialSupply,
+    "+2 Cards Each other player gains a curse",
+    2,
+    Card::kAction, Card::kAttack) {
+}
+
+void Witch::Play(GameState& game) const {
+  game.current_deck().Draw(2);
+
+  SupplyPile *curse_pile = game.FindSupplyPile("Curse");
+  for (std::vector<Player*>::const_iterator it = game.players().begin();
+      it != game.players().end();
+      ++it) {
+    if (*it == &game.current_player()) {
+      continue;
+    }
+
+    bool result = curse_pile->BuyOrGain();
+    if (result) {
+      (*it)->deck().Gain(curse_pile->card());
+    }
+  }
 }
 
 Woodcutter::Woodcutter() :
@@ -114,8 +128,6 @@ Woodcutter::Woodcutter() :
     1,
     kAction) {
 }
-
-Woodcutter::~Woodcutter() { }
 
 void Woodcutter::Play(GameState& game) const {
   game.current_player().AddCoin(2);

@@ -33,6 +33,7 @@ public:
    */
   void AddToSupply(Card *card);
   void ChangePhase(bool force);
+  SupplyPile* FindSupplyPile(std::string name) const;
   /*
    * TODO: Reexamine.
    * I don't know that I like this logic. I can create a game but in order for
@@ -59,7 +60,6 @@ private:
   GameState();
   GameState(const GameState& other);
 
-  SupplyPile* FindSupplyPile(std::string name) const;
   bool IsCardPlayable(const Card& card) const;
   void StartDeck(Deck& deck);
 

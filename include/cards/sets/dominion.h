@@ -14,7 +14,7 @@
   class name : public Card {\
   public:\
     name();\
-    virtual ~name();\
+    virtual ~name() { }\
     \
     virtual void Play(GameState& game) const;\
   private:\

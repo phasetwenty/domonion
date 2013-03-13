@@ -61,25 +61,25 @@ void CardBank::InitializeAllCards() {
 //  all_cards_.push_back(cards::Cellar());
 //  all_cards_.push_back(cards::Chancellor());
 //  all_cards_.push_back(cards::Chapel());
-  all_cards_.push_back(new cards::CouncilRoom());
+//  all_cards_.push_back(new cards::CouncilRoom());
 //  all_cards_.push_back(cards::Feast());
-  all_cards_.push_back(new cards::Festival());
+//  all_cards_.push_back(new cards::Festival());
 //  all_cards_.push_back(cards::Gardens());
   all_cards_.push_back(new cards::Laboratory());
 //  all_cards_.push_back(cards::Library());
-  all_cards_.push_back(new cards::Market());
+//  all_cards_.push_back(new cards::Market());
 //  all_cards_.push_back(cards::Militia());
 //  all_cards_.push_back(cards::Mine());
 //  all_cards_.push_back(cards::Moat());
 //  all_cards_.push_back(cards::Moneylender());
 //  all_cards_.push_back(cards::Remodel());
-  all_cards_.push_back(new cards::Smithy());
+//  all_cards_.push_back(new cards::Smithy());
 //  all_cards_.push_back(cards::Spy());
 //  all_cards_.push_back(cards::Thief());
 //  all_cards_.push_back(cards::ThroneRoom());
 //  all_cards_.push_back(cards::Village());
-//  all_cards_.push_back(cards::Witch());
-  all_cards_.push_back(new cards::Woodcutter());
+  all_cards_.push_back(new cards::Witch());
+//  all_cards_.push_back(new cards::Woodcutter());
 //  all_cards_.push_back(cards::Workshop());
 }
 

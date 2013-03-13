@@ -11,7 +11,7 @@ class GameState;
 
 class Card : public IViewable {
 public:
-  enum Types { kUndefined = 0, kAction, kCurse, kReaction, kTreasure, kVictory };
+  enum Types { kUndefined = 0, kAction, kAttack, kCurse, kReaction, kTreasure, kVictory };
 
   Card(std::string name,
     int cost,

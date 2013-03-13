@@ -37,6 +37,9 @@ void PlayerView::Update(const Player& player) {
    * ss.str("");
    * clears a stringstream.
    */
+  wclear(window_);
+  ReinitializeWindow();
+
   mvwprintw(window_, 1, 1, player.name().c_str());
 
   std::stringstream ss;

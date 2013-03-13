@@ -1,8 +1,7 @@
 #include <algorithm>
 #include <vector>
 
-#include <cards/basictreasure.h>
-#include <cards/basicvictory.h>
+#include <cards/base.h>
 #include <gamestate.h>
 #include <playercollection.h>
 

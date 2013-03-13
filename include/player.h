@@ -7,6 +7,8 @@
 
 namespace domonion {
 
+class GameState;
+
 class Player {
 public:
   Player(std::string name, Deck *deck);
@@ -29,7 +31,7 @@ public:
   int coin() const;
   Deck& deck() const;
   const std::string& name() const;
-  int victory_points() const;
+  int victory_points(const GameState& game) const;
 
 private:
   int actions_;

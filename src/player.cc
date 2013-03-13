@@ -1,3 +1,4 @@
+#include <gamestate.h>
 #include <player.h>
 
 namespace domonion {
@@ -72,8 +73,8 @@ const std::string& Player::name() const {
   return name_;
 }
 
-int Player::victory_points() const {
-  return deck_->victory_points();
+int Player::victory_points(const GameState& game) const {
+  return deck_->victory_points(game);
 }
 
 }

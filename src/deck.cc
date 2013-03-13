@@ -10,8 +10,9 @@
 #include <time.h>
 
 #include <card.h>
-#include <cards/basicvictory.h>
+#include <cards/base.h>
 #include <deck.h>
+#include <gamestate.h>
 
 namespace domonion {
 
@@ -34,15 +35,19 @@ bool CardComparer(const Card *lhs, const Card *rhs);
  * Duration.
  */
 void Deck::CleanupAndDraw() {
-  while (!hand_.empty()) {
-    discard_pile_.push_back(hand_[0]);
-    hand_.erase(hand_.begin());
+  for (std::vector<const Card*>::iterator it = hand_.begin();
+      it != hand_.end();
+      ++it) {
+    discard_pile_.push_back(*it);
   }
+  hand_.clear();
 
-  while (!tableau_.empty()) {
-    discard_pile_.push_back(tableau_.back());
-    tableau_.erase(tableau_.begin());
+  for (std::vector<const Card*>::iterator it = tableau_.begin();
+      it != tableau_.end();
+      ++it) {
+    discard_pile_.push_back(*it);
   }
+  tableau_.clear();
 
   Draw(5);
 }
@@ -211,17 +216,17 @@ std::vector<const IViewable*>* Deck::tableau_viewable() const {
   return CopyCards(tableau_);
 }
 
-int Deck::victory_points() const {
+int Deck::victory_points(const GameState& game) const {
   int result = 0;
   std::vector<const Card*> piles[] = { discard_pile_, draw_pile_, hand_, tableau_ };
   for (int i = 0; i < 4; ++i) {
     for (std::vector<const Card*>::const_iterator it = piles[i].begin();
         it != piles[i].end();
         ++it) {
-      const cards::BasicVictory *v =
-        dynamic_cast<const cards::BasicVictory*>(*it);
+      const cards::IPointsProvider *v =
+        dynamic_cast<const cards::IPointsProvider*>(*it);
       if (v != 0) {
-        result += v->points_provided();
+        result += v->points_provided(game);
       }
     }
   }

@@ -6,7 +6,7 @@
  */
 #include <algorithm>
 
-#include <cards/base.h>
+#include <cards/sets/dominion.h>
 #include <cardbank.h>
 
 namespace domonion {

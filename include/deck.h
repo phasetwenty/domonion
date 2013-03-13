@@ -14,6 +14,7 @@
 namespace domonion {
 
 class Card;
+class GameState;
 class IViewable;
 
 class Deck {
@@ -65,7 +66,7 @@ public:
 	std::vector<const IViewable*>* hand_viewable() const;
 	const std::vector<const Card*>& tableau() const;
 	std::vector<const IViewable*>* tableau_viewable() const;
-	int victory_points() const;
+	int victory_points(const GameState& game) const;
 private:
     /*
      * Cards in the discard pile.

@@ -75,7 +75,7 @@ int main() {
           it != g->players().end();
           ++it) {
         ss.str("");
-        ss << (*it)->name() << ": " << (*it)->victory_points();
+        ss << (*it)->name() << ": " << (*it)->victory_points(*g);
         mvprintw(line_no++, 1, ss.str().c_str());
       }
       getch();

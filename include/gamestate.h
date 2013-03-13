@@ -21,8 +21,6 @@ class GameState {
 public:
   enum Phases { kUndefined = 0, kAction, kBuy, kCleanupDiscard };
 
-  static const int kDefaultInitialSupply = 10;
-
   GameState(int player_count);
   ~GameState();
 

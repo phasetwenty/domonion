@@ -16,6 +16,8 @@ namespace domonion {
 
 class CardBank {
 public:
+  static const int kDefaultInitialSupply = 10;
+
   CardBank();
   virtual ~CardBank();
 

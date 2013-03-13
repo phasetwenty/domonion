@@ -1,22 +1,15 @@
 #include <algorithm>
 #include <vector>
 
-#include <cards/base.h>
+#include <cardbank.h>
 #include <gamestate.h>
 #include <playercollection.h>
+#include <supplypile.h>
 
 namespace domonion {
 
 GameState::GameState(int player_count) :
-  current_phase_(kUndefined), empty_piles_(0), players_(player_count), supply_piles_() {
-  InitializeBaseSupply();
-
-  for (std::vector<Player*>::const_iterator it = players_.players().begin();
-    it != players_.players().end(); ++it) {
-    StartDeck((*it)->deck());
-    (*it)->deck().CleanupAndDraw();
-  }
-}
+  current_phase_(kUndefined), empty_piles_(0), players_(player_count), supply_piles_() { }
 
 GameState::~GameState() {
   for (std::vector<SupplyPile*>::const_iterator it = supply_piles_.begin();
@@ -110,20 +103,15 @@ SupplyPile* GameState::FindSupplyPile(std::string name) const {
   return result;
 }
 
-void GameState::InitializeBaseSupply() {
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicVictory("Estate", 1, 2, 24, ")1(")));
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicVictory("Duchy", 3, 5, 12, ")3(")));
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicVictory("Province", 6, 8, 12, ")6(")));
+void GameState::InitializeBaseSupply(const CardBank& bank) {
+  supply_piles_.push_back(new SupplyPile(bank.estate()));
+  supply_piles_.push_back(new SupplyPile(bank.duchy()));
+  supply_piles_.push_back(new SupplyPile(bank.province()));
 
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicTreasure("Copper", 1, 0, 60, "(1)")));
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicTreasure("Silver", 2, 3, 60, "(2)")));
-  supply_piles_.push_back(new SupplyPile(
-    new cards::BasicTreasure("Gold", 3, 6, 60, "(3)")));
+  supply_piles_.push_back(new SupplyPile(bank.copper()));
+  supply_piles_.push_back(new SupplyPile(bank.silver()));
+  supply_piles_.push_back(new SupplyPile(bank.gold()));
+  supply_piles_.push_back(new SupplyPile(bank.curse()));
 }
 
 bool GameState::IsCardPlayable(const Card& card) const {
@@ -169,6 +157,12 @@ void GameState::PlayCard(const Card& card) {
 }
 
 void GameState::Start() {
+  for (std::vector<Player*>::const_iterator it = players_.players().begin();
+    it != players_.players().end(); ++it) {
+    StartDeck((*it)->deck());
+    (*it)->deck().CleanupAndDraw();
+  }
+
   current_player().StartTurn();
   ChangePhase(false);
 }

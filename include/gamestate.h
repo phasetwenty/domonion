@@ -9,6 +9,7 @@
 
 namespace domonion {
 
+class CardBank;
 class Deck;
 
 /*
@@ -32,6 +33,12 @@ public:
    */
   void AddToSupply(Card *card);
   void ChangePhase(bool force);
+  /*
+   * TODO: Reexamine.
+   * I don't know that I like this logic. I can create a game but in order for
+   * it to run, this method must be called by the user.
+   */
+  void InitializeBaseSupply(const CardBank& bank);
   void NextTurn();
   void PlayCard(const Card& card);
   void Start();
@@ -53,7 +60,6 @@ private:
   GameState(const GameState& other);
 
   SupplyPile* FindSupplyPile(std::string name) const;
-  void InitializeBaseSupply();
   bool IsCardPlayable(const Card& card) const;
   void StartDeck(Deck& deck);
 

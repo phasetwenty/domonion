@@ -4,7 +4,7 @@
 
 namespace domonion {
 
-SupplyPile::SupplyPile(Card *card) :
+SupplyPile::SupplyPile(const Card *card) :
   card_(card), count_(card->initial_supply()) { }
 
 SupplyPile::~SupplyPile() {

@@ -6,12 +6,15 @@
  */
 #include <algorithm>
 
-#include <cards/sets/dominion.h>
+#include <cards/base.h>
 #include <cardbank.h>
+#include <cards/sets/dominion.h>
 
 namespace domonion {
 
-CardBank::CardBank() : all_cards_(), selected_cards_() {
+CardBank::CardBank() :
+    all_cards_(), selected_cards_(), copper_(), silver_(), gold_(), estate_(),
+    duchy_(), province_(), curse_() {
   InitializeAllCards();
 
   /*
@@ -19,20 +22,19 @@ CardBank::CardBank() : all_cards_(), selected_cards_() {
    * This is a temporary construct.
    */
   for (std::vector<Card*>::const_iterator it = all_cards_.begin();
-      it != all_cards_.end();
-      ++it) {
+    it != all_cards_.end(); ++it) {
     selected_cards_.push_back(*it);
   }
 }
 
-CardBank::~CardBank() { }
+CardBank::~CardBank() {
+}
 
 std::vector<Card*>* CardBank::Selection() const {
   std::vector<Card*>* result = new std::vector<Card*>;
 
   for (std::vector<Card*>::const_iterator it = selected_cards_.begin();
-      it != selected_cards_.end();
-      ++it) {
+    it != selected_cards_.end(); ++it) {
     result->push_back(*it);
   }
 
@@ -40,6 +42,16 @@ std::vector<Card*>* CardBank::Selection() const {
 }
 
 void CardBank::InitializeAllCards() {
+  estate_ = new cards::BasicVictory("Estate", 1, 2, 24, ")1(");
+  duchy_ = new cards::BasicVictory("Duchy", 3, 5, 12, ")3(");
+  province_ = new cards::BasicVictory("Province", 6, 8, 12, ")6(");
+
+  copper_ = new cards::BasicTreasure("Copper", 1, 0, 60, "(1)");
+  silver_ = new cards::BasicTreasure("Silver", 2, 3, 60, "(2)");
+  gold_ = new cards::BasicTreasure("Gold", 3, 6, 60, "(3)");
+
+  curse_ = new cards::Curse();
+
   /*
    * TODO
    * When cards are implemented, uncomment their initialization.
@@ -69,6 +81,34 @@ void CardBank::InitializeAllCards() {
 //  all_cards_.push_back(cards::Witch());
   all_cards_.push_back(new cards::Woodcutter());
 //  all_cards_.push_back(cards::Workshop());
+}
+
+const Card* CardBank::copper() const {
+  return copper_;
+}
+
+const Card* CardBank::silver() const {
+  return silver_;
+}
+
+const Card* CardBank::gold() const {
+  return gold_;
+}
+
+const Card* CardBank::estate() const {
+  return estate_;
+}
+
+const Card* CardBank::duchy() const {
+  return duchy_;
+}
+
+const Card* CardBank::province() const {
+  return province_;
+}
+
+const Card* CardBank::curse() const {
+  return curse_;
 }
 
 } /* namespace domonion */

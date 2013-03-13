@@ -9,7 +9,7 @@ namespace domonion {
 class SupplyPile : public IViewable {
 
 public:
-    SupplyPile(Card *card);
+    SupplyPile(const Card *card);
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
 
@@ -24,7 +24,7 @@ public:
     int count() const;
     const std::string& name() const;
 private:
-    Card *card_;
+    const Card *card_;
     int count_;
 
     SupplyPile() { }

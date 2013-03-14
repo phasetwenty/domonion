@@ -64,6 +64,7 @@ public:
 	const std::vector<const Card*>& hand() const;
 	bool hand_has_actions() const;
 	std::vector<const IViewable*>* hand_viewable() const;
+	int size() const;
 	const std::vector<const Card*>& tableau() const;
 	std::vector<const IViewable*>* tableau_viewable() const;
 	int victory_points(const GameState& game) const;

@@ -38,6 +38,7 @@ public:
    * it to run, this method must be called by the user.
    */
   void InitializeBaseSupply(const CardBank& bank);
+  const Player& NextPlayer();
   void NextTurn();
   void PlayCard(const Card& card);
   void Start();

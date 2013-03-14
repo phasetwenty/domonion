@@ -72,12 +72,13 @@ int main() {
 
       std::stringstream ss;
       int line_no = 2;
-      for (std::vector<domonion::Player*>::const_iterator it = g->players().begin();
-          it != g->players().end();
-          ++it) {
+      for (unsigned i = 0; i < g->players().size(); ++i) {
+        const domonion::Player& player = g->current_player();
         ss.str("");
-        ss << (*it)->name() << ": " << (*it)->victory_points(*g);
+        ss << player.name() << ": " << player.victory_points(*g);
         mvprintw(line_no++, 1, ss.str().c_str());
+
+        g->NextPlayer();
       }
       getch();
     }

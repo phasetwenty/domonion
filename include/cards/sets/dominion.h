@@ -8,6 +8,7 @@
 #ifndef DOMONION_CARDS_DOMINION_H_
 #define DOMONION_CARDS_DOMINION_H_
 
+#include <cards/base.h>
 #include <card.h>
 
 #define CARD_CLASS_DECL(name) \
@@ -33,7 +34,18 @@ CARD_CLASS_DECL(Chapel)
 CARD_CLASS_DECL(CouncilRoom)
 CARD_CLASS_DECL(Feast)
 CARD_CLASS_DECL(Festival)
-CARD_CLASS_DECL(Gardens)
+
+class Gardens : public Card, public IPointsProvider {
+public:
+  Gardens();
+  ~Gardens() { }
+
+  virtual void Play(GameState& game) const { }
+
+  virtual int initial_supply(int player_count) const;
+  virtual int points_provided(const GameState& game) const;
+};
+
 CARD_CLASS_DECL(Laboratory)
 CARD_CLASS_DECL(Library)
 CARD_CLASS_DECL(Market)

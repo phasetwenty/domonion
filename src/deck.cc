@@ -208,6 +208,16 @@ std::vector<const IViewable*>* Deck::hand_viewable() const {
   return CopyCards(hand_);
 }
 
+int Deck::size() const {
+  std::vector<const Card*> piles[] = { discard_pile_, draw_pile_, hand_, tableau_ };
+  int result = 0;
+  for (int i = 0; i < 4; ++i) {
+    result += piles[i].size();
+  }
+
+  return result;
+}
+
 const std::vector<const Card*>& Deck::tableau() const {
   return tableau_;
 }

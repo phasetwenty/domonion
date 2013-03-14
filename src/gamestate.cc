@@ -134,6 +134,10 @@ bool GameState::IsCardPlayable(const Card& card) const {
   return result;
 }
 
+const Player& GameState::NextPlayer() {
+  return players_.Advance();
+}
+
 void GameState::NextTurn() {
   if (!is_ended()) {
     current_player().EndTurn();

@@ -43,7 +43,7 @@ private:
   static const int kColorPairActive = 1;
   static const int kColorPairInactive = 2;
 
-  static const int kMenuLines = 9;
+  static const int kMenuLines = 10;
   static const int kMenuCols = 18;
   static const int kMenuStartx = 1;
   static const int kMenuStarty = 1;

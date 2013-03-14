@@ -27,6 +27,7 @@ View::View(
   ITEM **new_items = MakeMenuItems();
   menu_ = new_menu(new_items);
 
+  set_menu_format(menu_, kMenuLines, 1);
   set_menu_win(menu_, window_);
   set_menu_sub(menu_,
     derwin(window_, kMenuLines, kMenuCols, kMenuStarty, kMenuStartx));

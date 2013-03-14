@@ -6,10 +6,12 @@
 
 namespace domonion {
 
+class GameState;
+
 class SupplyPile : public IViewable {
 
 public:
-    SupplyPile(const Card *card, int player_count);
+    SupplyPile(const Card *card, const GameState& game);
     virtual ~SupplyPile();
     virtual bool operator==(const SupplyPile& other) const;
 
@@ -26,8 +28,9 @@ public:
 private:
     const Card *card_;
     int count_;
+    const GameState& game_;
 
-    SupplyPile() { }
+    SupplyPile();
     SupplyPile(const SupplyPile& other);
     SupplyPile& operator=(const SupplyPile& other);
 

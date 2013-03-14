@@ -25,10 +25,10 @@ public:
    * resolving.
    */
   virtual void Play(GameState& game) const = 0;
-  std::string* Info() const;
-  std::string* ToString() const;
+  virtual std::string* Info() const;
+  virtual std::string* ToString() const;
 
-  int cost() const;
+  virtual int cost(const GameState& game) const;
   virtual int initial_supply(int player_count) const;
   bool is_action() const;
   std::string const& name() const;

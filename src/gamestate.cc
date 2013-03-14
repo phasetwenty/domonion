@@ -30,11 +30,11 @@ bool GameState::Buy(std::string name) {
 
   if (current_player().buys() > 0) {
     SupplyPile *pile = FindSupplyPile(name);
-    if (current_player().coin() >= pile->card()->cost()) {
+    if (current_player().coin() >= pile->card()->cost(*this)) {
       result = pile->BuyOrGain();
       if (result) {
         current_player().SpendBuy();
-        current_player().SpendCoin(pile->card()->cost());
+        current_player().SpendCoin(pile->card()->cost(*this));
         current_player().deck().Gain(pile->card());
 
         if (pile->count() == 0) {

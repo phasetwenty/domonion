@@ -37,7 +37,7 @@ int Card::initial_supply(int player_count) const {
   return kDefaultInitialSupply;
 }
 
-int Card::cost() const {
+int Card::cost(const GameState& game) const {
   return cost_;
 }
 

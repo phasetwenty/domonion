@@ -1,11 +1,12 @@
 #include <sstream>
 
+#include <gamestate.h>
 #include <supplypile.h>
 
 namespace domonion {
 
-SupplyPile::SupplyPile(const Card *card, int player_count) :
-  card_(card), count_(card->initial_supply(player_count)) { }
+SupplyPile::SupplyPile(const Card *card, const GameState& game) :
+  card_(card), count_(card->initial_supply(game.players().size())), game_(game) { }
 
 SupplyPile::~SupplyPile() {
   delete card_;
@@ -29,7 +30,10 @@ std::string* SupplyPile::Info() const {
 
 std::string* SupplyPile::ToString() const {
   std::stringstream ss;
-  ss << "(" << count() << ") " << card()->name() ;
+  std::string *name = card()->ToString();
+  ss << card()->cost(game_) << " " << std::string(*name) << " (" << count() << ")";
+
+  delete name;
   return new std::string(ss.str());
 }
 

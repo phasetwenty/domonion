@@ -31,7 +31,19 @@ CARD_CLASS_DECL(Bureaucrat)
 CARD_CLASS_DECL(Cellar)
 CARD_CLASS_DECL(Chancellor)
 CARD_CLASS_DECL(Chapel)
-CARD_CLASS_DECL(CouncilRoom)
+
+class CouncilRoom : public Card {
+public:
+  CouncilRoom();
+  virtual ~CouncilRoom() { }
+
+  virtual void Play(GameState& game) const;
+  virtual std::string* ToString() const;
+private:
+  CouncilRoom(const CouncilRoom& other);
+  CouncilRoom& operator=(const CouncilRoom& other);
+};
+
 CARD_CLASS_DECL(Feast)
 CARD_CLASS_DECL(Festival)
 

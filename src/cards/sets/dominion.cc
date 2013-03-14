@@ -42,6 +42,10 @@ void CouncilRoom::Play(GameState& game) const {
   }
 }
 
+std::string* CouncilRoom::ToString() const {
+  return new std::string("Council R");
+}
+
 Festival::Festival() :
   Card("Festival", 5, "+2 Actions +1 Buy +(2)", 1, kAction) {
 }
@@ -52,9 +56,7 @@ void Festival::Play(GameState& game) const {
   game.current_player().AddCoin(2);
 }
 
-Gardens::Gardens() :
-  Card("Gardens", 4, "Worth )1( for every 10 cards in your deck.", 1, kVictory) {
-}
+Gardens::Gardens() : Card("Gardens", 4, "Worth )1( for every 10 cards in your deck", 1, kVictory) { }
 
 int Gardens::initial_supply(int player_count) const {
   return player_count < 3 ? 8 : 12;

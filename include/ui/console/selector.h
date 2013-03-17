@@ -34,12 +34,14 @@ private:
   static const int kWindowStartx = 30;
   static const int kWindowStarty = 5;
 
+  std::vector<std::string*> current_item_strings_;
   MENU *menu_;
   WINDOW *window_;
 
   Selector();
   Selector(const Selector& other);
 
+  void EmptyCurrentItemStrings();
   ITEM** MakeMenuItems(const std::vector<const Card*>& items);
 
   Selector& operator=(const Selector& other);

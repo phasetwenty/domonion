@@ -38,7 +38,7 @@ $(OBJ) :
 	mkdir -p obj
 
 clean :
-	$(RM) $(objects)
+	$(RM) $(OBJ)/*
 	$(RM) scratch
 	$(RM) app
 	

@@ -17,9 +17,19 @@
 namespace domonion {
 namespace console {
 
+/*
+ * Designed prompt the user to select items in a list (such as Cards or
+ * SupplyPiles) and return the selection to the owner.
+ */
 class Selector {
 public:
-  Selector(const std::vector<const Card*>& initial_items, bool multiselect);
+  static const int kSelectAll = -1;
+
+  /*
+   * TODO Currently expects a container of cards, but it should be easily
+   * replaced with the IViewable interface once initial development is done.
+   */
+  Selector(const std::vector<const Card*>& items, int min_selection, int max_selection);
   ~Selector();
 
   const std::vector<const Card*>& GetSelection();
@@ -35,14 +45,18 @@ private:
   static const int kWindowStarty = 5;
 
   std::vector<std::string*> current_item_strings_;
+  std::vector<const Card*>& items_;
+  int max_selection_;
+  int min_selection_;
   MENU *menu_;
+  std::vector<const Card*> selection_;
   WINDOW *window_;
 
   Selector();
   Selector(const Selector& other);
 
-  void EmptyCurrentItemStrings();
   ITEM** MakeMenuItems(const std::vector<const Card*>& items);
+  bool ValidateMenuSelection();
 
   Selector& operator=(const Selector& other);
 };

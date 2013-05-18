@@ -1,6 +1,9 @@
 #include <card.h>
 #include <cards/sets/dominion.h>
 #include <ui/console/selector.h>
+
+#include <iostream>
+#include <unistd.h>
 #include <vector>
 
 int main() {
@@ -18,9 +21,18 @@ int main() {
   cards.push_back(g);
   cards.push_back(m);
 
-  domonion::console::Selector s(cards, false);
-  s.GetSelection();
+  domonion::console::Selector s(cards, 1u, 1u);
+  const std::vector<const domonion::Card*> result = s.GetSelection();
 
   endwin();
+
+  for (std::vector<const domonion::Card*>::const_iterator it = result.begin();
+      it != result.end();
+      ++it) {
+    std::cout << (*it)->name() << std::endl;
+  }
+
+  sleep(3u);
+
   return 0;
 }

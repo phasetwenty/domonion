@@ -29,7 +29,9 @@ public:
    * TODO Currently expects a container of cards, but it should be easily
    * replaced with the IViewable interface once initial development is done.
    */
-  Selector(const std::vector<const Card*>& items, int min_selection, int max_selection);
+  Selector(const std::vector<const Card*>& items,
+    unsigned int min_selection,
+    unsigned int max_selection);
   ~Selector();
 
   const std::vector<const Card*>& GetSelection();
@@ -45,10 +47,10 @@ private:
   static const int kWindowStarty = 5;
 
   std::vector<std::string*> current_item_strings_;
-  std::vector<const Card*>& items_;
-  int max_selection_;
-  int min_selection_;
+  const std::vector<const Card*>& items_;
+  unsigned int max_selection_;
   MENU *menu_;
+  unsigned int min_selection_;
   std::vector<const Card*> selection_;
   WINDOW *window_;
 

@@ -13,7 +13,8 @@ namespace domonion {
 namespace console {
 
 Selector::Selector(const std::vector<const Card*>& items,
-    int min_selection, int max_selection) :
+    unsigned int min_selection,
+    unsigned int max_selection) :
     current_item_strings_(), items_(items), max_selection_(max_selection), menu_(),
     min_selection_(min_selection), selection_(),
     window_(newwin(kWindowLines, kWindowCols, kWindowStarty, kWindowStartx)) {
@@ -71,26 +72,27 @@ const std::vector<const Card*>& Selector::GetSelection() {
 
   bool done = false;
   int ch = 0;
-  while ((ch = getch()) != 10 && !done) {
+  while (!done) {
+    ch = getch();
     switch (ch) {
     case KEY_DOWN: {
       menu_driver(menu_, REQ_DOWN_ITEM);
-      wrefresh(window_);
       break;
-    }
-    case KEY_UP: {
+    } case KEY_UP: {
       menu_driver(menu_, REQ_UP_ITEM);
-      wrefresh(window_);
       break;
     }
-    case 32: {
+    case '\r':
+    case ' ': {
       menu_driver(menu_, REQ_TOGGLE_ITEM);
-      wrefresh(window_);
+      break;
     } case '\t': {
       done = ValidateMenuSelection();
       break;
     }
     }
+
+    wrefresh(window_);
   }
 
   return selection_;
@@ -113,7 +115,7 @@ bool Selector::ValidateMenuSelection() {
    * items.
    */
   ITEM **menu_items = ::menu_items(menu_);
-  for (int i = 0; i < items_.size(); ++i) {
+  for (unsigned i = 0; i < items_.size(); ++i) {
     if (item_value(menu_items[i])) {
       selection_.push_back(items_[i]);
     }
